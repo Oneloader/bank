@@ -1,0 +1,1865 @@
+<?php
+namespace app\admin\controller;
+use app\admin\model\BrandsCards;
+use app\common\logic\fengzeApiLogic;
+use app\common\logic\k11ApiLogic;
+use app\common\model\Brands;
+use app\common\model\Integral;
+use app\common\model\Mall;
+use app\common\model\Sales;
+use app\common\model\Shop;
+use app\common\model\WeixinCards;
+use app\common\model\WeixinCardsCats;
+use app\common\model\Store;
+use think\AjaxPage;
+use think\Page;
+use think\Db;
+use think\Validate;
+
+class Tools extends Base {
+
+    /**
+     * sales管理
+     */
+    public function sales(){
+        //获取列表
+        $username = input('keyword','','htmlspecialchars');
+        $status = input('status');
+        $where['sid'] = $this->sid;
+        if(!empty($username)){
+            $where['username'] = ['like',"%$username%"];
+        }
+        if(isset($status) && in_array($status,[0,1])){
+            $where['status'] = $status;
+            $this->assign('status',$status);
+        }else{
+            $where['status'] = ['in',[0,1]];
+        }
+
+        $model = new Sales();
+        $count = $model->where($where)->count('id');
+        if($count){
+            $pager = $page = new Page($count,20);
+            $lists = $model->where($where)->limit($page->firstRow.','.$page->listRows)->order('id desc')->select();
+            foreach($lists as $k=>$v){
+                //扫码数据
+                $scanData = Db::name('sales_data')->field('SUM(scan) scan,SUM(subscribe) subscribe,SUM(register) register')->where(['sales_id'=>$v['id'],'sid'=>$this->sid])->find();
+                $lists[$k]['scan'] = empty($scanData['scan']) ? 0 : $scanData['scan'];
+                $lists[$k]['subscribe'] = empty($scanData['subscribe']) ? 0 : $scanData['subscribe'];
+                $lists[$k]['register'] = empty($scanData['register']) ? 0 : $scanData['register'];
+
+                //线下销售
+                $offline_sales = Db::name('sales_sell_list')->field('count(id) num,SUM(sales_amount) sales_amount')->where(['sid'=>$this->sid,'sales_id'=>$v['id']])->find();
+                $offline_sales['sales_amount'] = round($offline_sales['sales_amount'],2);
+                $lists[$k]['offline_sales'] = $offline_sales;
+
+                //线上销售数及金额
+                $online_sales = Db::name('sales_sell_list_online')
+                    //->field('count(id) num,SUM(bonus_amount) total_kp,SUM(social_amount) total_sp,SUM(cash_amount) total_cash')
+                    ->field('count(id) num,SUM(cash_amount) total_cash')
+                    ->where(['sid'=>$this->sid,'sales_id'=>$v['id']])
+                    ->find();
+                $online_sales['total_cash'] = round($online_sales['total_cash'],2);
+                $lists[$k]['online_sales'] = $online_sales;
+            }
+            //dump($lists);die;
+            $this->assign([
+                'lists' => $lists,
+                'count' => $count,
+                'pager' => $pager
+            ]);
+        }
+        return $this->fetch();
+    }
+
+    /**
+     * 删除sales
+     * @throws \think\Exception
+     */
+    public function sales_del(){
+        if(IS_AJAX && IS_POST){
+            $id = input('id/d');
+            if($id > 0){
+                $result = model('Sales')->delSales($id);
+                $this->ajaxReturn($result);
+            }
+        }
+    }
+
+    /**
+     * 楼层管理
+     */
+    public function floors(){
+        $model = DB::name('floors');
+        $where = ['sid'=>$this->sid];
+        $keyword = $_POST['keyword'];
+        if(!empty($keyword)){
+            $where['name'] = ['like',"%$keyword%"];
+        }
+        $count = $model->where($where)->count('id');
+        if($count){
+            $page = new Page($count,20);
+            $lists = $model
+                ->where($where)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->order('id desc')
+                ->select();
+            $this->assign([
+                'lists' => $lists,
+                'total' => $count,
+                'pager' => $page->show()
+            ]);
+        }
+        return $this->fetch();
+    }
+
+    /**
+     * 添加楼层
+     * @return mixed
+     */
+    public function addEditFloors(){
+        $id = I('id/d',0);
+        if(IS_POST && !empty($_POST)){
+            $floor_name = input('post.name');
+
+            if(empty($floor_name)){
+                $this->ajaxReturn(['status'=>0,'msg'=>'楼层名称不能为空']);
+            }
+            $model = DB::name('floors');
+            //是否唯一
+            $num = $model->where(['name'=>$floor_name])->count('id');
+            if($num > 0){
+                $this->error('楼层名称已经存在');
+            }
+            if(!empty($id)) {
+                $r = $model->where(['id'=>$id,'sid'=>$this->sid])->save(['name'=>$floor_name]);
+            } else {
+                $r = $model->add(['name'=>$floor_name,'sid'=>$this->sid]);
+            }
+            if($r !== false){
+                $this->ajaxReturn(['status'=>1,'msg'=>'操作成功']);
+            }else{
+                $this->ajaxReturn(['status'=>0,'msg'=>'操作失败']);
+            }
+        }
+        if(!empty($id)){
+            //获取楼层信息
+            $info = DB::name('floors')->where(['id'=>$id,'sid'=>$this->sid])->find();
+            $this->assign('info',$info);
+        }
+        return $this->fetch('_floors');
+    }
+
+    public function delFloors(){
+        $id = I('id/d',0);
+        if(IS_AJAX && $id > 0){
+            $r = DB::name('floors')->where(['id'=>$id,'sid'=>$this->sid])->delete();
+            if($r){
+                $data = ['status'=>1,'msg'=>'删除成功'];
+            }else{
+                $data = ['status'=>0,'msg'=>'删除失败'];
+            }
+            $this->ajaxReturn($data);
+        }
+    }
+
+
+    /**
+     * 发送记录
+     * @return mixed
+     */
+    public function message(){
+        $where = ['a.sid'=>$this->sid];
+        $name = input('name','','htmlspecialchars');
+        $type = input('type');
+        $g_name = input('g_name','','htmlspecialchars');
+        $c_name = input('c_name','','htmlspecialchars');
+        $begin = input('time_begin','','htmlspecialchars');
+        $end = input('time_end','','htmlspecialchars');
+        if(!empty($name)){
+            $wh['nick_name'] = ['like',"%$name%"];
+            $cust_id = Db::name('customer')
+                ->field('id')
+                ->where($wh)
+                ->select();
+            foreach ($cust_id as $val){
+                $cust_id = $val['id'];
+            }
+            $where['a.customer'] = ['like',"$cust_id"];
+//            $where['c.nick_name'] = ['like',"%$name%"];
+        }
+        if(!empty($type)){
+            $where['a.type'] = ['like',"%$type%"];
+        }
+        if(!empty($g_name) && $type == 1){
+            $where['d.goods_name'] = ['like',"%$g_name%"];
+        }
+        if(!empty($c_name) && $type == 2){
+            $where['e.title'] = ['like',"%$c_name%"];
+        }
+        if(!empty($begin) || !empty($end)){
+            $time_begin = empty($begin) ? 0 : strtotime(urldecode($begin));
+            $time_end   = empty($end) ? time() : strtotime(urldecode($end));
+            $where['a.time'] = ['between',[$time_begin,$time_end]];
+        }
+        if ($type == 1){
+            $count = Db::name('sales_message')
+                ->alias('a')
+                ->join('sales b','a.sales_id=b.id')
+                ->join('customer c','a.customer=c.id')
+                ->join('goods d','a.key=d.goods_id')
+                ->where($where)
+                ->count('a.id');
+        }elseif ($type == 2) {
+            $count = Db::name('sales_message')
+                ->alias('a')
+                ->join('sales b', 'a.sales_id=b.id')
+                ->join('customer c', 'a.customer=c.id')
+                ->join('weixin_cards e','a.key=e.id')
+                ->where($where)
+                ->count('a.id');
+        }else{
+            $count = Db::name('sales_message')
+                ->alias('a')
+                ->join('sales b', 'a.sales_id=b.id')
+                ->join('customer c', 'a.customer=c.id')
+                ->where($where)
+                ->count('a.id');
+        }
+        if($count){
+            $pager = $page = new Page($count,20);
+            if ($type == 1) {
+                $lists = Db::name('sales_message')
+                    ->alias('a')
+                    ->field('b.username,b.unionid,c.nick_name,c.union_id,a.type,a.result,a.msg,a.date,a.time,a.key')
+                    ->join('sales b', 'a.sales_id=b.id')
+                    ->join('customer c', 'a.customer=c.id')
+                    ->join('goods d','a.key=d.goods_id')
+                    ->where($where)
+                    ->limit($page->firstRow . ',' . $page->listRows)
+                    ->order(['a.id' => 'desc'])
+                    ->select();
+            }elseif($type == 2){
+                $lists = Db::name('sales_message')
+                    ->alias('a')
+                    ->field('b.username,b.unionid,c.nick_name,c.union_id,a.type,a.result,a.msg,a.date,a.time,a.key')
+                    ->join('sales b', 'a.sales_id=b.id')
+                    ->join('customer c', 'a.customer=c.id')
+                    ->join('weixin_cards e','a.key=e.id')
+                    ->where($where)
+                    ->limit($page->firstRow . ',' . $page->listRows)
+                    ->order(['a.id' => 'desc'])
+                    ->select();
+            }else{
+                $lists = Db::name('sales_message')
+                    ->alias('a')
+                    ->field('b.username,b.unionid,c.nick_name,c.union_id,a.type,a.result,a.msg,a.date,a.time,a.key')
+                    ->join('sales b', 'a.sales_id=b.id')
+                    ->join('customer c', 'a.customer=c.id')
+                    ->where($where)
+                    ->limit($page->firstRow . ',' . $page->listRows)
+                    ->order(['a.id' => 'desc'])
+                    ->select();
+            }
+            foreach($lists as $k=>$v){
+                if($v['type'] == 1){
+                    $table_name = 'goods';
+                    $name = 'goods_name,brand_id,origin';
+                    $field = 'goods_id';
+                    $info = Db::name($table_name)->field($name)->where([$field=>$v['key']])->find();
+                    $lists[$k]['content'] = $info['goods_name'];
+
+                    //获取品牌
+                    if($info['origin'] == 1 ){   //在线商品
+                        $lists[$k]['brand_name'] = '在线商品';
+                    }else{  //ipad商品
+                        if($info['brand_id'] > 0){
+                            //获取品牌数据
+                            $brand_name = Db::name('brands')->where(['id'=>$info['brand_id']])->getField('name');
+                            $lists[$k]['brand_name'] = $brand_name;
+                        }else{
+                            $lists[$k]['brand_name'] = '';
+                        }
+                    }
+                }else{
+                    $table_name = 'weixin_cards';
+                    $name = 'title';
+                    $field = 'id';
+                    $content = Db::name($table_name)->where([$field=>$v['key']])->getField($name);
+                    $lists[$k]['content'] = $content;
+                }
+            }
+            //是否导出
+            if($_GET['export'] == 1){
+                if ($type == 1) {
+                    $lists = Db::name('sales_message')
+                        ->alias('a')
+                        ->field('b.username,b.unionid,c.nick_name,c.union_id,a.type,a.result,a.msg,a.date,a.time,a.key')
+                        ->join('sales b', 'a.sales_id=b.id')
+                        ->join('customer c', 'a.customer=c.id')
+                        //->join('goods d','a.key=d.goods_id')
+                        ->where($where)
+                        ->order(['a.id' => 'desc'])
+                        ->select();
+                }elseif($type == 2){
+                    $lists = Db::name('sales_message')
+                        ->alias('a')
+                        ->field('b.username,b.unionid,c.nick_name,c.union_id,a.type,a.result,a.msg,a.date,a.time,a.key')
+                        ->join('sales b', 'a.sales_id=b.id')
+                        ->join('customer c', 'a.customer=c.id')
+                        ->join('weixin_cards e','a.key=e.id')
+                        ->where($where)
+                        ->order(['a.id' => 'desc'])
+                        ->select();
+                }else{
+                    $lists = Db::name('sales_message')
+                        ->alias('a')
+                        ->field('b.username,b.unionid,c.nick_name,c.union_id,a.type,a.result,a.msg,a.date,a.time,a.key')
+                        ->join('sales b', 'a.sales_id=b.id')
+                        ->join('customer c', 'a.customer=c.id')
+                        ->where($where)
+                        ->order(['a.id' => 'desc'])
+                        ->select();
+                }
+//                $lists = Db::name('sales_message')
+//                    ->alias('a')
+//                    ->field('b.username,b.unionid,c.nick_name,c.union_id,a.type,a.result,a.msg,a.date,a.time,a.key')
+//                    ->join('sales b', 'a.sales_id=b.id')
+//                    ->join('customer c', 'a.customer=c.id')
+//                    ->join('goods d','a.key=d.goods_id')
+//                    ->join('weixin_cards e','a.key=e.id')
+//                    ->where($where)
+//                    ->order(['a.id' => 'desc'])
+//                    ->select();
+                foreach($lists as $k=>$v){
+                    if($v['type'] == 1){
+                        $table_name = 'goods';
+                        $name = 'goods_name,brand_id,origin';
+                        $field = 'goods_id';
+                        $info = Db::name($table_name)->field($name)->where([$field=>$v['key']])->find();
+                        $lists[$k]['content'] = $info['goods_name'];
+
+                        //获取品牌
+                        if($info['origin'] == 1 ){   //在线商品
+                            $lists[$k]['brand_name'] = '线上商品';
+                        }else{  //ipad商品
+                            if($info['brand_id'] > 0){
+                                //获取品牌数据
+                                $brand_name = Db::name('brands')->where(['id'=>$info['brand_id']])->getField('name');
+                                $lists[$k]['brand_name'] = $brand_name;
+                            }else{
+                                $lists[$k]['brand_name'] = '';
+                            }
+                        }
+                    }else{
+                        $table_name = 'weixin_cards';
+                        $name = 'title';
+                        $field = 'id';
+                        $content = Db::name($table_name)->where([$field=>$v['key']])->getField($name);
+                        $lists[$k]['content'] = $content;
+                    }
+                }
+                $strTable ='<table width="500" border="1">';
+                $strTable .= '<tr>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">会员名称</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">会员UnionID</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">SA 名称</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">SA UnionID</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">消息类型</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">商品/卡券</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">商品品牌</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">发送时间</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">发送状态</td>';
+                $strTable .= '</tr>';
+                if(is_array($lists)){
+                    foreach($lists as $k=>$val){
+                        if ($val['type'] == 1){
+                            $t = "商品";
+                        }elseif($val['type'] == 2){
+                            $t = "卡券";
+                        }
+                        if ($val['result'] == 1){
+                            $r = "成功";
+                        }else{
+                            $r = "失败";
+                        }
+                        $strTable .= '<tr>';
+                        $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['nick_name'].'</td>';
+                        $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['union_id'].'</td>';
+                        $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['username'].'</td>';
+                        $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['unionid'].'</td>';
+                        $strTable .= '<td style="text-align:center;font-size:12px;">'.$t.'</td>';
+                        $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['content'].'</td>';
+                        $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['brand_name'].'</td>';
+                        $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['date'].'</td>';
+                        $strTable .= '<td style="text-align:center;font-size:12px;">'.$r.'</td>';
+                        $strTable .= '</tr>';
+                    }
+                }
+                $strTable .='</table>';
+                downloadExcel($strTable,'message');
+                exit();
+            }
+
+            $this->assign([
+                'pager' => $pager,
+                'messages'=>$lists
+            ]);
+        }
+        return $this->fetch();
+    }
+
+    /**
+     * 后台重新推送失败消息
+     */
+    public function resetMessage(){
+        if(IS_POST && IS_AJAX){
+            $id = input('id/d',0);
+            if($id>0){
+                $message = Db::name('sales_message')
+                    ->alias('a')
+                    ->field('a.*,b.openid,b.nick_name')
+                    ->join('customer b','a.customer=b.id')
+                    ->where(['a.id'=>$id,'a.sid'=>$this->sid])
+                    ->find();
+                if(empty($message)){
+                    $this->ajaxReturn(['status'=>0,'msg'=>'获取发送记录失败']);
+                }
+                if(empty($message['openid'])){
+                    $this->ajaxReturn(['status'=>0,'msg'=>'获取顾客OpenID失败']);
+                }
+                //推送商品数据
+                $k11Model = new k11ApiLogic($this->sid);
+
+                if($message['type'] == 1) {
+                    $goodsInfo = Db::name('goods')->field('goods_name,original_img,goods_url,goods_remark')->where(['goods_id'=>$message['key']])->find();
+                    $text = json_encode(['articles'=>[['title'=>$goodsInfo['goods_name'],'url'=>$goodsInfo['goods_url'],'picurl'=>$goodsInfo['original_img'],'description'=>$goodsInfo['goods_remark']]]]);
+                    $result = $k11Model->sendCustomerMessage($message['openid'], 'news', $text);
+                    $keyword = '商品：【'.$goodsInfo['goods_name'].'】';
+                }elseif($message['type'] == 2){
+                    $card_id = Db::name('weixin_cards')->where(['id'=>$message['key']])->getField('card_id');
+                    if(empty($card_id)){
+                        $this->ajaxReturn(['status'=>0,'msg'=>'获取卡券card_id失败']);
+                    }
+                    $text['card_id'] = $card_id;
+                    $text = json_encode($text);
+                    $result = $k11Model->sendCustomerMessage($message['openid'], 'wxcard', $text);
+                    $keyword = '卡券，card_id：【'.$card_id.'】';
+                }else{
+                    $this->ajaxReturn(['status'=>0,'msg'=>'发送信息类型错误']);
+                }
+                if($result['success'] === true){
+                    adminLog('重新给会员'.'【'.$message['nick_name'].'】推送'.$keyword);
+                    Db::name('sales_message')->where(['id'=>$id])->save(['result'=>1,'msg'=>'','date'=>date('Y-m-d H:i:s'),'time'=>time()]);
+                    $this->ajaxReturn(['status'=>1,'msg'=>'发送成功']);
+                }else{
+                    $this->ajaxReturn(['status'=>0,'msg'=>$result['msg']]);
+                }
+            }
+        }
+    }
+
+    /**
+     * 小票上传
+     * @return mixed
+     */
+    public function bill(){
+        $where = ['a.sid'=>$this->sid];
+        $count = Db::name('customer_receipt')->alias('a')->where($where)->count();
+        if($count){
+            $pager = $page = new Page($count,20);
+            $lists = Db::name('customer_receipt')
+                ->alias('a')
+                ->field('b.username,b.unionid,c.nick_name,c.union_id,a.*')
+                ->join('sales b','a.sales_id=b.id')
+                ->join('customer c','a.customer=c.id')
+                ->where($where)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->order(['a.id'=>'desc'])
+                ->select();
+            $this->assign([
+                'pager' => $pager,
+                'bills'=>$lists
+            ]);
+        }
+
+        //获取最近同步日期
+        $date = $this->getRefreshLog('billStatus');
+        $this->assign('date',$date);
+        return $this->fetch();
+    }
+
+
+
+    /**
+     * 查询小票审核状态
+     */
+    public function getBillStatus(){
+        if(IS_POST && IS_AJAX){
+            $id = input('id/d');
+            if(empty($id)){
+                $this->ajaxReturn('参数错误');
+            }
+
+            $requestNo = Db::name('customer_receipt')->where(['id'=>$id,'sid'=>$this->sid])->getField('requestNo');
+            if(empty($requestNo)){
+                $this->ajaxReturn('未查询到该小票上传纪录');
+            }
+            $model = new fengzeApiLogic();
+            $res = $model->getBillStatus($requestNo);
+            if(isset($res['success']) && $res['success']==true){
+                //查询状态成功,记录审核状态
+                Db::name('customer_receipt')->where(['id'=>$id])->save(['status'=>$res['status'],'reason'=>$res['responseMsg'],'last_check'=>date('Y-m-d H:i:s')]);
+                $this->ajaxReturn(['status'=>1]);
+            }else{
+                //查询状态失败
+                $this->ajaxReturn(['status'=>0,'msg'=>$res['errorcode']]);
+            }
+        }
+    }
+
+    /**
+     * 获取所有待审核小票的审核状态
+     */
+    public function getAllBillStatus(){
+        if(IS_AJAX && IS_GET){
+            //获取当前所有待审核小票单号
+            $requestNos = Db::name('customer_receipt')->where(['sid'=>$this->sid,'status'=>['in',[10,20]]])->getField('id,requestNo');
+            if(empty($requestNos)){
+                $this->ajaxReturn(['status'=>1]);
+            }
+            $model = new fengzeApiLogic();
+            foreach($requestNos as $k=>$v){
+                $res = $model->getBillStatus($v);
+                if(isset($res['success']) && $res['success']==true){
+                    //查询状态成功,记录审核状态
+                    Db::name('customer_receipt')->where(['id'=>$k])->save(['status'=>$res['status'],'reason'=>$res['responseMsg'],'last_check'=>date('Y-m-d H:i:s')]);
+                }
+            }
+
+            adminLog('同步小票最新审核状态','billStatus');
+            $this->ajaxReturn(['status'=>1]);
+        }
+    }
+
+    /**
+     * 下载EXCEL模板文件
+     */
+    public function download(){
+        if(!empty($_GET) && $_GET['download'] == 1){
+            $file_path = 'public/sales_example.xls';
+            if(file_exists(ROOT_PATH . $file_path)){
+                downFile($file_path);
+            }else{
+                $this->error('模板文件不存在');
+            }
+        }
+    }
+
+    /**
+     * 导入EXCEL模板文件
+     */
+    public function import_sales(){
+        return $this->fetch();
+    }
+
+    /**
+     * 导入导购列表
+     */
+    public function ajax_import_sales(){
+        if (IS_POST && IS_AJAX)
+        {
+            //检查文件
+            $allow_exts = array('xls'); //xlsx
+            $allow_size = 5*1024*1024;//5M
+            $file = empty($_FILES['sales']) ? array() : $_FILES['sales'];
+            if(empty($file['tmp_name']))
+            {
+                $this->error('请先择正确的文件上传！');
+            }
+            $file_ext = explode('.', $file['name']);
+            $file_ext = end($file_ext);
+            if(!in_array($file_ext,$allow_exts))
+            {
+                $this->error('请先择正确的文件上传！');
+            }
+            if($file['size'] <=0 or $file['size'] > $allow_size)
+            {
+                $this->error('上传文件最大支持5M，请分批次导入');
+            }
+            //读取EXCEL并写入数据库
+            vendor ( 'importxls.excel.reader' );
+            $xls = new \Spreadsheet_Excel_Reader();
+            $xls->setOutputEncoding('utf-8');
+            $xls->read($file['tmp_name']);
+
+            $model = model('Sales');
+            $time = date('Y-m-d H:i:s');
+            $model->startTrans();
+            $total =$success=0;
+            $error = array();
+            for ($i=2; $i<=$xls->sheets[0]['numRows']; $i++) {
+                $total++;
+                $unionid = !isset($xls->sheets[0]['cells'][$i][1]) ? '' : $xls->sheets[0]['cells'][$i][1];
+                $unionid = trim($unionid);
+                //$sa_id = !isset($xls->sheets[0]['cells'][$i][2]) ? '' : $xls->sheets[0]['cells'][$i][2];
+                $username = !isset($xls->sheets[0]['cells'][$i][2]) ? '' : $xls->sheets[0]['cells'][$i][2];
+                $username = htmlspecialchars(trim($username));
+                if(empty($unionid) || empty($username)){
+                    array_push($error,'数据缺失');
+                    continue;
+                }
+
+                $arr['unionid'] = $unionid;
+                //$arr['sa_id'] = $sa_id;
+                $arr['username'] = $username;
+                $arr['create_time'] = $time;
+                $arr['sid'] = $this->sid;
+                $unique = $model->checkUnique($arr);
+                if($unique == 1){
+                    array_push($error,$unionid.':UnionId已经存在');
+                    continue;
+                }
+                $id = $model->add($arr);
+                if($id) $success++;
+            }
+            $model ->commit();
+            if(!empty($error)){
+                $error_str = implode("\r\n",$error);
+                file_put_contents(RUNTIME_PATH.'importSalesError'.mt_rand(1000,9999).'.php',$error_str);
+            }
+            if($total == 0){
+                $this->ajaxReturn(['status'=>0,'msg'=>'导入文件内容为空']);
+            }
+            if($success != 0)
+                $this->ajaxReturn(['status'=>1,'msg'=>"本次共操作 $total 条数据，共执行了 $success 条数据！"]);
+            else
+                $this->ajaxReturn(['status'=>0,'msg'=>$error_str]);
+        }
+    }
+
+    /**
+     * 导入商品标签列表
+     */
+    public function ajax_import_goods_tags(){
+        if (IS_POST && IS_AJAX)
+        {
+            //检查文件
+            $allow_exts = array('xls','xlsx');
+            $allow_size = 5*1024*1024;//5M
+            $file = empty($_FILES['sales']) ? array() : $_FILES['sales'];
+            if(empty($file['tmp_name']))
+            {
+                $this->error('请先择正确的文件上传！');
+            }
+            $file_ext = explode('.', $file['name']);
+            $file_ext = end($file_ext);
+            if(!in_array($file_ext,$allow_exts))
+            {
+                $this->error('请先择正确的文件上传！');
+            }
+            if($file['size'] <=0 or $file['size'] > $allow_size)
+            {
+                $this->error('上传文件最大支持5M！');
+            }
+            //读取EXCEL并写入数据库
+            vendor ( 'importxls.excel.reader' );
+            $xls = new \Spreadsheet_Excel_Reader();
+            $xls->setOutputEncoding('utf-8');
+            $xls->read($file['tmp_name']);
+
+            $model = model('GoodsTags');
+            $model->startTrans();
+            $total =$success=0;
+            $error = array();
+            for ($i=2; $i<=$xls->sheets[0]['numRows']; $i++) {
+                $total++;
+                $id = !isset($xls->sheets[0]['cells'][$i][3]) ? '' : $xls->sheets[0]['cells'][$i][3];
+                $partner_code = !isset($xls->sheets[0]['cells'][$i][2]) ? '' : $xls->sheets[0]['cells'][$i][2];
+                $goods_tag_name = !isset($xls->sheets[0]['cells'][$i][4]) ? '' : $xls->sheets[0]['cells'][$i][4];
+                $goods_tag_name = trim(htmlspecialchars($goods_tag_name));
+                $level = !isset($xls->sheets[0]['cells'][$i][5]) ? '' : $xls->sheets[0]['cells'][$i][5];
+                if(empty($goods_tag_name) || empty($id)){
+                    array_push($error,'空行数据');
+                    continue;
+                }
+
+                $arr['id'] = $id;
+                $arr['partner_code'] = $partner_code;
+                $arr['goods_tag_name'] = $goods_tag_name;
+                $arr['level'] = $level;
+                $id = $model->add($arr);
+                if($id) $success++;
+            }
+            $model ->commit();
+            if(!empty($error)){
+                $error_str = implode("\r\n",$error);
+                file_put_contents(RUNTIME_PATH.'importSalesError'.mt_rand(1000,9999).'.php',$error_str);
+            }
+            if($total == 0){
+                $this->ajaxReturn(['status'=>0,'msg'=>'导入文件内容为空']);
+            }
+            if($success != 0)
+                $this->ajaxReturn(['status'=>1,'msg'=>"本次共操作 $total 条数据，共执行了 $success 条数据！"]);
+            else
+                $this->ajaxReturn(['status'=>0,'msg'=>$error_str]);
+        }
+    }
+
+    /**
+     * 品牌列表
+     * @return mixed
+     */
+    public function brands(){
+        $where = ['sid'=>$this->sid];
+        //获取列表
+        $name = input('keyword',' ','htmlspecialchars');
+        $status = input('status/d');
+        $floor = input('floor/d');
+        if(!empty($name) && $name!=' '){
+            $where['name'] = ['like',"%$name%"];
+        }
+        if(!empty($floor) && $floor > 0){
+            $where['floor'] = $floor;
+        }
+        if(isset($status) && in_array($status,[0,1])){
+            $where['status'] = $status;
+            $this->assign('status',$status);
+        }
+        $model = new Brands();
+        /* 品牌导出 */
+//        if($_GET['export'] == 1){
+//            $model = new Brands();
+////            $cat_list = M('goods_category')->where("parent_id = 0 and ".$this->wherestr)->getField('id,name');
+//            $lists = $model
+//                ->where($where)
+//                ->order(['sort'=>desc,'id'=>desc])
+//                ->select();
+//            //获取所有楼层
+//            $floors = model('Floors')->getAllFloors();
+////            $lists = Db::name('integral')
+////                ->alias('a')
+////                ->field('a.vip_number,a.dan_number,a.sales_time,a.sale_money,
+////                            a.today_day,a.get_points,a.other_text,a.sales_id,
+////                            b.nick_name vip_name,b.sex,
+////                            c.store_name,
+////                            d.unionid,d.username')
+////                ->join('customer b','a.vip_number=b.vip_code and b.sid='.$this->sid)
+////                ->join('store c','a.brands_adds=c.id')
+////                ->join('sales d','a.sales_id=d.id')
+////                ->where($where)
+////                ->order('a.id desc')
+////                ->select();
+//            $strTable ='<table width="500" border="1">';
+//            $strTable .= '<tr>';
+//            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">银行ID</td>';
+//            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">品牌名称</td>';
+//            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">品牌楼层</td>';
+//            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">门牌号</td>';
+//            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">品牌描述</td>';
+//            $strTable .= '</tr>';
+//            if(is_array($lists)){
+//                foreach($lists as $k=>$val){
+//                    if ($val['sid'] == '26'){
+//                        $sid = "WH";
+//                    }elseif ($val['sid'] == '27'){
+//                        $sid = "SH";
+//                    }elseif ($val['sid'] == '28'){
+//                        $sid = "GZ";
+//                    }elseif ($val['sid'] == '29'){
+//                        $sid = "SY";
+//                    }elseif ($val['sid'] == '30'){
+//                        $sid = "K11CS";
+//                    }else{
+//                        $sid = "undefined";
+//                    }
+//                    $strTable .= '<tr>';
+//                    $strTable .= '<td style="text-align:center;font-size:12px;">'.$sid.'</td>';
+//                    $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['name'].'</td>';
+//                    $strTable .= '<td style="text-align:center;font-size:12px;">'.$floors[$val['floor']].'</td>';
+//                    $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['door'].'</td>';
+//                    $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['desc'].'</td>';
+//                    $strTable .= '</tr>';
+//                }
+//            }
+//            $strTable .='</table>';
+//            downloadExcel($strTable,'brands');
+//            exit();
+//        }
+        $count = $model
+            ->where($where)
+            ->count('id');
+        if($count){
+            $pager = $page = new Page($count,20);
+            $lists = $model
+                ->where($where)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->order(['sort'=>desc,'id'=>desc])
+                ->select();
+            //获取关联标签名称
+            $tagModel = model('Tags');
+            foreach($lists as $key=>$val){
+                $TagNames = $tagModel->getHasTagNames($val['id'],'bid','brands');
+                $tags = empty($TagNames) ? '' :implode($TagNames,',');
+                $lists[$key]['tags'] = $tags;
+                $desc = getSubstr($val['desc'],0,70);
+                $lists[$key]['desc'] = $desc;
+            }
+
+            //获取最近同步日期
+            $date = $this->getRefreshLog('goodsBrands');
+            $this->assign([
+                'lists' => $lists,
+                'count' => $count,
+                'pager' => $pager,
+                'date' => $date
+            ]);
+        }
+
+        //获取所有楼层
+        $floors = model('Floors')->getAllFloors();
+        $this->assign([
+            'floors' => $floors
+        ]);
+        return $this->fetch();
+    }
+
+    /**
+     * 编辑品牌
+     * @return mixed
+     */
+    public function addEditBrands(){
+        $id = input('id/d');
+        //获取所有楼层
+        if(IS_POST && IS_AJAX){
+            $floor = input('floor',0,'intval');
+            $logo = input('logo');
+            $store_imgs = input('store_imgs/a');
+
+            /*if(empty($store_imgs)){
+                $error = ['status'=>0,'msg'=>'请上传店铺图'];
+            }
+            if(empty($logo)){
+                $error = ['status'=>0,'msg'=>'请上传品牌LOGO'];
+            }
+            if(empty($floor)){
+                $error = ['status'=>0,'msg'=>'请选择所在楼层'];
+            }
+            if(!empty($error)){
+                $this->ajaxReturn($error);
+            }*/
+
+            $name = input('name','','htmlspecialchars');
+            if(checkIsset('brands',['id'=>['neq',$id],'name'=>$name,'sid'=>$this->sid])){
+                $this->ajaxReturn(['status'=>0,'msg'=>'品牌名称已经存在']);
+            }
+            /*$door = input('door','','htmlspecialchars');
+            $desc = input('desc','','htmlspecialchars');
+            if(empty($name) || empty($door) || empty($desc)){
+                $this->ajaxReturn(['status'=>0,'msg'=>'请完善数据后再提交']);
+            }*/
+            $data = input('post.');
+            $model = Db::name('brands');
+            if($id){
+                unset($data['id']);
+                $r = $model->where(['id'=>$id,'sid'=>$this->sid])->save($data);
+            }else{
+                $data['sid'] = $this->sid;
+                $r = $id = $model->add($data);
+            }
+            model('Brands')->afterSave($id);
+            if($r !== false){
+                $return = ['status'=>1,'msg'=>'操作成功'];
+            }else{
+                $return = ['status'=>0 , 'msg'=> '操作失败'];
+            }
+            $this->ajaxReturn($return);
+        }
+        if(!empty($id)){
+            //品牌信息
+            $brand = model('Brands')->getInfo($id);
+            //店铺图片
+            $store_imgs = model('Brands')->getStoreImgs($id);
+            $this->assign([
+                'brand'=>$brand,
+                'storeImgs' => $store_imgs
+            ]);
+        }
+        $floors = model('Floors')->getAllFloors();
+        $this->assign([
+            'floors'=>$floors
+        ]);
+        return $this->fetch('_brand');
+    }
+
+    public function brands_del(){
+        if(IS_AJAX && IS_POST){
+            $id = input('id/d');
+            if($id > 0){
+                $result = model('Brands')->delBrand($id);
+                $this->ajaxReturn($result);
+            }else{
+                $this->ajaxReturn(['status'=>0,'msg'=>'数据丢失']);
+            }
+        }
+    }
+
+    /**
+     * 同步CRM+品牌数据到本地
+     */
+    public function import_brands(){
+        if(IS_AJAX && IS_POST){
+            $mallModel = new Mall();
+            $mallInfo = $mallModel->getMallInfo($this->sid);
+
+            $r = $this->getBrandsFromCrm($mallInfo['store_code']);
+            adminLog('同步CRM+商品品牌','goodsBrands');
+            $this->ajaxReturn($r);
+        }
+    }
+
+    protected function getBrandsFromCrm($mall_id,$curpage = 1){
+        $k11Model = new k11ApiLogic($this->sid);
+        $k11Model->mall_id = $mall_id;
+        $page_size = 100;
+        $start = ($curpage-1) * $page_size;
+        $data = $k11Model->getAllBrands($start,$page_size);
+        //file_put_contents(RUNTIME_PATH.'allBrands'.mt_rand(1000,9999).'.php',var_export($data,true));
+        if(isset($data['total'])){
+            //获取已经存在的数据
+            $brandsModel = new \app\wiki\model\Brands();
+            $brandsModel->sid = $this->sid;
+            //$brandsIds = $brandsModel->getAllBrandsIds();
+            $brands_arr = $brandsModel->getAllBrands();
+            if(!empty($brands_arr)){
+                $brands_arr = convert_arr_key($brands_arr,'brand_id');
+            }else{
+                $brands_arr = [];
+            }
+            if($data['total'] > 0){
+                $addBrands = $editBrands = [];
+                //保存数据
+                if(!empty($data['list'])){
+                    $brands = $data['list'];
+                    foreach($brands as $k=>$v){
+                        //$v['brand_id'] = intval($v['brand_id']);
+                        $location = $v['store'][0];
+                        unset($v['store']);
+                        $floor = $location['floor'];
+                        $v['door'] = $location['code'];
+                        //获取楼层信息
+                        $floorId = Db::name('floors')->where(['name'=>$floor,'sid'=>$this->sid])->cache(true)->getField('id');
+                        if(empty($floorId)){
+                            $floorId = Db::name('floors')->insertGetId([
+                                'name'=>$floor,
+                                'sid'=>$this->sid
+                            ]);
+                        }
+                        $v['floor'] = $floorId;
+                        /*if(in_array($v['brand_id'],$brandsIds)){
+                        foreach($v as $key=>$val){
+                            if(empty($val)){
+                                unset($v[$key]);
+                            }
+                        }
+                        array_push($editBrands,$v);
+                        */
+                        if(array_key_exists($v['brand_id'],$brands_arr)){
+                            foreach($brands_arr[$v['brand_id']] as $key=>$val){
+                                if($key =='id'){
+                                    $v['id'] = $val;
+                                }elseif(!empty($val)){
+                                    unset($v[$key]);
+                                }
+                            }
+                            array_push($editBrands,$v);
+                        }else{
+                            $v['sid'] = $this->sid;
+                            $v['origin'] = 1;
+                            $v['status'] = 1;
+                            array_push($addBrands,$v);
+                        }
+                    }
+                }
+                if(!empty($addBrands)){
+                    $brandsModel->isUpdate(false)->saveAll($addBrands);
+                }
+                if(!empty($editBrands)){
+                    //file_put_contents(RUNTIME_PATH.'editData'.mt_rand(1000,9999).'.php',var_export($editBrands,true));
+                    $brandsModel->isUpdate(true)->saveAll($editBrands);
+                }
+
+                $total_page = ceil($data['total']/100);
+                if($total_page > $curpage){
+                    $curpage++;
+                    $r = $this->getBrandsFromCrm($mall_id,$curpage);
+                    return $r;
+                }else{
+                    return ['status'=>1,'msg'=>'同步成功'];
+                }
+            }else{
+                return ['status'=>0,'msg'=>'未查询到品牌数据'];
+            }
+        }else{
+            $data = empty($data) ? '数据为空' : $data;
+            return ['status'=>0,'msg'=>$data];
+        }
+    }
+
+    /**
+     * 为品牌追加店铺图
+     * @return mixed
+     */
+    public function showBrandsBanner(){
+        $id = input('id/d');
+        if(empty($id)){
+            $this->error('参数丢失');
+        }
+        if(IS_POST && IS_AJAX){
+            $imgs = input('post.imgs/a');
+            if(empty($imgs)){
+                $this->error('请上传图片');
+            }
+            $addArr = [];
+
+            //获取已有图片
+            $hasImgs = Db::name('brands_imgs')->where(['brand_id'=>$id,'sid'=>$this->sid])->getField('img_url',true);
+            foreach($imgs as $k=>$v){
+                if(!empty($v) && !in_array($v,$hasImgs)){
+                    array_push($addArr,['img_url'=>$v,'brand_id'=>$id,'sid'=>$this->sid]);
+                }
+            }
+
+            if(!empty($addArr)){
+                $r = Db::name('brands_imgs')->insertAll($addArr);
+            }
+
+            if($r !== false){
+                $r = ['status'=>1,'msg'=>'设置店铺图成功'];
+            }else{
+                $r = ['status'=>0,'msg'=>'设置店铺图失败'];
+            }
+            $this->ajaxReturn($r);exit;
+        }
+        //获取图片
+        $imgs = Db::name('brands_imgs')->where(['brand_id'=>$id,'sid'=>$this->sid])->select();
+        $this->assign([
+            'id' => $id,
+            'imgs' => $imgs,
+        ]);
+        return $this->fetch();
+    }
+
+    /**
+     * 删除店铺图片
+     */
+    public function del_brand_images(){
+        $path = I('filename','');
+        M('brands_imgs')->where("img_url = '$path'")->delete();
+    }
+
+    /**
+     * 为品牌绑定优惠券
+     * @return mixed
+     */
+    public function setBrandCoupons(){
+        $id = input('id/d');
+        if(empty($id)){
+            $this->error('参数丢失');
+        }
+
+        //获取所有购物下的卡券品类
+        $wxCardsCatModel = new WeixinCardsCats();
+        $wxCats = $wxCardsCatModel->getAllCats(1,$this->sid);
+        if(!empty($wxCats)){
+            //获取各分类下所有卡券
+            $wxCardModel = new WeixinCards();
+            foreach($wxCats as $k=>$v){
+                $cards = $wxCardModel->getAllCardsByCats($v['id'],$this->sid);
+                if(empty($cards)){
+                    unset($wxCats[$k]);
+                }else{
+                    $wxCats[$k]['cards'] = $cards;
+                }
+            }
+        }
+        //获取已选择卡券
+        $brandModel = new Brands();
+        $hasBindCardIds = $brandModel->getHasCards($id);
+        $this->assign([
+            'bid' => $id,
+            'wxCats' => $wxCats,
+            'hasBindCardIds' => $hasBindCardIds
+        ]);
+        return $this->fetch('set_brand_coupons');
+    }
+
+    /**
+     * 标签操作
+     */
+    public function addCardToBrand(){
+        if(IS_POST && IS_AJAX){
+            $card = input('card/a');   // tag_id 标签ID
+            $bid = input('brand_id/d');      // brand_id    品牌ID
+            $type = input('type');
+            if(empty($card)){
+                $this->ajaxReturn(['status'=>0,'msg'=>'ID参数丢失']);
+            }
+            if(empty($bid)){
+                $this->ajaxReturn(['status'=>0,'msg'=>'商品ID参数丢失']);
+            }
+            if(empty($type) || !in_array($type,['add','del'])){
+                $this->ajaxReturn(['status'=>0,'msg'=>'参数错误']);
+            }
+            $r = false;
+            $model = new BrandsCards();
+            if($type == 'add'){
+                $r = $model->addRelation(['brand_id'=>$bid,'card'=>$card]);
+            }
+            if($type == 'del'){
+                $r = $model->delRelation(['brand_id'=>$bid,'card'=>$card]);
+            }
+            if($r){
+                $result = ['status'=>1,'msg'=>'操作成功'];
+            }else{
+                $result = ['status'=>0,'msg'=>'操作失败'];
+            }
+            $this->ajaxReturn($result);
+        }
+    }
+
+    /**
+     * 打开绑定标签页
+     * @return mixed
+     */
+    public function setTags(){
+        $id = input('id/d');
+        if(empty($id)){
+            $this->error('参数丢失');
+        }
+        //获取所有标签分类
+        $tagCats = model('TagsCats')->getAllCats(['in',[0,1]],'id,name');
+        if(!empty($tagCats)){
+            $model = model('Tags');
+            foreach($tagCats as $key=>$val){
+                //获取当前已有卡券
+                $tags =$model->getAllTagsName($val['id']);
+                $tagCats[$key]['tags'] = $tags;
+            }
+        }
+
+        //获取已绑定标签id
+        $hasBindTagIds = model('Brands')->getHasTags($id);
+        $this->assign([
+            'bid' => $id,
+            'tagCats' => $tagCats,
+            'hasBindTagIds' => $hasBindTagIds
+        ]);
+        return $this->fetch('set_tags');
+    }
+
+    /**
+     * 标签操作
+     */
+    public function addTagToBrand(){
+        if(IS_POST && IS_AJAX){
+            $tids = input('tid/a');   // tag_id 标签ID
+            $bid = input('bid/d');      // brand_id    品牌ID
+            $type = input('type');
+            if(empty($tids)){
+                $this->ajaxReturn(['status'=>0,'msg'=>'ID参数丢失']);
+            }
+            if(empty($bid)){
+                $this->ajaxReturn(['status'=>0,'msg'=>'品牌ID参数丢失']);
+            }
+            if(empty($type) || !in_array($type,['add','del'])){
+                $this->ajaxReturn(['status'=>0,'msg'=>'参数错误']);
+            }
+            $r = false;
+            if($type == 'add'){
+                $r = model('BrandsTags')->addRelation(['bid'=>$bid,'tids'=>$tids]);
+            }
+            if($type == 'del'){
+                $r = model('BrandsTags')->delRelation(['bid'=>$bid,'tids'=>$tids]);
+            }
+            if($r){
+                $result = ['status'=>1,'msg'=>'操作成功'];
+            }else{
+                $result = ['status'=>0,'msg'=>'操作失败'];
+            }
+            $this->ajaxReturn($result);
+        }
+    }
+
+    /**
+     * 关注欢迎语
+     * @return mixed
+     */
+    public function answer_msg(){
+        $model = DB::name('answer_msg');
+        $where = ['sid'=>$this->sid];
+        $count = $model->where($where)->count('id');
+        if($count){
+            $page = new Page($count,20);
+            $lists = $model
+                ->where($where)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->order('status desc,id desc')
+                ->select();
+            $this->assign([
+                'types' => ['不推送消息','文本消息','图文消息'],
+                'lists' => $lists,
+                'total' => $count,
+                'pager' => $page->show()
+            ]);
+        }
+        return $this->fetch();
+    }
+
+    /**
+     * 操作欢迎语
+     * @return mixed
+     */
+    public function add_edit_answer_msg(){
+        clean_xss($_POST);
+        $id = input('id/d',0);
+        if($id){
+            $info = Db::name('answer_msg')->where(['id'=>$id])->find();
+        }
+        if(IS_POST){
+            $data = input('post.');
+            $addData = [];
+            $type = $data['type'];
+
+            $addData['type'] = $type;
+            if($type == 2){
+                if(empty($data['title'])){
+                    $this->error('请输入欢迎语标题');
+                }
+                if(empty($data['description'])){
+                    $this->error('请输入欢迎语内容');
+                }
+                if(empty($data['picurl'])){
+                    $this->error('请上传欢迎语图片');
+                }
+                $addData['title'] = $data['title'];
+                $addData['description'] = $data['description'];
+                $addData['picurl'] = $data['picurl'];
+                $addData['url'] = $data['url'];
+                if(empty($id)){
+                    $addData['sid'] = $this->sid;
+                    $r = Db::name('answer_msg')->add($addData);
+                }else{
+                    $r = Db::name('answer_msg')->where(['id'=>$id])->save($addData);
+                    if($r && $info['status'] == 1){
+                        $this->pushMsgToCRM($addData);
+                    }
+                }
+            }elseif($type == 1){
+                if(empty($data['description'])){
+                    $this->error('请输入欢迎语内容');
+                }
+                $addData['description'] = $data['description'];
+                $addData['title'] = '';
+                $addData['picurl'] = '';
+                $addData['url'] = '';
+                if(empty($id)){
+                    $addData['sid'] = $this->sid;
+                    $r = Db::name('answer_msg')->add($addData);
+                }else{
+                    $r = Db::name('answer_msg')->where(['id'=>$id])->save($addData);
+                    if($r && $info['status'] == 1){
+                        $this->pushMsgToCRM($addData);
+                    }
+                }
+            }else{
+                $addData['description'] = '';
+                $addData['title'] = '';
+                $addData['picurl'] = '';
+                $addData['url'] = '';
+                if(empty($id)){
+                    $addData['sid'] = $this->sid;
+                    $r = Db::name('answer_msg')->add($addData);
+                }else{
+                    $r = Db::name('answer_msg')->where(['id'=>$id])->save($addData);
+                    if($r && $info['status'] == 1){
+                        $this->pushMsgToCRM($addData);
+                    }
+                }
+            }
+
+            if($r === false){
+                $this->error('操作失败');
+            }else{
+                $return_arr = array(
+                    'status' => 1,
+                    'msg'   => '操作成功',
+                    'data'  => array('url'=>U('Tools/answer_msg')),
+                );
+                $this->ajaxReturn($return_arr);
+            }
+        }else{
+            if(!empty($info)){
+                $this->assign([
+                    'info' => $info
+                ]);
+            }
+        }
+        return $this->fetch();
+    }
+
+    /**
+     * 删除欢迎语
+     */
+    public function del_msg(){
+        $id = input('id/d',0);
+        $info = Db::name('answer_msg')->where(['id'=>$id,'sid'=>$this->sid])->find();
+
+        if(!empty($info)){
+            if($info['status']){
+                $result = ['status'=>0,'msg'=>'不能删除正在使用的欢迎语'];
+            }else{
+                $r = Db::name('answer_msg')->where(['sid'=>$this->sid,'id'=>$id])->delete();
+                if($r){
+                    $result = ['status'=>1,'msg'=>'删除成功'];
+                }else{
+                    $result = ['status'=>0,'msg'=>'删除失败'];
+                }
+            }
+        }else{
+            $result = ['status'=>0,'msg'=>'查询欢迎语失败'];
+        }
+        $this->ajaxReturn($result);
+    }
+
+    /**
+     * 更换欢迎语
+     */
+    public function changeMsgUse(){
+        $id = input('id/d',0);
+        $info = Db::name('answer_msg')->where(['id'=>$id,'sid'=>$this->sid])->find();
+
+        if(!empty($info)){
+            if($info['status'] == 1){
+                $result = ['status'=>0,'msg'=>'该欢迎语正在使用中'];
+            }else{
+                Db::name('answer_msg')->where(['sid'=>$this->sid])->save(['status'=>0]);
+                $r = Db::name('answer_msg')->where(['sid'=>$this->sid,'id'=>$id])->save(['status'=>1]);
+                if($r !== false){
+                    $r = $this->pushMsgToCRM($info);
+
+                    if(is_array($r)){
+                        $result = ['status'=>1,'msg'=>'更换欢迎语成功'];
+                    }else{
+                        $result = ['status'=>0,'msg'=>$r];
+                    }
+                }else{
+                    $result = ['status'=>0,'msg'=>'更新欢迎语失败'];
+                }
+            }
+        }else{
+            $result = ['status'=>0,'msg'=>'查询欢迎语失败'];
+        }
+        $this->ajaxReturn($result);
+    }
+
+    /**
+     * 关注欢迎语
+     * @return mixed
+     */
+    public function gold_up(){
+        $model = DB::name('goldcard_up_log');
+        $where = ['sid'=>$this->sid];
+        $time_begin = input('time_begin');
+        $time_end = input('time_end');
+
+        if(!empty($time_begin)){
+            if(!empty($time_end)){
+                $where['up_at'] = ['between',[$time_begin,$time_end]];
+            }else{
+                $where['up_at'] = ['gt',$time_begin];
+            }
+        }else{
+            if(!empty($time_end)){
+                $where['up_at'] = ['lt',$time_end];
+            }
+        }
+
+        if($_GET['export']){
+            $lists = $model
+                ->where($where)
+                ->order('id desc')
+                ->limit(10000)
+                ->select();
+            if(!empty($lists)){
+                $strTable ='<table width="500" border="1">';
+                $strTable .= '<tr>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">会员名称</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">会员vip_code</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">会员UnionID</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">关联SA姓名</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">关联SA UnionID</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">关联时间</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">金卡升级时间</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">店铺推送时间</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">消费店铺号</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">消费金额</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">消费时间</td>';
+                $strTable .= '</tr>';
+                if(is_array($lists)){
+                    foreach($lists as $val){
+                        $sales = Db::name('sales')->field('username,unionid')->where(['id'=>$val['sales_id']])->cache(true)->find();
+                        $customer = Db::name('customer')->field('nick_name,union_id,vip_code')->where(['id'=>$val['customer']])->cache(true)->find();
+
+                        //查询最近推送事件
+                        $push_time = Db::name('sales_message')
+                            ->where(['sales_id'=>$val['sales_id'],'customer'=>$val['customer'],'date'=>['between',[$val['stime'],$val['up_at']]]])
+                            ->getField('date');
+                        if(!empty($sales)){
+                            $val['username'] = $sales['username'];
+                            $val['unionid'] = $sales['unionid'];
+                        }
+                        if(!empty($customer)){
+                            $val['nick_name'] = $customer['nick_name'];
+                            $val['union_id'] = $customer['union_id'];
+                            $val['vip_code'] = $customer['vip_code'];
+                        }
+
+                        $bills = Db::name('sales_sell_list')->field('createtime,store_code,sales_amount')->where(['id'=>['in',$val['mall_bill_ids']]])->select();
+
+                        $rowspan = empty($bills) ? 1 : count($bills);
+                        $strTable .= '<tr>';
+                        $strTable .= '<td rowspan='.$rowspan.' style="text-align:center;font-size:12px;">'.$val['nick_name'].'</td>';
+                        $strTable .= '<td rowspan='.$rowspan.' style="text-align:center;font-size:12px;vnd.ms-excel.numberformat:@">'.$val['vip_code'].'</td>';
+                        $strTable .= '<td rowspan='.$rowspan.' style="text-align:center;font-size:12px;">'.$val['union_id'].'</td>';
+                        $strTable .= '<td rowspan='.$rowspan.' style="text-align:center;font-size:12px;">'.$val['username'].'</td>';
+                        $strTable .= '<td rowspan='.$rowspan.' style="text-align:center;font-size:12px;">'.$val['unionid'].'</td>';
+                        $strTable .= '<td rowspan='.$rowspan.' style="text-align:center;font-size:12px;">'.$val['stime'].'</td>';
+                        $strTable .= '<td rowspan='.$rowspan.' style="text-align:center;font-size:12px;">'.$val['up_at'].'</td>';
+                        $strTable .= '<td rowspan='.$rowspan.' style="text-align:center;font-size:12px;">'.$push_time.'</td>';
+
+                        $strTable .= '<td rowspan=1 style="text-align:center;font-size:12px;">'.$bills[0]['store_code'].'</td>';
+                        $strTable .= '<td rowspan=1 style="text-align:center;font-size:12px;">'.$bills[0]['sales_amount'].'</td>';
+                        $strTable .= '<td rowspan=1 style="text-align:center;font-size:12px;">'.$bills[0]['createtime'].'</td>';
+                        $strTable .= '</tr>';
+                        if(!empty($bills)){
+                            foreach($bills as $k=>$v){
+                                if($k == 0){
+                                    continue;
+                                }
+                                $strTable .= '<tr>';
+                                $strTable .= '<td rowspan=1 style="text-align:center;font-size:12px;">'.$v['store_code'].'</td>';
+                                $strTable .= '<td rowspan=1 style="text-align:center;font-size:12px;">'.$v['sales_amount'].'</td>';
+                                $strTable .= '<td rowspan=1 style="text-align:center;font-size:12px;">'.$v['createtime'].'</td>';
+                                $strTable .= '</tr>';
+                            }
+                        }
+                    }
+                }
+                $strTable .='</table>';
+                downloadExcel($strTable,'金卡升级记录');
+                exit();
+            }
+        }
+
+        $count = $model->where($where)->count('id');
+        if($count){
+            $page = new Page($count,20);
+            $lists = $model
+                ->where($where)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->order('id desc')
+                ->select();
+            if(!empty($lists)) {
+                foreach ($lists as $k => $v) {
+                    $sales = Db::name('sales')->field('username,unionid')->where(['id' => $v['sales_id']])->cache(true)->find();
+                    $customer = Db::name('customer')->field('nick_name,union_id,vip_code')->where(['id' => $v['customer']])->cache(true)->find();
+                    if (!empty($sales)) {
+                        $lists[$k]['username'] = $sales['username'];
+                        $lists[$k]['unionid'] = $sales['unionid'];
+                    }
+                    if (!empty($customer)) {
+                        $lists[$k]['nick_name'] = $customer['nick_name'];
+                        $lists[$k]['union_id'] = $customer['union_id'];
+                        $lists[$k]['vip_code'] = $customer['vip_code'];
+                    }
+
+                    //查询最近推送事件
+                    $push_time = Db::name('sales_message')
+                        ->where(['sales_id'=>$v['sales_id'],'customer'=>$v['customer'],'date'=>['between',[$v['stime'],$v['up_at']]]])
+                        ->getField('date');
+                    $lists[$k]['push_time'] = $push_time;
+                }
+            }
+            $this->assign([
+                'lists' => $lists,
+                'total' => $count,
+                'pager' => $page
+            ]);
+        }
+        return $this->fetch();
+    }
+
+    /**
+     * 推送最新欢迎语到CRM+
+     * @param $info
+     */
+    private function pushMsgToCRM($info){
+        $shopModel = new Shop();
+        $ssid = $shopModel->getOnlineShopId($this->sid);
+        $shopInfo = $shopModel->shops[$ssid];
+
+        $k11model = new k11ApiLogic($this->sid);
+        $k11model->mall_id = $shopInfo['store_code'];
+        $k11model->account_id = $shopInfo['account_id'];
+
+        $push_type = $info['type']; //推送文本
+        if($push_type == 2){
+            $push_content = '';
+            $push_articles = [
+                'url' => $info['url'],
+                'title' => $info['title'],
+                'picurl' => getCDNUrl($info['picurl']),
+                'description' => $info['description']
+            ];
+        }elseif($push_type == 1){
+            $push_content = $info['description'];
+            $push_articles = '';
+        }else{
+            $push_type = 0; //不推送消息
+            $push_content = '';
+            $push_articles = '';
+        }
+
+        $salesModel = new Sales();
+        $sales = $salesModel->getAllSales($this->sid,'id',true);
+
+        $r = ['msg'=>'操作成功'];
+        if(!empty($sales)){
+            foreach($sales as $v){
+                $r = $k11model->updateSales($v['id'],$push_type,$push_content,$push_articles);
+            }
+        }
+        return $r;
+    }
+
+    /**
+     * 商铺列表
+     * @return mixed
+     */
+    public function store(){
+
+        $where = ['sid'=>$this->sid];
+        //获取列表
+        $name = input('keyword','','htmlspecialchars');
+        if(!empty($name)){
+            $where['store_name'] = ['like',"%$name%"];
+        }
+        $model = new Store();
+
+        $count = $model
+            ->where($where)
+            ->count('id');
+        if($count){
+            $pager = $page = new Page($count,20);
+            $lists = $model
+                ->where($where)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->order(['id desc'])
+                ->select();
+
+            //获取最近同步日期
+            $date = $this->getRefreshLog('store');
+
+            $this->assign([
+                'lists' => $lists,
+                'count' => $count,
+                'pager' => $pager,
+                'date' => $date
+            ]);
+
+        }
+        return $this->fetch();
+    }
+
+    /**
+     * 商铺管理
+     */
+    public function import_store(){
+//        echo 1;exit;
+        if(IS_AJAX && IS_POST){
+            $mallModel = new Mall();
+            $mallInfo = $mallModel->getMallInfo($this->sid);
+            $r = $this->getStoreFromCrm($mallInfo['store_code']);
+//            print_r($r);exit;
+            adminLog('同步CRM+商铺','store');
+            $this->ajaxReturn($r);
+        }
+    }
+
+    /**
+     * @param $mall_id
+     * @param int $curpage
+     * @return array
+     * 获取CRM+商铺数据
+     */
+    protected function getStoreFromCrm($mall_id,$curpage = 1){
+        $k11Model = new k11ApiLogic($this->sid);
+        $k11Model->mall_id = $mall_id;
+        $page_size = 100;
+        $start = ($curpage-1) * $page_size;
+        $data = $k11Model->getAllStore($start,$page_size);
+        //file_put_contents(RUNTIME_PATH.'allBrands'.mt_rand(1000,9999).'.php',var_export($data,true));
+        if(isset($data['total'])){
+            //获取已经存在的数据
+            $storeModel = new \app\wiki\model\Store();
+            $storeModel->sid = $this->sid;
+            $store_arr = $storeModel->getAllStore();
+
+            if(!empty($store_arr)){
+                $store_arr = convert_arr_key($store_arr,'store_code');
+            }else{
+                $store_arr = [];
+            }
+
+            if($data['total'] > 0){
+                $addStore = $editStore = [];
+                //保存数据
+                if(!empty($data['list'])){
+                    $store = $data['list'];
+                    foreach($store as $k=>$v){
+                        $v['store_code'] = trim($v['store_code']);
+                        if(array_key_exists($v['store_code'],$store_arr)){
+                            foreach($store_arr[$v['store_code']] as $key=>$val){
+                                if($key =='id'){
+                                    $v['id'] = $val;
+                                }
+                                /*elseif(!empty($val)){
+                                    unset($v[$key]);
+                                }*/
+                            }
+                            array_push($editStore,$v);
+                        }else{
+                            $v['sid'] = $this->sid;
+                            $v['origin'] = 1;
+                            $v['status'] = 1;
+                            array_push($addStore,$v);
+                        }
+                    }
+                }
+
+                if(!empty($addStore)){
+                    $storeModel->isUpdate(false)->saveAll($addStore);
+                }
+                if(!empty($editStore)){
+                    //file_put_contents(RUNTIME_PATH.'editData'.mt_rand(1000,9999).'.php',var_export($editBrands,true));
+                    $storeModel->isUpdate(true)->saveAll($editStore);
+                }
+
+                $total_page = ceil($data['total']/100);
+                if($total_page > $curpage){
+                    $curpage++;
+                    $r = $this->getStoreFromCrm($mall_id,$curpage);
+                    return $r;
+                }else{
+                    return ['status'=>1,'msg'=>'同步成功'];
+                }
+            }else{
+                return ['status'=>0,'msg'=>'未查询到商铺数据'];
+            }
+        }else{
+            $data = empty($data) ? '数据为空' : $data;
+            return ['status'=>0,'msg'=>$data];
+        }
+    }
+
+    /**
+     * 积分列表
+     * @return mixed
+     */
+    public function integral(){
+        $where = ['a.sid'=>$this->sid];
+        //获取列表
+        $vip = input('keyword','','htmlspecialchars');
+        $store = input('store','','htmlspecialchars');
+        $begin = input('time_begin','','htmlspecialchars');
+        $end = input('time_end','','htmlspecialchars');
+//        $date = input('date','','htmlspecialchars');
+        if(!empty($begin) || !empty($end)){
+            $time_begin = empty($begin) ? 0 : strtotime(urldecode($begin));
+            $time_end   = empty($end) ? time() : strtotime(urldecode($end));
+            $where['a.today_day'] = ['between',[$time_begin,$time_end]];
+        }
+        if(!empty($vip)){
+            $where['b.nick_name'] = ['like',"%$vip%"];
+        }
+        if(!empty($store)){
+            $where['c.store_name'] = ['like',"%$store%"];
+        }
+//        if (!empty($date)){
+//            $where['a.today_day'] = ['like',"%$date%"];
+//        }
+        //是否导出
+        if($_GET['export'] == 1){
+            $lists = Db::name('integral')
+                ->alias('a')
+                ->field('a.vip_number,a.dan_number,a.sales_time,a.sale_money,
+                            a.today_day,a.get_points,a.other_text,a.sales_id,
+                            b.nick_name vip_name,b.sex,
+                            c.store_name,
+                            d.unionid,d.username')
+                ->join('customer b','a.vip_number=b.vip_code and b.sid='.$this->sid)
+                ->join('store c','a.brands_adds=c.id')
+                ->join('sales d','a.sales_id=d.id')
+                ->where($where)
+                ->order('a.id desc')
+                ->select();
+            $strTable ='<table width="500" border="1">';
+            $strTable .= '<tr>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">会员名</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">会员卡号</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">SA 名称</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">SA UnionID</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">商铺名称</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">单据号</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">交易金额</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">积分日期</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">交易日期</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">积分</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">备注</td>';
+            $strTable .= '</tr>';
+            if(is_array($lists)){
+                foreach($lists as $k=>$val){
+                    $strTable .= '<tr>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['vip_name'].'</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;width: 200px;vnd.ms-excel.numberformat:0">'.$val['vip_number'].'</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['username']."\t".'</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['unionid'].'</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['store_name'].'</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['dan_number'].'</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['sale_money'].'</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;">'.date('Y-m-d H:i:s',$val['today_day']).'</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;">'.date('Y-m-d H:i:s',$val['sales_time']).'</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['get_points'].'</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;">'.$val['other_text'].'</td>';
+                    $strTable .= '</tr>';
+                }
+            }
+            $strTable .='</table>';
+            downloadExcel($strTable,'integral');
+            exit();
+        }
+        $count = Db::name('integral')
+            ->alias('a')
+            ->join('customer b','a.vip_number=b.vip_code')
+            ->join('store c','a.brands_adds=c.id')
+            ->join('sales d','a.sales_id=d.id')
+            ->where($where)
+            ->count('a.id');
+        if($count){
+            $pager = $page = new Page($count,20);
+            $lists = Db::name('integral')
+                ->alias('a')
+                ->field('a.vip_number,a.dan_number,a.sales_time,a.sale_money,
+                a.today_day,a.get_points,a.other_text,a.sales_id,
+                b.nick_name vip_name,b.sex,
+                c.store_name,
+                d.unionid,d.username')
+                ->join('customer b','a.vip_number=b.vip_code and b.sid='.$this->sid)
+                ->join('store c','a.brands_adds=c.id')
+                ->join('sales d','a.sales_id=d.id')
+                ->where($where)
+                ->limit($page->firstRow . ',' . $page->listRows)
+                ->order('a.id desc')
+                ->select();
+            //获取最近同步日期
+//            $date = $this->getRefreshLog('integral');
+            $this->assign([
+                'lists' => $lists,
+                'count' => $count,
+                'pager' => $pager,
+//                'date' => $date
+            ]);
+        }
+        return $this->fetch();
+    }
+
+
+    /**
+     * 积分助手管理
+     */
+//    public function import_integral(){
+//        if(IS_AJAX && IS_POST){
+//            $mallModel = new Mall();
+//            $mallInfo = $mallModel->getMallInfo($this->sid);
+////            $r = $this->getIntegralFromCrm($mallInfo['vip_number']);
+//            adminLog('同步CRM+商铺','integral');
+//            $this->ajaxReturn($r);
+//        }
+//    }
+
+
+    /**
+     * @param $mall_id
+     * @param int $curpage
+     * @return array
+     * 上传积分数据到CRM+
+     */
+//    protected function getIntegralFromCrm($mall_id){
+//        $k11Model = new k11ApiLogic($this->sid);
+//        $k11Model->mall_id = $mall_id;
+//        $data = $k11Model->CreateIntegral();
+//        //file_put_contents(RUNTIME_PATH.'allBrands'.mt_rand(1000,9999).'.php',var_export($data,true));
+//        if(isset($data['total'])){
+//            //获取已经存在的数据
+//            $integralModel = new \app\wiki\model\Integral();
+//            $integralModel->sid = $this->sid;
+//            $integral_arr = $integralModel->getAllIntegral();
+//            if(!empty($integral_arr)){
+//                $integral_arr = convert_arr_key($integral_arr,'store_code');
+//            }else{
+//                $integral_arr = [];
+//            }
+////            var_dump($store_arr);exit;
+//            if($data['total'] > 0){
+//                $addStore = $editStore = [];
+//                //保存数据
+//                if(!empty($data['list'])){
+//                    $store = $data['list'];
+//                    foreach($store as $k=>$v){
+////                        var_dump($store_arr);exit;
+//                        if(array_key_exists($v['store_code'],$integral_arr)){
+//                            foreach($integral_arr[$v['store_code']] as $key=>$val){
+//                                if($key =='id'){
+//                                    $v['id'] = $val;
+//                                }elseif(!empty($val)){
+//                                    unset($v[$key]);
+//                                }
+//                            }
+//                            array_push($editIntegral,$v);
+//                        }else{
+//                            $v['sid'] = $this->sid;
+//                            $v['origin'] = 1;
+//                            $v['status'] = 1;
+//                            array_push($addIntegral,$v);
+//                        }
+//                    }
+//                }
+//
+//                if(!empty($addStore)){
+//                    $integralModel->isUpdate(false)->saveAll($addIntegral);
+//                }
+//                if(!empty($editStore)){
+//                    //file_put_contents(RUNTIME_PATH.'editData'.mt_rand(1000,9999).'.php',var_export($editBrands,true));
+//                    $integralModel->isUpdate(true)->saveAll($editIntegral);
+//                }
+//                    return ['status'=>1,'msg'=>'同步成功'];
+//            }else{
+//                return ['status'=>0,'msg'=>'未查询到商铺数据'];
+//            }
+//        }else{
+//            $data = empty($data) ? '数据为空' : $data;
+//            return ['status'=>0,'msg'=>$data];
+//        }
+//    }
+}

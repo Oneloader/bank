@@ -1,0 +1,299 @@
+<include file="public/layout" />
+<style>
+    .top-box{width: 860px;margin: 20px auto;}
+    .top-box li{font-size: 14px; height: 23px;  line-height: 23px;overflow:hidden;font-weight: normal;color: #555 !important;text-shadow: 1px 1px 0 rgba(255,255,255,0.75); }
+    .main-box{height: 250px;border: 1px solid #D7D7D7;padding:5px;;margin: 5px;overflow-y: scroll;border-radius: 5px;}
+    .main-box-right{width: 150px;float:right;border-color: #cccccc}
+    .main-box-center{width: 150px;float:left;}
+    .main-box-center li{display: none;}
+    .main-box-center .active{display: block;}
+    .main-box-left{width: 250px;float:left;}
+    .checkbox{margin-right: 5px;}
+</style>
+<body style="background-color: #FFF; overflow: auto; min-width:600px;">
+<div>
+    <!--表单数据-->
+    <form method="post" id="addEditSpecForm">                    
+    <div class="ncap-form-default">
+        <div class="top-box">
+            <div class="main-box main-box-left">
+                <ul>
+                    <volist name="tags" id="vo">
+                        <gt name="key" value="9">
+                            <li><input type="checkbox" class="checkbox top-level" data-val="{$vo.tag_name|default=''}" name="goods_tags" value="{$vo.tag_code|default=0}" <in name="vo.tag_code" value="$tags_ids">checked</in> />{$vo.tag_name}</li>
+                        </gt>
+                    </volist>
+                </ul>
+            </div>
+
+            <div class="main-box main-box-center" id="tag-level1">
+                <volist name="tags1" id="vo">
+                    <li <in name="vo.parent_code" value="$tags_ids">class="active"</in> >
+                        <input type="checkbox" class="checkbox second-level top_level_{$vo.parent_code|default=0} second_include_{$vo.tag_code|default=0}"
+                               data-include="{$vo.tag_include|default=''}" data-val="{$vo.tag_name|default=''}" name="goods_tags" value="{$vo.tag_code|default=0}"
+                                <in name="vo.tag_code" value="$tags_ids">checked</in> />
+                        {$vo.tag_name}
+                    </li>
+                </volist>
+            </div>
+            <div class="main-box main-box-center" id="tag-level2">
+                <volist name="tags2" id="vo">
+                    <li <in name="vo.parent_code" value="$tags_ids">class="active"</in> >
+                        <input type="checkbox" class="checkbox third-level top_level_{$vo.parent_code|default=0} third_include_{$vo.tag_code|default=0}"
+                           data-include="{$vo.tag_include|default=''}" data-val="{$vo.tag_name|default=''}" name="goods_tags"
+                           value="{$vo.tag_code|default=0}"  <in name="vo.tag_code" value="$tags_ids">checked</in> />{$vo.tag_name}
+                    </li>
+                </volist>
+            </div>
+
+            <div class="main-box main-box-right">
+                <ul>
+                    <volist name="tags" id="vo">
+                        <lt name="key" value="10">
+                            <li><input type="checkbox" class="checkbox" name="goods_tags" value="{$vo.tag_code}" data-val="{$vo.tag_name|default=''}" <in name="vo.tag_code" value="$tags_ids">checked</in> />{$vo.tag_name}</li>
+                        </lt>
+                    </volist>
+                </ul>
+            </div>
+        </div>
+        <div class="bot">
+            <a href="JavaScript:void(0);" style="margin-left:30%;margin-top:35px;" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a>
+        </div>
+    </div>
+  </form>
+</div>
+ 
+</body>
+
+<script>
+    $('.top-level').on('click',function(){
+        var val = $(this).val();
+        if ($(this).is(':checked')) {
+            $('.top_level_'+val).parent().fadeIn();
+        } else {
+            $('.top_level_'+val).each(function(){
+                if ($(this).is(':checked')) {
+                    $(this).attr('checked',false);
+                }
+                $(this).parent().fadeOut();
+            });
+        }
+    });
+
+    //第二级标签点击事件
+    $('.second-level').on('click',function(){
+        var tag_include = [];
+        var obj = $('.second-level[name=goods_tags]:checked');  // 已选择的二级标签
+        if(obj.length > 0){
+            /***  获取所有选择的tag_includes    开始  ***/
+            obj.each(function(){
+                var tag_include1 = getInclude($(this));
+                if(tag_include.length > 0 && tag_include1.length > 0){
+                    tag_include = mergeArray(tag_include,tag_include1);
+                }else{
+                    tag_include = tag_include1.length > 0 ? tag_include1 : tag_include;
+                }
+            });
+            /*if(tag_include.length > 0){
+                for(i=0;i<tag_include.length;i++) {
+                    $('.third_include_'+tag_include[i]).parent().fadeIn('slow');
+                }
+            }*/
+            /***  获取所有选择的tag_includes    结束  ***/
+
+            var obj1 = $('.third-level[name=goods_tags]:visible');  // 显示出来的三级标签
+            var tagIds = getTalVals(obj1);  //获取所有三级标签id值
+            /*****   隐藏不在选项中的   start    *****/
+            for(var i=0;i<tagIds.length;i++){
+                if($.inArray(tagIds[i],tag_include) == -1){
+                    $('.third_include_'+tagIds[i]).removeAttr('checked').parent().fadeOut('fast');
+                }
+            }
+            /*****   隐藏不在选项中的   end    *****/
+
+            /*****   显示其余子标签       end     *****/
+            for(var j=0;j<tag_include.length;j++){
+                if($.inArray(tag_include[j],tagIds) == -1){
+                    $('.third_include_'+tag_include[j]).parent().fadeIn('slow');
+                }
+            }
+            /*****   显示其余子标签       end     *****/
+        }else{
+            return_cycle();    //归零
+        }
+    });
+
+    //第三级标签点击事件
+    $('.third-level').on('click',function(){
+        var tag_include = [];
+        var obj = $('.third-level[name=goods_tags]:checked');  // 已选择的三级标签
+        if(obj.length > 0){
+            /***  获取所有选择的tag_includes    开始  ***/
+            obj.each(function(){
+                var tag_include1 = getInclude($(this));
+                if(tag_include.length > 0 && tag_include1.length > 0){
+                    tag_include = mergeArray(tag_include,tag_include1);
+                }else{
+                    tag_include = tag_include1.length > 0 ? tag_include1 : tag_include;
+                }
+            });
+            /*if(tag_include.length > 0){
+             for(i=0;i<tag_include.length;i++) {
+             $('.second_include_'+tag_include[i]).parent().fadeIn('slow');
+             }
+             }*/
+            /***  获取所有选择的tag_includes    结束  ***/
+
+            var obj1 = $('.second-level[name=goods_tags]:visible');  // 显示出来的三级标签
+            var tagIds = getTalVals(obj1);  //获取所有三级标签id值
+            /*****   隐藏不在选项中的   start    *****/
+            for(var i=0;i<tagIds.length;i++){
+                if($.inArray(tagIds[i],tag_include) == -1){
+                    $('.second_include_'+tagIds[i]).removeAttr('checked').parent().fadeOut('fast');
+                }
+            }
+            /*****   隐藏不在选项中的   end    *****/
+
+            /*****   显示其余子标签       end     *****/
+            for(var j=0;j<tag_include.length;j++){
+                if($.inArray(tag_include[j],tagIds) == -1){
+                    $('.second_include_'+tag_include[j]).parent().fadeIn('slow');
+                }
+            }
+            /*****   显示其余子标签       end     *****/
+        }else{
+            return_cycle();    //归零
+        }
+    });
+
+    /*
+    //第二级标签点击事件
+    $('.second-level').on('click',function(){
+        var i;
+        var tag_include = getInclude($(this));
+        var third_level_lenght = $('.second-level[name=goods_tags]:checked').length;
+        if($(this).is(':checked')) {
+            if(third_level_lenght == 1){
+                $('.third-level').parent().fadeOut('fast');
+            }
+            for(i=0;i<tag_include.length;i++) {
+                $('.third_include_'+tag_include[i]).parent().fadeIn('slow');
+            }
+        }else{
+            for(i=0;i<tag_include.length;i++) {
+                $('.third_include_' + tag_include[i]).parent().fadeOut('fast');
+            }
+            if(third_level_lenght == 0){
+                $('.third-level').parent().fadeIn('slow');
+            }
+        }
+    });
+
+    //第三级标签点击事件
+    $('.third-level').on('click',function(){
+        var i;
+        var tag_include = getInclude($(this));
+        var second_level_lenght = $('.third-level[name=goods_tags]:checked').length;
+        if($(this).is(':checked')) {
+            if(second_level_lenght == 1){
+                $('.second-level').parent().fadeOut('fast');
+            }
+            for(i=0;i<tag_include.length;i++){
+                $('.second_include_'+tag_include[i]).parent().fadeIn('slow');
+            }
+        }else{
+            for(i=0;i<tag_include.length;i++){
+                $('.second_include_'+tag_include[i]).parent().fadeOut('fast');
+            }
+            if(second_level_lenght == 0){
+                $('.second-level').parent().fadeIn('slow');
+            }
+        }
+    });
+    */
+
+    function getTalVals(objs){
+        var box = [];
+        if(objs.length > 0){
+            objs.each(function(){
+                var val = $(this).val();
+                if(val>0){
+                    box.push(val);
+                }
+            });
+        }
+        return box;
+    }
+
+    //还原
+    function return_cycle(){
+        var obj = $('.top-level[name=goods_tags]:checked');
+        obj.each(function(){
+            var val = obj.val();
+            $('.top_level_'+val).parent().fadeIn();
+        });
+    }
+
+    function getHasCheckBox(level){
+        var obj;
+        if(level == 0){
+            obj = $('.top-level');
+        }else if(level == 1){
+            obj = $('.second-level');
+        }else{
+            obj = $('.third-level');
+        }
+
+        var top_tags = [];
+        obj.each(function(){
+            if ($(this).is(':checked')) {
+                //选中,获取当前所有被选中的顶级标签
+                top_tags.push($(this).val());
+            }
+        });
+        return top_tags;
+    }
+
+    var goods_id = '{$goods_id|default=0}';
+    $('#submitBtn').click(function(){
+        var goods_tags = [];
+        var goods_text = [];
+        var obj = $('input[name=goods_tags]:checked');
+        obj.each(function(){
+            goods_tags.push($(this).val());
+            goods_text.push($(this).attr('data-val'));
+        });
+        //保存tag
+        $.post('{:U("Admin/Goods/save_goods_k11tags")}',{goods_id:goods_id ,goods_tags:goods_tags},function(data){
+            if(data.status == 1){
+                //同步商品标签数据到CRM+
+                window.parent.set_goods_tags_back(goods_text);
+            }else{
+                layer.msg('保存失败', {icon: 2,time: 3000});return false;
+            }
+        },'json');
+    });
+
+    //获取tag_include标签
+    function getInclude(obj){
+        var include = obj.attr('data-include');
+        if(include == '' || include == null){
+            return true;
+        }
+        var tag_include = include.split(",");
+        if(tag_include.length == 0){
+            return true;
+        }
+        return tag_include;
+    }
+
+    //求数据并集
+    function mergeArray(arr1, arr2) {
+        var arr=arr1.concat(arr2);
+        arr=arr.filter(function(item,index,self){
+            return self.indexOf(item) == index;
+        });
+        return arr;
+    }
+</script>
+</html>

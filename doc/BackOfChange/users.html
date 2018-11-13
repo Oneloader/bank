@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户兑换</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache,must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta name="format-detection" content="telephone=no, address=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+    <link rel="stylesheet" href="css/amazeui.min.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="user_pages">
+    <img class="pages_img" src="images/bgs.jpg" alt="">
+    <img class="user_logo" src="images/logo.png" alt="">
+    <img class="user_text" src="images/text.png" alt="">
+    <a href="javascript:void(0);" class="btn_orange user_btn">立即兑换</a>
+</div>
+
+
+<div class="center_box">
+    <div>
+        <div>
+            <div>
+                <div class="contents-box">
+                    <h2>请输入您的兑换码</h2>
+                    <input type="text" class="ipt_login" placeholder="请输入手机号码">
+                    <div class="user_btns clearfix">
+                        <a href="javasccript:void(0)" class="conform_cancel am-fl">取消</a>
+                        <a href="javasccript:void(0)" class="conform_btn am-fr">确认</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/amazeui.min.js"></script>
+<script src="js/jquery.imgpreload.min.js"></script>
+<script>
+    $('.btn_orange').click(function(){
+        $('.center_box').fadeIn(200);
+    });
+
+    $('.conform_cancel').click(function(){
+        $('.center_box').fadeOut(200);
+    });
+
+</script>
+</body>
+</html>

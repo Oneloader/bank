@@ -1,0 +1,237 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>Sales列表</h3>
+        <h5>扩展工具</h5>
+      </div>
+    </div>
+  </div>
+
+  <!-- 操作说明 -->
+  <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+    <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+      <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+    </div>
+    <ul>
+      <li>Sales状态为“不可用”时，该sales在前端不能登录</li>
+      <li>Sales数据不允许编辑；后台禁用的Sales不能登录</li>
+    </ul>
+  </div>
+
+  <div class="flexigrid">
+    <div class="mDiv" style="padding-bottom: 10px;">
+      <div class="ftitle">
+        <h3>SA列表</h3>
+        <h5>(共{$pager->totalRows|default=0}条记录)</h5>
+      </div>
+
+      <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+
+      <div class="tDiv2" style="padding: 0px;">
+        <!--<div class="fbutton">
+          <a href="{:U('Admin/Tools/addEditSales')}">
+            <div class="add" title="新增SA">
+              <span><i class="fa fa-plus"></i>新增SA</span>
+            </div>
+          </a>
+        </div>-->
+
+        <div class="fbutton">
+          <a href="javascript:void(0)" onclick="import_sales()">
+            <div class="add" title="导入SA数据">
+              <span><i class="fa fa-download"></i>导入SA数据</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <form id="search-form2" class="navbar-form form-inline"  method="post" action="{:U('/Admin/Tools/sales')}">
+        <div class="sDiv">
+          <div class="sDiv2">
+            <select name="status" id="status" class="select">
+              <option value="-1">状态</option>
+              <option <if condition="$status == 1">selected</if> value="1">可用</option>
+              <option <if condition="isset($status) && $status == 0">selected</if> value="0">禁用</option>
+            </select>
+            &nbsp;
+            <input type="text" class="qsbox" id="input-order-id" placeholder="请输入姓名关键字" value="{$_POST['keyword']}" name="keyword">
+            <input type="submit" class="btn" value="搜索">
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="hDiv">
+      <div class="hDivBox">
+        <table cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th class="sign" axis="col0">
+                <div style="width: 24px;"><i class="ico-check"></i></div>
+              </th>
+              <th align="center" abbr="article_title" axis="col3" class="">
+                <div style="text-align: center; width: 220px;" class="">SA-UnionID</div>
+              </th>
+              <th align="center" abbr="ac_id" axis="col4" class="">
+                <div style="text-align: center; width: 80px;" class="">姓名</div>
+              </th>
+              <th align="center" abbr="ac_id" axis="col4" class="">
+                <div style="text-align: center; width: 70px;" class="">扫码</div>
+              </th>
+              <th align="center" abbr="ac_id" axis="col4" class="">
+                <div style="text-align: center; width: 70px;" class="">关注</div>
+              </th>
+              <th align="center" abbr="ac_id" axis="col4" class="">
+                <div style="text-align: center; width: 70px;" class="">注册</div>
+              </th>
+              <th align="center" abbr="ac_id" axis="col4" class="">
+                <div style="text-align: center; width: 70px;" class="">关联销售数</div>
+              </th>
+              <th align="center" abbr="ac_id" axis="col4" class="">
+                <div style="text-align: center; width: 70px;" class="">关联销售金额</div>
+              </th>
+              <th align="center" abbr="ac_id" axis="col4" class="">
+                <div style="text-align: center; width: 130px;" class="">最近上线时间</div>
+              </th>
+              <th align="center" abbr="ac_id" axis="col4" class="">
+                <div style="text-align: center; width: 65px;" class="">黑卡权限</div>
+              </th>
+              <th align="center" abbr="ac_id" axis="col4" class="">
+                <div style="text-align: center; width: 65px;" class="">是否可用</div>
+              </th>
+              <th align="center" axis="col1" class="">
+                <div style="text-align: center; width: 70px;">操作</div>
+              </th>
+              <th style="width:100%" axis="col7">
+                <div></div>
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+
+    <div class="bDiv" style="height: auto;">
+      <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+        <notempty name="lists">
+          <table>
+            <tbody>
+            <volist name="lists" id="list">
+              <tr>
+                <td class="sign">
+                  <div style="width: 24px;"><i class="ico-check"></i></div>
+                </td>
+                <td align="left" class="">
+                  <div style="text-align: left; width: 220px;">{$list.unionid}</div>
+                </td>
+                <td align="center" class="">
+                  <div style="text-align: center; width: 80px;">{$list.username}</div>
+                </td>
+                <td align="center" class="">
+                  <div style="text-align: center; width: 70px;">{$list.scan}</div>
+                </td>
+                <td align="center" class="">
+                  <div style="text-align: center; width: 70px;">{$list.subscribe}</div>
+                </td>
+                <td align="center" class="">
+                  <div style="text-align: center; width: 70px;">{$list.register}</div>
+                </td>
+                <td align="center" class="">
+                  <div style="text-align: center; width: 70px;">{$list.offline_sales.num + $list.online_sales.num}</div>
+                </td>
+                <td align="center" class="">
+                  <div style="text-align: center; width: 70px;">{$list.offline_sales.sales_amount + $list.online_sales.total_cash}</div>
+                </td>
+                <td align="center" class="">
+                  <div style="text-align: center; width: 130px;">{$list.last_time}</div>
+                </td>
+                <td align="center" class="">
+                  <div style="text-align: center; width: 65px;">
+                    <if condition='$list[is_black_card] eq 1'>
+                      <span class="yes" onClick="changeTableVal('sales','id','{$list.id}','is_black_card',this)"><i class="fa fa-check-circle"></i>是</span>
+                      <else/>
+                      <span class="no" onClick="changeTableVal('sales','id','{$list.id}','is_black_card',this)"><i class="fa fa-ban"></i>否</span>
+                    </if>
+                  </div>
+                </td>
+                <td align="center" class="">
+                  <div style="text-align: center; width: 65px;">
+                    <if condition='$list[status] eq 1'>
+                      <span class="yes" onClick="changeTableVal('sales','id','{$list.id}','status',this)"><i class="fa fa-check-circle"></i>是</span>
+                      <else/>
+                      <span class="no" onClick="changeTableVal('sales','id','{$list.id}','status',this)"><i class="fa fa-ban"></i>否</span>
+                    </if>
+                  </div>
+                </td>
+                <td align="center">
+                  <div style="text-align: center; width: 70px;">
+                    <a class="btn red"  href="javascript:void(0)"  onclick="del('{$list[id]}')"><i class="fa fa-trash-o"></i>删除</a>
+                    <!--<a href="{:U('Admin/goods/addEditBrand',array('id'=>$list['id'],'p'=>$_GET[p]))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>-->
+                  </div>
+                </td>
+                <td align="" class="" style="width: 100%;">
+                  <div></div>
+                </td>
+              </tr>
+            </volist>
+            </tbody>
+          </table>
+          <!--分页位置-->
+          {$pager->show()}
+        </notempty>
+      </div>
+    </div>
+</div>
+<script>
+	 // 删除操作
+	function del(id)
+	{
+      layer.confirm('你确认要删除该SA吗？', function () {
+        // 确定
+        $.ajax({
+          url: "{:U('Admin/Tools/sales_del')}",
+          type:'post',
+          data:{id:id},
+          success: function (v) {
+            layer.closeAll();
+            var v = eval('(' + v + ')');
+            if (v.hasOwnProperty('status') && (v.status == 1))
+              location.href = "{:U('Admin/Tools/sales')}";
+            else
+              layer.msg(v.msg, {icon: 2, time: 1000}); //alert(v.msg);
+          }
+        });
+        }, function (index) {
+          layer.close(index);
+        }
+      );
+	}
+
+     function import_sales(){
+       var url = "{:U('Admin/Tools/import_sales')}";
+       layer.open({
+         type: 2,
+         title: '导入SA数据',
+         shadeClose: true,
+         shade: 0.3,
+         area: ['45%', '50%'],
+         content: url,
+       });
+     }
+
+    $(document).ready(function(){
+		// 点击刷新数据
+		$('.fa-refresh').click(function(){
+			location.href = location.href;
+		});
+	}); 
+</script>
+</body>
+</html>

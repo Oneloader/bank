@@ -1,0 +1,91 @@
+<include file="public/layout" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/multiselect/multi-select.css">
+
+<body style="background-color: #FFF; overflow: auto; ">
+    <div>
+        <!-- 操作说明 -->
+        <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 95%; height: 100%;">
+            <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+                <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+                <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+            </div>
+            <ul>
+                <li>单击左侧标签名称或标签分类将标签绑定到该品牌</li>
+            </ul>
+        </div>
+    </div>
+    <select id='optgroup' multiple='multiple'>
+        <volist name="tagCats" id="vo">
+            <optgroup label='{$vo.name}' disabled>
+                <volist name="vo.tags" id="tag">
+                    <option value='{$key}' <in name="key" value="$hasBindTagIds">selected</in>>{$tag}</option>
+                </volist>
+            </optgroup>
+        </volist>
+    </select>
+   <!-- <div class="bot">
+        <a id="submitBtn" data-status="0" style="height: 36px;margin:20px 41%;" class="ncap-btn-big ncap-btn-green" href="JavaScript:void(0);">确认提交</a>
+    </div>-->
+</body>
+</html>
+<script src="__PUBLIC__/static/js/multiselect/jquery.quicksearch.js"></script>
+<script src="__PUBLIC__/static/js/multiselect/jquery.multi-select.js"></script>
+<script src="__PUBLIC__/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    // run callbacks
+    var bid = '{$bid|default=0}';
+    $('#optgroup').multiSelect({
+        selectableHeader: "<input type='text' style='width: 180px; height: 28px;' class='search-input' autocomplete='off' placeholder='请输入标签名称搜索'>",
+        selectionHeader: "<input type='text' style='width: 180px; height: 28px;' class='search-input' autocomplete='off' placeholder='请输入标签名称搜索' >",
+        selectableFooter: "<div style='width: 180px; height: 28px;background-color: black; color:white;text-align: center;line-height: 28px;font-weight: bolder;' class='custom-header'>待选标签</div>",
+        selectionFooter: "<div style='width: 180px; height: 28px;background-color: black; color:white;text-align: center;line-height: 28px;font-weight: bolder;' class='custom-header'>已选标签</div>",
+        selectableOptgroup: true,
+        //keepOrder: true,
+        //dblClick:true,
+        afterInit: function(ms){
+            var that = this,
+                    $selectableSearch = that.$selectableUl.prev(),
+                    $selectionSearch = that.$selectionUl.prev(),
+                    selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
+                    selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
+
+            that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                    .on('keydown', function(e){
+                        if (e.which === 40){
+                            that.$selectableUl.focus();
+                            return false;
+                        }
+                    });
+            that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                    .on('keydown', function(e){
+                        if (e.which == 40){
+                            that.$selectionUl.focus();
+                            return false;
+                        }
+                    });
+        },
+        afterSelect: function(values){
+            this.qs1.cache();
+            this.qs2.cache();
+            $.post('{:url("Admin/Tools/addTagToBrand")}',{tid:values,bid:bid,type:'add'},function(v){
+                if(v.status){
+                    layer.msg(v.msg, {icon: 1, time: 1000});
+                }else{
+                    layer.msg(v.msg, {icon: 2, time: 2000});
+                }
+            },'json');
+        },
+        afterDeselect: function(values){
+            this.qs1.cache();
+            this.qs2.cache();
+            $.post('{:url("Admin/Tools/addTagToBrand")}',{tid:values,bid:bid,type:'del'},function(v){
+                if(v.status){
+                    layer.msg(v.msg, {icon: 1, time: 1000});
+                }else{
+                    layer.msg(v.msg, {icon: 2, time: 2000});
+                }
+            },'json');
+        }
+    });
+</script>

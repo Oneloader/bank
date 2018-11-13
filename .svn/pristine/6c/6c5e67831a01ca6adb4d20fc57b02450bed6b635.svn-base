@@ -1,0 +1,1235 @@
+<?php
+/**
+ *
+ * 微信API 类 工具类
+ * @var unknown_type
+ * @internal
+ *
+ */
+
+class weixin_api
+{
+    //文本消息
+    public $biaoqing=array();
+    public $textMsgType = 'text';
+
+    // API TOKEN CACHE 默认数据库
+    public $cacheType='db';
+    
+    //地理位置消息
+    public $locationMsgType = 'location';
+
+    //图片消息
+    public $imageMsgType ='image';
+
+    //视频消息
+    public $videoMsgType='video';
+
+    //事件类型消息
+    public $eventMsgType = 'event';
+
+
+    public $weixinAccessToken = NULL;
+
+    //服务号相关
+    public $weixinAppId = NULL;
+    public $weixinAppSecret = NULL;
+
+    //请求微信接口基础URL
+    public $weixinApiBaseUrl = 'https://api.weixin.qq.com/cgi-bin/';
+
+    //请求获取接口access_token Uri
+    public $weixinApiAccessTokenUrl = 'token?grant_type=client_credential&appid=%s&secret=%s';
+
+    //POST请求微信接口发送消息
+    public $weixinApiPostMsgUrl = 'message/custom/send?access_token=%s';
+
+    //POST请求创建菜单
+    public $weixinApiMenuUrl = 'menu/create?access_token=%s';
+
+    //POST请求上传摇周边图片
+    public $weixinShakeUploadImgUrl = 'https://api.weixin.qq.com/shakearound/material/add?access_token=%s';
+    
+    //POST请求上传图片媒体资源
+    public $weixinUploadImgMediaUrl='media/uploadimg?access_token=%s';
+    
+    //摇一摇页面管理
+    public $shakePageUrl = 'https://api.weixin.qq.com/shakearound/page/%s?access_token=%s';
+    
+    //摇周边设备页面管理
+    public $shakeDeviceUrl = 'https://api.weixin.qq.com/shakearound/device/%s?access_token=%s';
+    
+    //卡券接口
+    public $cardApiUri = 'https://api.weixin.qq.com/card/%s?access_token=%s';
+    
+    //获取用户信息Uri
+    public $getUserInfoUrl = 'user/info?access_token=%s&openid=%s&lang=%s';
+
+   //下载获取媒体信息url
+   public $getMediaInfoUrl='media/get?access_token=%s&media_id=%s';   
+   
+	//缓存目录(用于存放缓存ACCESS token)
+   public $tmpDir='';
+
+    //客服给用户发送消息url
+    public $sendKefumsgToSingleUrl='message/custom/send?access_token=%s';
+
+    public $sendTplMsgUri = 'message/template/send?access_token=%s';
+    
+    //用户OPENID
+    public $openid='';
+
+    //商户id
+    public $sid = '';
+
+    public $error = '';
+    
+    //TEL URL 一拨号
+	public $telUrl='http://skin.wsb100.com/tel.html?tel=%s';
+
+	//MAP
+	public $mapUrl = 'http://api.map.baidu.com/marker?location=%s,%s&title=%s&content=%s&output=html';
+	
+    //text消息格式
+    public  $Text = "<xml>
+		<ToUserName><![CDATA[%s]]></ToUserName>
+		<FromUserName><![CDATA[%s]]></FromUserName>
+		<CreateTime>%s</CreateTime>
+		<MsgType><![CDATA[%s]]></MsgType>
+		<Content><![CDATA[%s]]></Content>
+		<FuncFlag>0</FuncFlag>
+		</xml>";
+
+    //图文消息格式
+    public  $Tuwen = "<xml>
+		<ToUserName><![CDATA[%s]]></ToUserName>
+		<FromUserName><![CDATA[%s]]></FromUserName>
+		<CreateTime>%s</CreateTime>
+		<MsgType><![CDATA[news]]></MsgType>
+		<ArticleCount>%s</ArticleCount>
+		<Articles>
+		%s
+		</Articles>
+		</xml>";
+
+    //图文子消息格式
+    public  $TuwenArticle = "<item>
+		<Title><![CDATA[%s]]></Title>
+		<Description><![CDATA[%s]]></Description>
+		<PicUrl><![CDATA[%s]]></PicUrl>
+		<Url><![CDATA[%s]]></Url>
+		</item>";
+
+    //image消息格式
+    public  $Image = "<xml>
+		<ToUserName><![CDATA[%s]]></ToUserName>
+		<FromUserName><![CDATA[%s]]></FromUserName>
+		<CreateTime>%s</CreateTime>
+		<MsgType><![CDATA[%s]]></MsgType>
+		 <PicUrl><![CDATA[%s]]></PicUrl>
+		<FuncFlag>0</FuncFlag>
+		</xml>";
+
+    //location消息格式
+    public  $Location = "<xml>
+		<ToUserName><![CDATA[%s]]></ToUserName>
+		<FromUserName><![CDATA[%s]]></FromUserName>
+		<CreateTime>%s</CreateTime>
+		<MsgType><![CDATA[%s]]></MsgType>
+		<Location_X>%s</Location_X>
+		<Location_Y>%s</Location_Y>
+		<Scale>%s</Scale>
+		<Label><![CDATA[%s]]></Label>
+		<FuncFlag>0</FuncFlag>
+		</xml>";
+
+
+
+
+    //表情对照码(与Kindeditor编辑器表情插件对应)
+    public $emoticonsCode = '
+		微笑|撇嘴|色|发呆|得意|流泪|害羞|闭嘴|
+		睡|大哭|尴尬|发恕|调皮|呲牙|惊讶|难过|
+		酷|冷汗|抓狂|吐|偷笑|愉快|白眼|傲慢|饥饿|困|惊恐|流汗|憨笑|大兵|
+		奋斗|咒骂|疑问|嘘|晕|疯了|衰|骷髅|敲打|再见|擦汗|抠鼻|鼓掌|糗大了|
+		坏笑|左哼哼|右哼哼|哈欠|鄙视|委屈|
+		快哭了|阴险|亲亲|吓|可怜|菜刀|西瓜|啤酒|
+		篮球|乒乓|咖啡|饭|猪头|玫瑰|凋谢|示爱|爱心|心碎|蛋糕|
+		闪电|炸弹|刀|足球|瓢虫|便便|月亮|太阳|礼物|拥抱|强|
+		弱|握手|胜利|抱拳|勾引|拳头|
+		差劲|爱你|NO|OK|爱情|飞吻|跳跳|
+		发抖|怄火|转圈|磕头|回头|跳绳|投降|
+		激动|乱舞|献吻|左太极|右太极		
+	';
+
+    public function __construct($sid)
+    {
+        $this->sid = $sid;
+
+        $this->biaoqing=$this->getBiaoQing();//反解析
+
+        $this->weixinApiAccessTokenUrl = $this->weixinApiBaseUrl . $this->weixinApiAccessTokenUrl;
+
+        $this->weixinApiPostMsgUrl = $this->weixinApiBaseUrl . $this->weixinApiPostMsgUrl;
+
+        $this->weixinApiMenuUrl = $this->weixinApiBaseUrl . $this->weixinApiMenuUrl;
+
+        $this->getUserInfoUrl = $this->weixinApiBaseUrl.$this->getUserInfoUrl;
+
+        $this->getMediaInfoUrl=$this->weixinApiBaseUrl.$this->getMediaInfoUrl;
+
+        $this->sendKefumsgToSingleUrl=$this->weixinApiBaseUrl.$this->sendKefumsgToSingleUrl;
+    }
+
+    /**
+     * 获取表情包
+     * @internal
+     * 
+     */
+    public function getBiaoQing()
+    {
+    	
+        return $table_change = array(
+            "/::)"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/0.gif",
+            "/::~"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/1.gif",
+            "/::B"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/2.gif",
+            "/::|"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/3.gif",
+            "/:8-)"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/4.gif",
+            "/::<"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/5.gif",
+            "/::$"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/6.gif",
+            "/::X"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/7.gif",
+            "/::Z"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/8.gif",
+
+//          "/::xb("=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/9.gif",//修改此行为下面一行
+            "/::'("=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/9.gif",
+
+
+            "/::-|"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/10.gif",
+            "/::@"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/11.gif",
+            "/::P"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/12.gif",
+            "/::D"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/13.gif",
+            "/::O"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/14.gif",
+            "/::("=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/15.gif",
+            "/::+"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/16.gif",
+            "/:--b"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/17.gif",
+            "/::Q"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/18.gif",
+            "/::T"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/19.gif",
+            "/:,@P"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/20.gif",
+            "/:,@-D"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/21.gif",
+            "/::d"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/22.gif",
+            "/:,@o"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/23.gif",
+            "/::g"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/24.gif",
+            "/:|-)"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/25.gif",
+            "/::!"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/26.gif",
+            "/::L"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/27.gif",
+            "/::>"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/28.gif",
+            "/::,@"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/29.gif",
+            "/:,@f"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/30.gif",
+            "/::-S"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/31.gif",
+            "/:?"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/32.gif",
+            "/:,@x"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/33.gif",
+            "/:,@@"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/34.gif",
+            "/::8"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/35.gif",
+            "/:,@!"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/36.gif",
+            "/:!!!"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/37.gif",
+            "/:xx"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/38.gif",
+            "/:bye"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/39.gif",
+            "/:wipe"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/40.gif",
+            "/:dig"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/41.gif",
+            "/:handclap"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/42.gif",
+            "/:&-("=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/43.gif",
+            "/:B-)"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/44.gif",
+            "/:<@"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/45.gif",
+            "/:@>"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/46.gif",
+            "/::-O"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/47.gif",
+            "/:>-|"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/48.gif",
+            "/:P-("=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/49.gif",
+            "/::xb|"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/50.gif",
+            "/:X-)"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/51.gif",
+            "/::*"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/52.gif",
+            "/:@x"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/53.gif",
+            "/:8*"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/54.gif",
+            "/:pd"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/55.gif",
+            //注意此行
+
+//          "/:"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/56.gif",//修改此行为下面一行
+            "/:<W>"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/56.gif",
+
+            "/:beer"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/57.gif",
+            "/:basketb"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/58.gif",
+            "/:oo"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/59.gif",
+            "/:coffee"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/60.gif",
+            "/:eat"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/61.gif",
+            "/:pig"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/62.gif",
+            "/:rose"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/63.gif",
+            "/:fade"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/64.gif",
+            "/:showlove"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/65.gif",
+            "/:heart"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/66.gif",
+            "/:break"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/67.gif",
+            "/:cake"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/68.gif",
+            "/:li"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/69.gif",
+            "/:bome"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/70.gif",
+            "/:kn"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/71.gif",
+            "/:footb"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/72.gif",
+            "/:ladybug"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/73.gif",
+            "/:shit"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/74.gif",
+            "/:moon"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/75.gif",
+            "/:sun"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/76.gif",
+            "/:gift"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/77.gif",
+            "/:hug"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/78.gif",
+            "/:strong"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/79.gif",
+            "/:weak"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/80.gif",
+            "/:share"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/81.gif",
+            "/:v"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/82.gif",
+            "/:@)"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/83.gif",
+            "/:jj"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/84.gif",
+            "/:@@"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/85.gif",
+            "/:bad"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/86.gif",
+            "/:lvu"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/87.gif",
+            "/:no"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/88.gif",
+            "/:ok"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/89.gif",
+            "/:love"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/90.gif",
+            "/:<L>"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/91.gif",
+            "/:jump"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/92.gif",
+            "/:shake"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/93.gif",
+            "/:<O>"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/94.gif",
+            "/:circle"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/95.gif",
+            "/:kotow"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/96.gif",
+            "/:turn"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/97.gif",
+            "/:skip"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/98.gif",
+            "/:oY"=>"http://rescdn.qqmail.com/zh_CN/images/mo/DEFAULT2/99.gif",
+
+        );
+    }
+
+    /**
+     *
+     * 获取授权公众号ACCESS Token
+     * @internal
+     *
+     */
+    public function getAccessToken($refresh=false)
+    {
+        vendor('openwx.WxComponentService');
+        //微信第三方平台授权
+        $params = config('params1');
+        $cfg_arr = array_values($params);
+        $wxComponentConfig = $cfg_arr[0];
+        $wxComponentService = new \WxComponentService($wxComponentConfig);
+
+        $sid = $this->sid;
+        if(empty($sid)){
+            return false;
+        }
+        //获取授权公众号appid
+        $appid = model('oauthshop')->getFieldVal('authorizer_appid',array('sid'=>$sid));
+        if(empty($appid)){
+            return false;
+        }
+        //获取授权方accessToken
+        $accessToken = $wxComponentService->getAppAccessToken($appid,$refresh);
+        if(empty($accessToken)){
+            return false;
+        }
+        $access_token['access_token'] = $accessToken;
+        $this->weixinAccessToken = $access_token;
+        return $access_token;
+    }
+
+    /**
+     *
+     * 验证本站URL
+     * @param $token
+     * @internal
+     *
+     */
+    public function validURl($token)
+    {
+        $echoStr = empty ( $_GET ['echostr'] ) ? 'ok' : $_GET ['echostr'];
+        if ($this->checkSignature ( $token ))
+        {
+            return $echoStr;
+
+        } else
+        {
+            return False;
+        }
+    }
+
+    /**
+     *
+     * 获取解析微信POST过来的消息
+     * @internal
+     *
+     */
+    public function parseWeixinServerMsg()
+    {
+        $data = array ();
+        //由于历史原因，只这样处理
+        $hasFields = array(
+        		'FromUserName','ToUserName',
+        		'MsgType','Content',
+        		'Location_X','Location_Y',
+        		'Label','Event',
+        		'EventKey','PicUrl',
+        		'MediaId','ThumbMediaId',
+        );
+        $postStr = file_get_contents ( "php://input" );
+        if (! empty ( $postStr ))
+        {
+            $postObj = simplexml_load_string ( $postStr, 'SimpleXMLElement', LIBXML_NOCDATA );
+            if (! is_object ( $postObj ) or ! isset ( $postObj->FromUserName ))
+            {
+                return $data;
+            }
+
+            $data ['fromUsername'] = $this->obj2array ( $postObj->FromUserName );
+            
+            $this->openid = $data['fromUsername'];
+            
+            $data ['toUsername'] = $this->obj2array ( $postObj->ToUserName );
+            $data ['msgType'] = $this->obj2array ( $postObj->MsgType );
+            if ($data ['msgType'] == $this->textMsgType)
+            {
+                $data ['content'] = $this->obj2array ( $postObj->Content );
+            } elseif ($data ['msgType'] == $this->locationMsgType)
+            {
+                $data ['location_x'] = $this->obj2array ( $postObj->Location_X );
+                $data ['location_y'] = $this->obj2array ( $postObj->Location_Y );
+                $data ['label'] = $this->obj2array ( $postObj->Label );
+
+            } elseif ($data ['msgType'] == $this->eventMsgType)
+            {
+                $data ['event'] = $this->obj2array ( $postObj->Event );
+
+                //事件key
+                if(!empty($postObj->EventKey))
+                {
+                    $data['key'] = $this->obj2array ( $postObj->EventKey );
+                }
+
+            }elseif($data ['msgType'] == $this->imageMsgType)
+            {
+                $data ['PicUrl'] = $this->obj2array ( $postObj->PicUrl );
+            }elseif($data ['msgType'] == $this->videoMsgType)
+            {
+                $data ['MediaId'] = $this->obj2array ( $postObj->MediaId );
+                $data ['ThumbMediaId'] = $this->obj2array ( $postObj->ThumbMediaId );
+            }
+            
+            //剩于字段
+            $postObj = (array)$postObj;
+            foreach ($postObj as $k=>$av)
+            {
+            	if(in_array($k,$hasFields))
+            	{
+            		continue;
+            	}
+            	$k = trim($k);
+            	$av = trim($av);
+            	$data[$k] = $av;
+            }
+        }
+        return $data;
+    }
+
+    /**
+     *
+     * 分析处理文本里的表情
+     * @internal
+     *
+     */
+    public function parseEmoticons($msg)
+    {
+        $patt = '/<img.*?src=".*?kindeditor4\/.*?\/emoticons\/images\/(\d+)\.gif"[^>]+>/si';
+        preg_match_all ( $patt, $msg, $match );
+        if (empty ( $match [1] ))
+        {
+            return $msg;
+        }
+
+        $codeS = explode ( '|', $this->emoticonsCode );
+        foreach ( $codeS as $k => $v )
+        {
+            $codeS [$k] = trim ( $v );
+        }
+
+        foreach ( $match [1] as $v )
+        {
+            $patt = '/<img.*?src=".*?kindeditor4\/.*?\/emoticons\/images\/' . $v . '\.gif"[^>]+>/si';
+
+            $msg = preg_replace ( $patt, '/' . $codeS [$v], $msg );
+        }
+        return $msg;
+    }
+
+    /**
+     *
+     * 由HTML转向机器文本
+     * @param unknown_type $msg
+     * @internal
+     *  注意此方式有特殊性
+     */
+    public function htmlToText($msg)
+    {
+        $newMsg = '';
+        $msg = strip_tags($msg,'<p><a>');
+        $msg = explode('<p>',$msg);
+
+        if (! empty ( $msg ))
+        {
+            //如果有换行
+            foreach ( $msg  as $v )
+            {
+                //空格
+                $v = trim ( $v );
+                $v = trim ( $v, '&nbsp;' );
+
+                if(empty($v))
+                {
+                    continue;
+                }
+                $v = strip_tags($v,'<a>');
+                $c_n = substr_count ( $v, '&nbsp;' );
+                $v = preg_replace ( '/&nbsp;/', ' ', $v, - 1, $c_n );
+
+                $v .= "\n";
+
+                $newMsg .= $v;
+            }
+
+        } else
+        {
+            //空格
+            $msg = trim ( $msg );
+            $msg = trim ( $msg, '&nbsp;' );
+            $c_n = substr_count ( $msg, '&nbsp;' );
+            $msg = preg_replace ( '/&nbsp;/', ' ', $msg, - 1, $c_n );
+
+            $msg .= "\n";
+
+            $newMsg .= $msg;
+        }
+        $newMsg = trim($newMsg);
+        return $newMsg;
+    }
+
+
+
+    /**
+     *
+     * 创建菜单
+     * @internal
+     * {
+    "button":[
+    {
+    "type":"click",
+    "name":"今日歌曲",
+    "key":"V1001_TODAY_MUSIC"
+    },
+    {
+    "type":"click",
+    "name":"歌手简介",
+    "key":"V1001_TODAY_SINGER"
+    },
+    {
+    "name":"菜单",
+    "sub_button":[
+    {
+    "type":"view",
+    "name":"搜索",
+    "url":"http://www.soso.com/"
+    },
+    {
+    "type":"view",
+    "name":"视频",
+    "url":"http://v.qq.com/"
+    },
+    {
+    "type":"click",
+    "name":"赞一下我们",
+    "key":"V1001_GOOD"
+    }]
+    }]
+    }
+     *
+     */
+    public function createWeixinMenu($menu)
+    {
+        $this->getAccessToken ( );
+        if (empty ( $this->weixinAccessToken ['access_token'] ))
+        {
+            $this->error = '提交数据到微信出错： 无法获取 access_token !';
+            return False;
+        }
+
+        $url = sprintf ( $this->weixinApiMenuUrl, $this->weixinAccessToken ['access_token'] );
+
+        //整理数据
+        $menuJson = array ();
+        foreach ( $menu as $v )
+        {
+            $d = array ();
+
+            $d ['name'] = urlencode($v ['name']);
+
+            if(!empty($v['items']))
+            {
+                $d['sub_button'] = array();
+                foreach ($v['items'] as $t)
+                {
+                    $dt = array();
+                    $dt ['type'] = $t ['type'];
+                    $dt ['name'] = urlencode($t ['name']);
+                    if ($dt ['type'] == 'click')
+                    {
+                        $dt ['key'] = $t ['id']; //菜单上的KEY就是菜单的ID
+                    } else
+                    {
+                    	if($t['type_c']=='tel')
+                    	{
+                    		$t['data'] = sprintf($this->telUrl,$t['data']);
+                    	
+                    	}elseif($t['type_c']=='map')
+                    	{
+                    		$map = explode('|',$t['data']); //$l['wd'],$l['jd']|$l['name']|$l['address']
+                    		$mapmark = explode(',', $map[0]);
+                    		
+                    		$t['data'] = sprintf($this->mapUrl,$mapmark[0],$mapmark[1],$map[1],$map[2]);                		
+                    	}
+                        $dt ['url'] = urlencode($t ['data']);
+                    }
+                    $d['sub_button'][] = $dt;
+                }
+
+
+            }else{
+
+                $d ['type'] = $v ['type'];
+                if ($v ['type'] == 'click')
+                {
+                    $d ['key'] = $v ['id'];
+                } else
+                {
+                    	if($v['type_c']=='tel')
+                    	{
+                    		$v['data'] = sprintf($this->telUrl,$v['data']);
+                    	
+                    	}elseif($v['type_c']=='map')
+                    	{
+                    		$map = explode('|',$v['data']); //$l['wd'],$l['jd']|$l['name']|$l['address']
+                    		$mapmark = explode(',', $map[0]);
+                    		
+                    		$v['data'] = sprintf($this->mapUrl,$mapmark[0],$mapmark[1],$map[1],$map[2]);                		
+                    	}
+                        $d['url'] = urlencode($v ['data']);
+                }
+
+            }
+
+
+            $menuJson[] = $d;
+        }
+
+        //PHP5.4支持JSON_UNESCAPED_UNICODE，中文问题
+
+        $menuJson = json_encode ( array ('button' => $menuJson ));
+        $menuJson = urldecode($menuJson);
+
+		
+        $res = curl($url,$menuJson,'POST');
+        $res = json_decode ( $res, True );
+        if (empty ( $res ['errcode'] ))
+        {
+            return True;
+        }
+
+        if($res['errcode']=='40001')
+        {
+        	//尝试获取新的
+        	$this->getAccessToken(True);
+        	$this->error = '请求操作过期，请重试！';
+        	return False;
+        }
+        
+        $this->error = '提交数据到微信出错：【 ' . $res ['errcode'] . ' 】 ' . $res ['errmsg'];
+        return False;
+    }
+
+    
+    /**
+     *  微信卡券接口管理
+     * @param unknown $data
+     * @param string $action
+     */
+    public function cardApi($data1,$action='create',$refresh=false)
+    {
+        $this->getAccessToken ($refresh);
+    	if (empty ( $this->weixinAccessToken ['access_token'] ))
+    	{
+    		$this->error = '微信报错： 无法获取授权方 access_token !';
+    		return False;
+    	}
+    	$url = sprintf ( $this->cardApiUri,$action,$this->weixinAccessToken ['access_token'] );
+
+        $data = json_encode($data1);
+    	if($action=='code/decrypt')
+    	{
+    		//空格问题
+    	}else{
+    		$data = urldecode($data);
+    	}
+        //dump($data);die;
+    	$res = curl($url,$data,'POST');
+    	$res = json_decode ( $res, True );
+        //file_put_contents(RUNTIME_PATH.'step5.php',var_export($res,true));
+    	if (empty ( $res ['errcode'] ))
+    	{
+    		return $res;
+    	}elseif($res['errcode'] == '42001'){
+            //强制刷新token
+            if(!$refresh){
+                //重试
+                $this->cardApi($data1,$action,true);
+                exit;
+            }
+        }
+    	$this->error = '微信报错：【 ' . $res ['errcode'] . ' 】 ' . $this->cardErrorCodes($res,$res['errcode']);
+    	return False;
+    }
+    
+    /**
+     * 卡券接口错误码
+     * @internal
+     * 
+     */
+    public function cardErrorCodes($error,$errocode='')
+    {
+    	$errocodes = array(
+    			'-1'=>'系统繁忙!',
+    			'0'=>'请求成功',
+    			'40003'=>'OPENID不合法！',
+    			'40009'=>'图片文件超长',
+    			'40013'=>'不合法的Appid',
+    			'40053'=>'不合法的actioninfo',
+    			'40071'=>'不合法的卡券类型',
+    			'47001'=>'解析JSON/XML内容错误',
+    			'40072'=>'不合法的编码方式',
+    			'40078'=>'不合法的卡券状态',
+    			'40079'=>'不合法的时间',
+    			'40080'=>'不合法的CardExt',
+    			'40099'=>'卡券已被核销',
+    			'40100'=>'不合法的时间区间',
+    			'40116'=>'不合法的Code码',
+    			'40122'=>'不合法的库存数量',
+    			'40124'=>'会员卡设置查过限制的 custom_field字段',
+    			'40127'=>'卡券被用户删除或转赠中',
+    			'41012'=>'缺少cardid参数',
+    			'45030'=>'该cardid无接口权限',
+    			'45031'=>'库存为0',
+    			'45033'=>'用户领取次数超过限制get_limit',
+    			'41011'=>'缺少必填字段',
+    			'45021'=>'字段超过长度限制',
+    			'40056'=>'不合法的Code码。',
+    			'43009'=>'自定义SN权限',
+    			'43010'=>'无储值权限',
+    	);
+    	
+    	if(!empty($errocode) and isset($errocodes[$errocode]))
+    	{
+    		return $errocodes[$errocode];
+    	}
+    	
+    	if(!empty($errocode))
+    	{
+    		return $error['errmsg'];
+    	}
+    	
+    	return $errocodes;
+    }
+    
+    
+    
+    /**
+     *    微信摇周边设备管理
+     * @param unknown $data
+     * @param string $action
+     */
+    public function shakeDevice($postdata,$action='applyid')
+    {
+        $this->getAccessToken ( );
+    	
+    	if (empty ( $this->weixinAccessToken ['access_token'] ))
+    	{
+    		$this->error = '微信报错： 无法获取 access_token !';
+    		return False;
+    	}
+    	$data = array();
+    	if($action=='applyid')
+    	{
+    		$data = array(
+    			'quantity'=>$postdata['quantity'],	
+    			'apply_reason'=>urlencode($postdata['apply_reason']),	
+    			'comment'=>urlencode($postdata['comment']),
+    		);
+    		
+    	}elseif($action=='search')
+    	{
+    		$data = $postdata;
+    	
+    	}elseif($action=='bindpage'){
+    		$data = $postdata;
+    	
+    	}elseif($action=='applystatus')
+    	{
+    		$data = array(
+    			'apply_id'=>intval($postdata['apply_id'])
+    		);
+    	}
+    	
+    	
+    	$url = sprintf ( $this->shakeDeviceUrl,$action,$this->weixinAccessToken ['access_token'] );
+    	
+    	$data = json_encode ($data);
+    	$data = urldecode($data);
+    	
+    	$res = curl($url,$data,'POST');
+    	$res = json_decode ( $res, True );
+    	
+    	if (empty ( $res ['errcode'] ))
+    	{
+    		return $res;
+    	}
+    	
+    	if($res['errcode']=='40001')
+    	{
+    		//尝试获取新的
+    		$this->getAccessToken(True);
+    		$this->error = '请求操作过期，请重试！';
+    		return False;
+    	}
+    	
+    	$this->error = '微信报错：【 ' . $res ['errcode'] . ' 】 ' . $res ['errmsg'];
+    	return False;
+
+    }
+    
+    
+    /**
+     *  微信摇一摇页面管理
+     * @param unknown $data
+     * @param string $action
+     */
+    public function shakePage($data,$action='add')
+    {
+        $this->getAccessToken ( );
+    	 
+    	if (empty ( $this->weixinAccessToken ['access_token'] ))
+    	{
+    		$this->error = '微信报错： 无法获取 access_token !';
+    		return False;
+    	}
+    	 
+    	$url = sprintf ( $this->shakePageUrl,$action,$this->weixinAccessToken ['access_token'] );
+    	 
+    	$data = json_encode ($data);
+    	$data = urldecode($data);
+    	
+    	$res = curl($url,$data,'POST');
+    	$res = json_decode ( $res, True );
+    	
+    	if (empty ( $res ['errcode'] ))
+    	{
+    		return $res;
+    	}
+    	
+    	if($res['errcode']=='40001')
+    	{
+    		//尝试获取新的
+    		$this->getAccessToken(True);
+    		$this->error = '请求操作过期，请重试！';
+    		return False;
+    	}
+    	
+    	$this->error = '微信报错：【 ' . $res ['errcode'] . ' 】 ' . $res ['errmsg'];
+    	return False;
+    }
+        
+    
+    /**
+     * 上传图片资源
+     * @param $file 为一个绝对路径的图片地址
+     * @internal
+     *  
+     */
+    public function uploadImageMedia($file,$field='media',$refresh = false)
+    {
+        $this->getAccessToken ($refresh);
+    	 
+    	if (empty ( $this->weixinAccessToken ['access_token'] ))
+    	{
+    		$this->error = '微信报错： 无法获取 access_token !';
+    		return False;
+    	}
+
+    	$this->weixinUploadImgMediaUrl = $this->weixinApiBaseUrl.$this->weixinUploadImgMediaUrl;
+    	
+    	$url = sprintf ( $this->weixinUploadImgMediaUrl, $this->weixinAccessToken ['access_token'] );
+    	
+    	//$data = array($field=> '@'.$file);
+    	//$res = curl($url,$data,'POST');
+        $res = curl1($url,$file);
+    	$res = json_decode ( $res, True );
+        //file_put_contents(RUNTIME_PATH.'img.php',var_export($res,true));
+    	if (empty ( $res ['errcode'] ))
+    	{
+    		$imgurl = $res['url'];
+    		return $imgurl;
+    	}
+    	 
+    	if($res['errcode']=='40001' || $res['errcode']=='42001')
+    	{
+            if($refresh == false){
+                $refresh = true;
+                //尝试获取新的
+                $this->uploadImageMedia($file,$field='media',$refresh);exit;
+            }
+    		$this->error = '请求操作过期，请重试！';
+    		return False;
+    	}
+    	$this->error = '微信报错：【 ' . $res ['errcode'] . ' 】 ' . $res ['errmsg'];
+    	return False;
+    } 
+    
+    
+
+    
+    
+    
+    /**
+     * 上传摇一摇周边展示图片
+     * @param $img 可以为$_FIFLE 中的 tmp_name
+     * @internal
+     * 
+     */
+    public function uploadShakeimg($img,$field='media')
+    {
+        $this->getAccessToken(  );
+    	
+    	if (empty ( $this->weixinAccessToken ['access_token'] ))
+    	{
+    		$this->error = '提微信报错： 无法获取 access_token !';
+    		return False;
+    	}
+    	
+    	$url = sprintf ( $this->weixinShakeUploadImgUrl, $this->weixinAccessToken ['access_token'] );
+    	
+    	$data = array($field=> '@'.$img);
+    	$res = curl($url,$data,'POST');
+    	$res = json_decode ( $res, True );
+    	
+    	if (empty ( $res ['errcode'] ))
+    	{
+    		$imgurl = $res['data']['pic_url'];
+    		return $imgurl;
+    	}
+    	
+    	if($res['errcode']=='40001')
+    	{
+    		//尝试获取新的
+    		$this->getAccessToken(True);
+    		$this->error = '请求操作过期，请重试！';
+    		return False;
+    	}
+    	
+    	$this->error = '微信报错：【 ' . $res ['errcode'] . ' 】 ' . $res ['errmsg'];
+    	return False;
+    }
+    
+
+    /**
+     *
+     * 通过API获取用户信息
+     * @param unknown_type $openid
+     * @param unknown_type $lang
+     */
+    public function getUserInfo($openid,$lang='zh_CN')
+    {
+        $this->getAccessToken ( );
+
+        if (empty ( $this->weixinAccessToken ['access_token'] ))
+        {
+            $this->error = '微信报错： 无法获取 access_token !';
+            return False;
+        }
+
+        ///user/info?access_token=%s&openid=%s&lang=%s
+        $url = sprintf ( $this->getUserInfoUrl, $this->weixinAccessToken ['access_token'],$openid,$lang );
+
+        $res = curl($url);//$this->newCurl ()->get ( $url);
+        $res = json_decode ( $res, True );
+        
+        //file_put_contents(ROOT_CMS_PATH.'/data/t9.php', var_export($res,True));
+        
+        if (empty ( $res ['errcode'] ))
+        {
+            return $res;
+        }
+        if($res['errcode']=='40001')
+        {
+        	//尝试获取新的
+        	$this->getAccessToken(True);
+        	$this->error = '请求操作过期，请重试！';
+        	return False;
+        }
+        
+        $this->error = '微信报错：【 ' . $res ['errcode'] . ' 】 ' . $res ['errmsg'];
+        return False;
+    }
+
+    /**
+     * 通过api获取媒体数据（图片、语音、视频等）
+     * @internal
+     * 
+     */
+
+    public function getMediaInfo($media_id)
+    {
+        $this->getAccessToken (  );
+
+        if (empty ( $this->weixinAccessToken ['access_token'] ))
+        {
+            $this->error = '微信报错： 无法获取 access_token !';
+            return False;
+        }
+        //http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID
+        ///user/info?access_token=%s&openid=%s&lang=%s
+        $url = sprintf ( $this->getMediaInfoUrl, $this->weixinAccessToken ['access_token'],$media_id );
+
+        $res = curl($url);//$this->newCurl ()->get ( $url);
+        //"https://api.weixin.qq.com/cgi-bin/media/get?access_token=uvZZPxEnZQGlDN740uzbnww-R8IlJIij45PVPLIfE25Jyxn7MXWuv_UDBxgYGtM-NvLE_9d__UEw7iOq4_1vPnt3cjSz0ZeLPT1JWKXvU30&media_id=roemnVmhLhxF0Vbz3IvXLzX0-t3v_JaQa0F1JSGbgvW6qaVDDFZ1QTU5k_tOUxQb"
+        $res = json_decode ( $res, True );
+
+        //视频返回正确不需要用到json，错误则需要
+       if (empty ( $res ['errcode'] ))
+      {
+        return $res;
+        }
+        if($res['errcode']=='40001')
+        {
+        	//尝试获取新的
+        	$this->getAccessToken(True);
+        	$this->error = '请求操作过期，请重试！';
+        	return False;
+        }
+        $this->error = '微信报错：【 ' . $res ['errcode'] . ' 】 ' . $res ['errmsg'];
+        return False;
+    }
+
+
+    /**
+     * 回复消息
+     * @param unknown $from
+     * @param unknown $to
+     * @param unknown $text
+     * @return string
+     */
+    public  function answer_text($from, $to, $text)
+    {
+    	$text = $this->parseEmoticons($text);
+    	$text = $this->htmlToText($text);
+    	
+        $resultStr = sprintf($this->Text, $to, $from, time(), 'text', $text);
+        return $resultStr;
+    }
+
+
+    /**
+     * 	 * 作用：回复图文消息
+     * 参数：$data, 二维数组, array(array('title'=>xx,'description'=>xx,'img'=>xx,'linkurl'=>xx))
+     * @param unknown $from
+     * @param unknown $to
+     * @param unknown $data
+     * @return string
+     */
+    public  function answer_tuwen($from, $to, $data)
+    {
+        $articles = '';
+        foreach($data as $k=>$v){
+        	if(strpos($v['linkurl'],'weixin.qq.com')!==false){
+        		//排除微信域名..
+        		
+        	}else{
+        		//加上OPENID
+        		if(strpos($v['linkurl'],'?')===false)
+        		{
+        			$v['linkurl'] .= '?wxid='.$this->openid;
+        		}else{
+        			$v['linkurl'] .= '&wxid='.$this->openid;
+        		}
+        		$v['linkurl'] = str_replace('&amp;','&', $v['linkurl']);        		
+        	}
+        	
+            $articles .= sprintf($this->TuwenArticle, $v['title'], $v['description'], $v['img'], $v['linkurl']);
+        }
+        $resultStr = sprintf($this->Tuwen, $to, $from, time(), count($data), $articles);
+        return $resultStr;
+    }
+
+
+
+
+    /**
+     *
+     * 验证本站URL算法
+     * @param $token
+     * @internal
+     *
+     */
+    private function checkSignature($token)
+    {
+
+        $signature = $_GET ['signature'];
+        $timestamp = $_GET ['timestamp'];
+        $nonce = $_GET ['nonce'];
+
+        $tmpArr = array (
+            $token,
+            $timestamp,
+            $nonce
+        );
+        sort ( $tmpArr, SORT_STRING );
+        $tmpStr = implode ( $tmpArr );
+        $tmpStr = sha1 ( $tmpStr );
+
+        if ($tmpStr == $signature)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+
+    }
+
+    /**
+     * 发送模板信息给用户？
+     * @internal
+     *
+     */
+    public function sendTplMsg($datas)
+    {
+        $this->getAccessToken( );
+
+        if (empty ( $this->weixinAccessToken ['access_token'] ))
+        {
+            $this->error = '提交数据到微信出错： 无法获取 access_token ! '.$this->error;
+            return False;
+        }
+
+        $url = sprintf ( $this->weixinApiBaseUrl.$this->sendTplMsgUri, $this->weixinAccessToken ['access_token'] );
+
+        $datas = json_encode($datas);
+        $datas = urldecode($datas);
+
+        //var_dump($datas);
+        //exit;
+
+        $res = curl($url,$datas,'POST');
+        $res = json_decode ( $res, True );
+        if (empty ( $res ['errcode'] ))
+        {
+            return 'success';
+        }
+
+        if($res['errcode']=='40001')
+        {
+            //尝试获取新的
+            $this->getAccessToken(True);
+            $this->error = '请求操作过期，请重试！';
+            return False;
+        }
+
+        $this->error = '发送消息失败：【 ' . $res ['errcode'] . ' 】 ' . $res ['errmsg'];
+        return $this->error;
+
+
+    }
+
+    /**
+     * 客服发送消息给用户
+     * @internal
+     * 
+     */
+    public function sendKefumsgToSingle($openid,$type,$content)
+    {
+        $this->getAccessToken (  );
+
+        if (empty ( $this->weixinAccessToken ['access_token'] ))
+        {
+            $this->error = '微信报错： 无法获取 access_token !';
+            return False;
+        }
+
+        $url = sprintf ( $this->sendMessageToSingleUrl, $this->weixinAccessToken ['access_token'] );
+
+        //整理数据
+        $data = array();
+        switch ($type)
+        {
+        	case 'news':
+        		$data['touser'] = $openid;
+        		$data['msgtype'] = 'news';
+        		foreach ($content as $k=>$c)
+        		{
+        			$c['title'] = urlencode($c['title']);
+        			$c['description']= urlencode($c['description']);
+        			$content[$k] = $c;
+        		}
+        		$data['news']['articles'] = $content;
+        		
+        		$data = json_encode ($data);
+        		$data = urldecode($data);
+        		break;
+        	
+        	default:
+        		$data = '{"touser":"%s","msgtype":"text","text":{"content":"%s"}}';//有链接问题
+        		$data = sprintf($data,$openid,$content);        	
+        }
+        
+        
+        //PHP5.4支持JSON_UNESCAPED_UNICODE，中文问题      
+	
+	
+	
+	
+        $res = curl($url,$data,'POST');
+        $res = json_decode ( $res, True );
+        if (empty ( $res ['errcode'] ))
+        {
+            return True;
+        }
+        
+        if($res['errcode']=='40001')
+        {
+        	//尝试获取新的
+        	$this->getAccessToken(True);
+        	$this->error = '请求操作过期，请重试！';
+        	return False;
+        }
+        
+        $this->error = '发送消息失败：【 ' . $res ['errcode'] . ' 】 ' . $res ['errmsg'];
+        return False;
+    }
+
+
+    /**
+     *
+     * Enter description here ...
+     */
+    private function obj2array($obj)
+    {
+        $a = ( array ) $obj;
+        return reset ( $a );
+    }
+}

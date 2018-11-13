@@ -1,0 +1,89 @@
+<?php
+namespace app\bank\controller;
+use think\Db;
+
+/**
+ * 银行客服经理兑换
+ * Class Sales
+ * @package app\bank\controller
+ */
+class Sales extends Base {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * 银行客服经理登陆页
+     */
+    public function login(){
+        if (IS_POST){
+            $phone = input('phone/s','');
+            $result = Db::name('sales_man')->where(['phone'=>$phone,'sid'=>$this->sid])->find();
+            if ($result){
+                session('sales_id',$result['id']);
+                $activityUrl = SITE_URL . url('Bank/sales/index',['sid'=>base64_encode($this->sid)]);
+                successReturn($activityUrl,'登陆成功');
+            }else{
+                errorReturn('登陆失败');
+            }
+        }else{
+            $this->assign([
+                'sid'=>base64_encode($this->sid),
+            ]);
+            return $this->fetch();
+        }
+    }
+
+    /**
+     * 银行客服经理退出登陆功能
+     */
+    public function logout(){
+        session('sales_id',null);
+        $activityUrl = SITE_URL . url('Bank/sales/index',['sid'=>base64_encode($this->sid)]);
+        successReturn($activityUrl,'注销成功');
+    }
+
+    /**
+     * 银行客服经理首页
+     */
+    public function index(){
+        $sales_id = session('sales_id');
+        if (empty($sales_id)){
+            $this->redirect(url('Bank/sales/login',['sid'=>base64_encode($this->sid)]));
+        }else{
+            $sales = Db::name('sales_man')
+                ->field('name,branch_id')
+                ->where(['id'=>$sales_id])
+                ->find();
+            $bank = Db::name('banks')
+                ->field('name')
+                ->where(['id'=>$sales['branch_id']])
+                ->find();
+            $activity_auth = D('activity_auth')
+                ->alias('a')
+                ->field('a.aid,a.is_leader,c.id,c.name,c.img,c.end_time')
+                ->join('ka_activity c','a.aid=c.id')
+                ->where(['a.sales_id'=>$sales_id,'a.sid'=>$this->sid,'c.sid'=>$this->sid,'c.status'=>1,'c.type'=>2])
+                ->select();
+            foreach ($activity_auth as $key=>$val){
+                $activity_auth[$key]['end_time'] = date('Y-m-d',$val['end_time']);
+            }
+            $this->assign([
+                'sales'=>$sales,
+                'bank'=>$bank,
+                'data'=>$activity_auth,
+                'sid' =>base64_encode($this->sid),
+            ]);
+            return $this->fetch();
+        }
+    }
+
+    public function manager($is_leader,$activity_id){
+        if ($is_leader = 1){
+            $sales = D('')->where()->select();
+        }
+        var_dump($is_leader);
+        var_dump($activity_id);exit;
+    }
+}

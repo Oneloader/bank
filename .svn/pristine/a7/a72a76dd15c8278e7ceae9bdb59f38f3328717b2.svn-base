@@ -1,0 +1,95 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <script type="text/javascript">
+        var SITEURL = window.location.host +'/admin';
+    </script>
+
+    <link href="__PUBLIC__/static/css/main.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/static/css/index.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/static/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/static/css/purebox.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/static/js/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/static/css/mystyle.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__PUBLIC__/static/js/jquery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/static/js/common.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/static/js/dialog/dialog.js" id="dialog_js"></script>
+    <script type="text/javascript" src="__PUBLIC__/static/js/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/static/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/static/js/jquery.validation.min.js"></script>
+
+    <script src="__PUBLIC__/js/layer/layer.js"></script><!--弹窗js 参考文档 http://layer.layui.com/-->
+    <style>
+        .contentWarp_item .section_select .item_comment{
+            padding: 83px 0 31px 38px;
+        }
+        .contentWarp_item .section_select .item {
+            padding: 83px 0 38px 38px;
+        }
+        .contentWarp_item .section_order_select li{
+            width: 220px;
+        }
+    </style>
+</head>
+<body class="iframe_body">
+
+<div class="warpper">
+    <div class="title">银行管理中心</div>
+    <div class="content start_content">
+        <div class="contentWarp">
+            <div class="contentWarp_item clearfix">
+                <div class="section_order_select">
+                    <ul>
+                        <volist name="shops" id="shop">
+                            <li>
+                                <div class="shop_item_box clearfix">
+                                    <img style="cursor:pointer;" title="点击编辑信息" onclick="CUR_DIALOG = ajax_form('pubsadd', '编辑银行信息', '{:U('Index/pubs_edit',array('sid'=>$shop.id))}');" src="__PUBLIC__/static/images/k11Logo.jpg" alt="" class="shop_item_logo">
+                                    <div class="shop_item_title">
+                                        <h1 style="cursor: pointer;" title="点击编辑信息" onclick="CUR_DIALOG = ajax_form('pubsadd', '编辑银行信息', '{:U('Index/pubs_edit',array('sid'=>$shop.id))}');">{$shop.name}</h1>
+                                    </div>
+                                </div>
+                                <div class="shop_manages clearfix">
+                                    <p>添加日期： <span>{$shop.add_time}</span></p>
+                                    <a href="{$shop.url}" target="_top">银行管理</a>
+                                </div>
+                            </li>
+                        </volist>
+
+                        <li class="add_boxs">
+                            <a href="javascript:void(0)" onclick="CUR_DIALOG = ajax_form('pubsadd', '添加银行', '{:U('Index/pubs_add')}');" class="shop_item_box clearfix">
+                                <img src="__PUBLIC__/static/images/add.png" alt="" class="shop_item_logo">
+                                <p>添加银行</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $("*[data-toggle='tooltip']").tooltip({
+            position: {
+                my: "left top+5",
+                at: "left bottom"
+            }
+        });
+    });
+
+    function authorize(url,shop){
+        layer.open({
+            type: 2,
+            title: '授权给第三方平台',
+            shadeClose: true,
+            shade: 0.3,
+            area: ['100%', '100%'],
+            content: url
+        });
+    }
+</script>
+</body>
+</html>

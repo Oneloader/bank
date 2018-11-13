@@ -1,0 +1,257 @@
+<include file="public/layout" />
+<style>
+    .btn {
+        display: inline-block;
+        padding: 5px 10px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    dd.opt table{
+        width: 100%;
+    }
+    dd.opt tr{
+        border: 1px solid #f4f4f4;
+        padding: 8px;
+    }
+    dd.opt tr th{
+        font-weight: bold;
+        border: 1px solid #f4f4f4;
+        text-align: center!important;
+    }
+    dd.opt tr td{
+        border: 1px solid #f4f4f4;
+    }
+    .yes{
+        color: #1BBC9D;
+        cursor: default;
+    }
+    .no{
+        color: #9ea3a7;
+        cursor: default;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto; min-width:600px;">
+<div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 95%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>请先选择时间，再选择日期</li>
+        </ul>
+    </div>
+    <!--表单数据-->
+    <form method="post" id="addEditSpecForm">                    
+    <div class="ncap-form-default">
+        <dl class="row">
+            <table style="margin-left: 70px;">
+                <tbody>
+                <tr>
+                    <td >开始时间</td>
+                    <td >结束时间</td>
+                    <td >库存</td>
+                    <td></td>
+                </tr>
+                <tr id="top_box">
+                    <td><input style="width: 150px;" type="text" id="stime" value=""/> &nbsp;~&nbsp; </td>
+                    <td><input style="width: 150px;" type="text" id="etime" value=""/> &nbsp;+&nbsp;</td>
+                    <td><input style="width: 30px;" type="text" id="store" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" value=""/>&emsp;</td>
+                    <td><button type="button" data-id="0" id="addEditBtn" class="btn add_time">添加</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </dl>
+        <br/><br/>
+        <dl class="row">
+            <dt class="tit">
+                <label>课时列表：</label>
+            </dt>
+            <dd class="opt">
+                <table>
+                    <thead>
+                        <tr style="">
+                            <th style="width: 250px;;">开始时间</th>
+                            <th style="width: 250px;">结束时间</th>
+                            <th style="width: 120px;">库存</th>
+                            <th>显示状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="time_list">
+                        <notempty name="times">
+                            <volist name="times" id="vo">
+                                <tr class="course_time_box_{$vo.id}" style="text-align: center;">
+                                    <td>{$vo['stime']|date='Y-m-d H:i:s',###}</td>
+                                    <td>{$vo['etime']|date='Y-m-d H:i:s',###}</td>
+                                    <td>{$vo['store']}</td>
+                                    <td align="center" >
+                                        <div>
+                                            <if condition='$vo[status] eq 1'>
+                                                <span class="yes" onClick="changeTableVal('course_time','id','{$vo.id}','status',this)" ><i class="fa fa-check-circle"></i>是</span>
+                                                <else />
+                                                <span class="no" onClick="changeTableVal('course_time','id','{$vo.id}','status',this)" ><i class="fa fa-ban"></i>否</span>
+                                            </if>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0)" onclick="editCourseTime('{$vo.id|default=0}',$(this));">编辑</a> |
+                                        <a href="javascript:void(0)" onclick="delCourseTime('{$vo.id|default=0}',$(this));">删除</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                        </notempty>
+                    </tbody>
+                </table>
+            </dd>
+        </dl>
+      <!--  <dd class="opt">
+          <input type="text" value="{$spec.name}" name="name"   class="input-txt"/>
+        </dd>-->
+        <div class="bot">
+            <a href="JavaScript:void(0);" style="margin-left: 30%;" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a>
+        </div>
+    </div>
+  </form>
+</div>
+ 
+</body>
+
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<script>
+    $('#stime').layDate();
+    $('#etime').layDate();
+
+    var goods_id = '{$goods_id|default=0}';
+    $('#submitBtn').click(function(){
+        var data = [];
+        var $tr = $('#time_list tr');
+        $tr.each(function(){
+            var td0 = $(this).find('td').eq(0).text();
+            var td1 = $(this).find('td').eq(1).text();
+            var td2 = parseInt($(this).find('td').eq(2).text());
+            if(td0 != '' && td1 != '' && td2 != ''){
+                data.push([td0,td1,td2]);
+            }
+        });
+        if(data.length < 1){
+            layer.msg('请设置课时', {icon: 2,time: 2000});return;
+        }
+        window.parent.set_course_time_back(data);
+    });
+
+    $('#top_box').on('click','.edit_time',function(){
+        var stime = $('#stime').val();
+        var etime = $('#etime').val();
+        var store = $('#store').val();
+        var course_id = parseInt($('#addEditBtn').attr('data-id'));
+        if(course_id == 0 || isNaN(course_id)){
+            layer.msg('课程ID丢失', {icon: 2, time: 2000});return false;
+        }
+        if(stime == '' || etime == '') {
+            layer.msg('请选择开始时间与结束时间', {icon: 2, time: 2000});return false;
+        }else if(store == ''){
+            layer.msg('请输入库存', {icon: 2, time: 2000});return false;
+        }else{
+            var index = layer.load(2, {shade: false}); //0代表加载的风格，支持0-2
+            //保存价格
+            $.post('{:U("Goods/set_course_time_detail")}',{goods_id:goods_id,course_id:course_id,stime:stime,etime:etime,store:store,doEdit:1},function(data){
+                if(data.status){
+                    var obj = $('.course_time_box_'+course_id);
+                    obj.find('td').eq(0).text(stime);
+                    obj.find('td').eq(1).text(etime);
+                    obj.find('td').eq(2).text(store);
+                    $('#stime').val('');
+                    $('#etime').val('');
+                    $('#store').val('');
+                    $('#addEditBtn').attr('data-id','').text('添加').removeClass('edit_time').addClass('add_time');
+                    layer.msg(data.msg, {icon: 1,time: 1000});
+                }else{
+                    layer.msg(data.msg, {icon: 2,time: 2000});
+                }
+                layer.close(index);
+            },'json');
+        }
+    });
+
+    $('#top_box').on('click','.add_time',function(){
+        var stime = $('#stime').val();
+        var etime = $('#etime').val();
+        var store = $('#store').val();
+        if(stime == '' || etime == '') {
+            layer.msg('请选择开始时间与结束时间', {icon: 2, time: 2000});return false;
+        }else if(store == ''){
+            layer.msg('请输入库存', {icon: 2, time: 2000});return false;
+        }else{
+            var index = layer.load(2, {shade: false}); //0代表加载的风格，支持0-2
+            //保存价格
+            $.post('{:U("Goods/set_course_time_detail")}',{goods_id:goods_id,stime:stime,etime:etime,store:store,doAdd:1},function(data){
+                if(data.status){
+                    var course_id = data.id;
+                    var tr = '';
+                    tr += '<tr class="course_time_box_"' + course_id + ' style="text-align: center;">';
+                    tr += '    <td>'+stime+'</td>';
+                    tr += '    <td>'+etime+'</td>';
+                    tr += '    <td>'+store+'</td>';
+                    tr += '    <td align="center"><div><span class="yes" onClick="changeTableVal(\'course_time\',\'id\','+course_id+',\'status\',this)" ><i class="fa fa-check-circle"></i>是</span></div></td>';
+                    tr += '    <td><a href="javascript:void(0)" onclick="editCourseTime('+ course_id +',$(this));">编辑</a> | ';
+                    tr += '    <a href="javascript:void(0)" onclick="delCourseTime('+ course_id +',$(this));">删除</a></td>';
+                    $('#stime').val('');
+                    $('#etime').val('');
+                    $('#store').val('');
+                    $('#time_list').append(tr);
+                    layer.msg(data.msg, {icon: 1,time: 1000});
+                }else{
+                    layer.msg(data.msg, {icon: 2,time: 2000});
+                }
+                layer.close(index);
+            },'json');
+        }
+    });
+
+    function delCourseTime(id,obj){
+        //询问框
+        var submitS = 0;
+        layer.confirm('你确定要删除吗？', function(index){
+            if(submitS > 0){
+                return false;
+            }
+            submitS ++;
+            var url = "{:U('Goods/del_course_time')}";
+            $.get(url,{id:id,goods_id:goods_id,doDel:1},function(data){
+                if(data.status){
+                    obj.parent().parent().remove();
+                }else{
+                    layer.msg(data.msg, {icon: 2,time: 2000});
+                }
+                layer.close(index);
+            },'json');
+        });
+    }
+
+    function editCourseTime(id,obj){
+        var stime = obj.parent().parent().find('td').eq(0).text();
+        var etime = obj.parent().parent().find('td').eq(1).text();
+        var store = obj.parent().parent().find('td').eq(2).text();
+        $('#stime').val(stime);
+        $('#etime').val(etime);
+        $('#store').val(store);
+        $('#addEditBtn').attr('data-id',id).text('编辑').removeClass('add_time').addClass('edit_time');
+    }
+</script>
+</html>

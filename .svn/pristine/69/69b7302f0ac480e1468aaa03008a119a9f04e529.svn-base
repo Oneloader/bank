@@ -1,0 +1,179 @@
+<include file="public/layout"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/css/multiselect/multi-select.css">
+
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div class="page" style="padding: 0px 1% 0 1%;">
+    <!-- 操作说明 -->
+    <php>
+        $cat = $_GET['cat'];
+        switch($cat){
+        case 1:$cat_name='商品';break;
+        case 2:$cat_name='品牌';break;
+        case 3:$cat_name='卡券';break;
+        default:$cat_name='';
+        }
+    </php>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div></div>
+            <!--<div class="ftitle">
+                <h3>商品列表</h3>
+                <h5>(共{$pager->totalRows}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>-->
+            <form class="navbar-form form-inline" id="search-form2" action="{:U('Admin/Ad/searchItems',['cat'=>$_GET['cat'],'ad_id'=>$_GET['ad_id']])}"
+                  method="get">
+                <div class="ftitle">
+                    <!--<div class="sDiv2" style="margin-right: 10px;border:none;">
+                        <select name="cat_id" id="cat_id">
+                            <option value="0">所有分类</option>
+                            <foreach name="categoryList" item="v" key="k">
+                                <option value="{$v['id']}"
+                                <if condition="$v[id] eq $cat_id">selected</if>
+                                >{$v['name']}</option>
+                            </foreach>
+                        </select>
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;border:none;">
+                        <select name="brand_id" id="brand_id">
+                            <option value="0">所有品牌</option>
+                            <foreach name="brandList" item="v" key="k">
+                                <option value="{$v['id']}"
+                                <if condition="$v[id] eq $brand_id">selected</if>
+                                >{$v['name']}</option>
+                            </foreach>
+                        </select>
+                    </div>-->
+                    <!--<div class="sDiv2" style="margin-right: 10px;border:none;">-->
+                        <!--<select name="shop">-->
+                            <!--<option value="0">全部</option>-->
+                            <!--<volist name="shops" id="shop">-->
+                                <!--<option <if condition="$_GET['shop'] == $key" >selected</if> value="{$key}">{$shop}</option>-->
+                            <!--</volist>-->
+                        <!--</select>-->
+                    <!--</div>-->
+                    <div class="sDiv2">
+                        <input size="30" name="keyword" value="{$_GET['keyword']}" class="qsbox" placeholder="输入{$cat_name}名称关键词"
+                               type="text">
+                        <input class="btn" value="搜索" type="submit">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th abbr="article_time" axis="col6" class="" align="left">
+                            <div style="text-align: left; width: 160px;" class="">{$cat_name}名称</div>
+                        </th>
+                        <!--<eq name="cat" value="1">-->
+                            <!--<th abbr="article_time" axis="col6" class="" align="left">-->
+                                <!--<div style="text-align: center; width: 150px;" class="">来源商城</div>-->
+                            <!--</th>-->
+                        <!--</eq>-->
+                        <!--<th abbr="article_time" axis="col6" class="" align="left">-->
+                            <!--<div style="text-align: center; width: 80px;" class="">状态</div>-->
+                        <!--</th>-->
+                        <!-- <th abbr="article_show" axis="col5" class="" align="center">
+                             <div style="text-align: center; width: 80px;" class="">库存</div>
+                         </th>-->
+                        <th axis="col1" class="" align="center">
+                            <div style="text-align: center; width: 120px;">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody id="goos_table">
+                    <volist name="lists" id="list">
+                        <tr>
+                            <td class="sign">
+                                <div style="width: 24px;"><i class="ico-check"></i></div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: left; width: 160px;">{$list.name}</div>
+                            </td>
+                            <php>
+                                $cat_name = getGoodsCatName($list['cat_id']);
+                            </php>
+                            <!--<eq name="cat" value="1">-->
+                                <!--<td class="" align="left">-->
+                                    <!--<div style="text-align: center; width: 150px;"><notempty name="list.shop">{$shops[$list.shop]}<else/><span style="color: blue;">线下商品({$cat_name})</span></notempty></div>-->
+                                <!--</td>-->
+                            <!--</eq>-->
+                            <!--<td align="center" class="">-->
+                                <!--<div style="text-align: center; width: 80px;">-->
+                                    <!--<if condition='$list[status] eq 1'>-->
+                                        <!--<span class="yes" onClick="changeTableVal('{$table}','{$primaryKey}','{$list.id}','{$statusField}',this)"><i class="fa fa-check-circle"></i>是</span>-->
+                                        <!--<else/>-->
+                                        <!--<span class="no" onClick="changeTableVal('{$table}','{$primaryKey}','{$list.id}','{$statusField}',this)"><i class="fa fa-ban"></i>否</span>-->
+                                    <!--</if>-->
+                                <!--</div>-->
+                            <!--</td>-->
+                            <!-- <td class="" align="left">
+                                 <div style="text-align: center; width: 80px;">{$list.store_count}</div>
+                             </td>-->
+                            <td class="" align="center">
+                                <div style="text-align: center; width: 120px; ">
+                                    <a class="btn red" data-id="12" onclick="checkItems({$list.id|default=0},$(this))"><i
+                                            class="fa fa-check-circle"></i>选择</a>
+                                </div>
+                            </td>
+                            <td class="" style="width: 100%;" align="">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+        <notempty name="lists">
+            <div class="te_le">
+                {$pager->show();}
+            </div>
+        </notempty>
+
+    </div>
+</div>
+
+<script>
+    function checkItems(item_id,obj) {
+        if(item_id == 0){
+            layer.msg('参数丢失', {icon: 2, time: 3000}); //alert(v.msg);
+        }
+        var cat = {$_GET['cat']|default=0};
+        var pid = {$_GET['ad_id']|default=0};
+        var url = '{:url("Admin/Ad/checkItems")}';
+        $.post(url,{item_id:item_id,cat:cat,pid:pid},function(msg){
+            if (msg.status === 1) {
+                obj.parentsUntil('tr').parent().fadeOut();
+                //obj.parent().parent().parent().fadeOut();
+                layer.msg(msg.msg, {icon: 1, time: 1000});
+                    var index = parent.layer.getFrameIndex(window.name);
+                    setTimeout(function(){
+                        window.parent.location.reload();
+                        parent.layer.close(index);
+                    }, 1000);
+            } else
+                layer.msg(msg.msg, {icon: 3, time: 1000});
+        },'json');
+    }
+</script>
+</body>
+</html>

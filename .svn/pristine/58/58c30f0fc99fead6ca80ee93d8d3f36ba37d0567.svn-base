@@ -1,0 +1,292 @@
+<include file="public/layout" />
+<style>
+    .btn {
+        display: inline-block;
+        padding: 5px 10px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    dd.opt table{
+        width: 100%;
+    }
+    dd.opt tr{
+        border: 1px solid #f4f4f4;
+        padding: 8px;
+    }
+    dd.opt tr th{
+        font-weight: bold;
+        border: 1px solid #f4f4f4;
+        text-align: center!important;
+    }
+    dd.opt tr td{
+        border: 1px solid #f4f4f4;
+    }
+    .yes{
+        color: #1BBC9D;
+        cursor: default;
+    }
+    .no{
+        color: #9ea3a7;
+        cursor: default;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto; min-width:600px;">
+<div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 95%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>积分商城商品必须设置一个纯积分价格</li>
+            <li>非积分商城商品必须设置一个纯现金价格</li>
+        </ul>
+    </div>
+    <!--表单数据-->
+    <form method="post" id="addEditSpecForm">                    
+    <div class="ncap-form-default">
+        <dl class="row">
+            <table style="margin-left: 50px;">
+                <tbody>
+                <tr>
+                    <neq name="shop" value="exchange"><td>现金</td></neq>
+                    <td>消费积分</td>
+                    <td>互动积分</td>
+                    <td></td>
+                </tr>
+                <tr id="top_box">
+                    <neq name="shop" value="exchange"><td><input type="text" id="cash" value=""/> +</td></neq>
+                    <td><input type="text" id="k_point" value=""/> +</td>
+                    <td><input type="text" id="s_point" value=""/>&emsp;</td>
+                    <td><button type="button" data-id="0" id="addEditBtn"  class="btn add_pay">添加</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </dl>
+        <br/><br/>
+        <dl class="row">
+            <dt class="tit">
+                <label>支付列表：</label>
+            </dt>
+            <dd class="opt">
+                <table>
+                    <thead>
+                        <tr style="">
+                            <neq name="shop" value="exchange"><th>现金(¥)</th></neq>
+                            <th>消费积分</th>
+                            <th>互动积分</th>
+                           <!-- <th>显示状态</th>-->
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pay_list">
+                        <notempty name="list">
+                            <volist name="list" id="vo">
+                                <php>$price = json_decode($vo['price'],true);</php>
+                                <tr class="price_box_{$vo.id}" style="text-align: center;">
+                                    <neq name="shop" value="exchange"><td>{$price[0]}</td></neq>
+                                    <td>{$price[1]}</td>
+                                    <td>{$price[2]}</td>
+                                    <td>
+                                        <a href="javascript:void(0)" onclick="editPrice('{$vo.id|default=0}',$(this));">编辑</a> |
+                                        <a href="javascript:void(0)" onclick="delPrice('{$vo.id|default=0}',$(this));">删除</a>
+                                    </td>
+                                </tr>
+                            </volist>
+                        </notempty>
+                    </tbody>
+                </table>
+            </dd>
+        </dl>
+      <!--  <dd class="opt">
+          <input type="text" value="{$spec.name}" name="name"   class="input-txt"/>
+        </dd>-->
+        <div class="bot">
+            <a href="JavaScript:void(0);" style="margin-left: 30%;" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a>
+        </div>
+    </div>
+  </form>
+</div>
+ 
+</body>
+
+<script>
+    var goods_id = '{$goods_id|default=0}';
+    $('#submitBtn').click(function(){
+        var data = [];
+        var $tr = $('#pay_list tr');
+        $tr.each(function(){
+            <neq name="shop" value="exchange">
+                var td0 = parseFloat($(this).find('td').eq(0).text());
+                var td1 = parseInt($(this).find('td').eq(1).text());
+                var td2 = parseInt($(this).find('td').eq(2).text());
+            <else/>
+                var td0 = 0;
+                var td1 = parseInt($(this).find('td').eq(0).text());
+                var td2 = parseInt($(this).find('td').eq(1).text());
+            </neq>
+            data.push([td0,td1,td2]);
+        });
+        if(data.length < 1){
+            layer.msg('请至少设置一种支付方式', {icon: 2,time: 2000});return;
+        }
+        window.parent.set_price_call_back('{$box}',data);
+    });
+
+    $('#top_box').on('click','.add_pay',function(){
+        <neq name="shop" value="exchange">
+            var cash = parseFloat($('#cash').val());
+        <else/>
+            var cash = 0;
+        </neq>
+        var kpoint = parseInt($('#k_point').val());
+        var spoint = parseInt($('#s_point').val());
+
+        cash = isNaN(cash) ? 0 : cash;
+        kpoint = isNaN(kpoint) ? 0 : kpoint;
+        spoint = isNaN(spoint) ? 0 : spoint;
+
+        if(cash == 0 && kpoint == 0 && spoint == 0){
+            layer.msg('商品价格设置有误', {icon: 2,time: 2000});return;
+        }
+        if(cash < 0 || kpoint < 0 || spoint < 0){
+            layer.msg('商品价格设置有误', {icon: 2,time: 2000});return;
+        }else{
+            var index = layer.load(2, {shade: false}); //0代表加载的风格，支持0-2
+            //保存价格
+            $.post('{:U("Goods/set_price_detail")}',{goods_id:goods_id ,key:'{$box}',key1:'{$key|default=0}',cash:cash,kpoint:kpoint,spoint:spoint,doAdd:1},function(data){
+                if(data.status){
+                    var price_id = data.id;
+                    var tr = '';
+                    tr += '<tr class="price_box_"' +price_id+ ' style="text-align: center;">';
+                    <neq name="shop" value="exchange">tr += '    <td>'+cash+'</td>';</neq>
+                    tr += '    <td>'+kpoint+'</td>';
+                    tr += '    <td>'+spoint+'</td>';
+                    //tr += '    <td align="center"><div><span class="yes" onClick="changeTableVal(\'spec_goods_price_detail\',\'id\','+price_id+',\'status\',this)" ><i class="fa fa-check-circle"></i>是</span></div></td>';
+                    tr += '    <td class="mem_price"><a href="javascript:void(0)" onclick="setMemPrice(\''+price_id+'\');">设置</a></td>';
+                    tr += '    <td><a href="javascript:void(0)" onclick="editPrice('+ price_id +',$(this));">编辑</a> | ';
+                    tr += '    <a href="javascript:void(0)" onclick="delPrice('+ price_id +',$(this));">删除</a></td>';
+                    tr += '</tr>';
+                    <neq name="shop" value="exchange">$('#cash').val('');</neq>
+                    $('#k_point').val('');
+                    $('#s_point').val('');
+                    $('#pay_list').append(tr);
+                }else{
+                    layer.msg('保存失败', {icon: 2,time: 2000});
+                }
+                layer.close(index);
+            },'json');
+        }
+    });
+
+    $('#top_box').on('click','.edit_pay',function(){
+        <neq name="shop" value="exchange">
+            var cash = parseFloat($('#cash').val());
+            <else/>
+            var cash = 0;
+        </neq>
+        var kpoint = parseInt($('#k_point').val());
+        var spoint = parseInt($('#s_point').val());
+        var price_id = parseInt($('#addEditBtn').attr('data-id'));
+        cash = isNaN(cash) ? 0 : cash;
+        kpoint = isNaN(kpoint) ? 0 : kpoint;
+        spoint = isNaN(spoint) ? 0 : spoint;
+
+        if(price_id == 0 || isNaN(price_id)){
+            layer.msg('参数丢失，设置失败', {icon: 2,time: 2000});return;
+        }
+        if(cash == 0 && kpoint == 0 && spoint == 0){
+            layer.msg('商品价格设置有误', {icon: 2,time: 2000});return;
+        }
+        if(cash < 0 || kpoint < 0 || spoint < 0){
+            layer.msg('商品价格设置有误', {icon: 2,time: 2000});return;
+        }else{
+            var index = layer.load(2, {shade: false}); //0代表加载的风格，支持0-2
+            //保存价格
+            $.post('{:U("Goods/set_price_detail")}',{price_id:price_id,goods_id:goods_id ,cash:cash,kpoint:kpoint,spoint:spoint,doEdit:1},function(data){
+                if(data.status){
+                    var obj = $('.price_box_'+price_id);
+                    <neq name="shop" value="exchange">
+                        obj.find('td').eq(0).text(cash);
+                        obj.find('td').eq(1).text(kpoint);
+                        obj.find('td').eq(2).text(spoint);
+                        $('#cash').val('');
+                    <else/>
+                        obj.find('td').eq(0).text(kpoint);
+                        obj.find('td').eq(1).text(spoint);
+                    </neq>
+                    $('#k_point').val('');
+                    $('#s_point').val('');
+                    $('#addEditBtn').attr('data-id','').text('添加').removeClass('edit_pay').addClass('add_pay');
+                    layer.msg(data.msg, {icon: 1,time: 1000});
+                }else{
+                    layer.msg('保存失败', {icon: 2,time: 2000});
+                }
+                layer.close(index);
+            },'json');
+        }
+    });
+
+    function delPrice(id,obj){
+        //询问框
+        var submitS = 0;
+        layer.confirm('你确定要删除吗？', function(index){
+            if(submitS > 0){
+                return false;
+            }
+            submitS ++;
+            var url = "{:U('Goods/del_price_detail')}";
+            $.get(url,{id:id,goods_id:goods_id,doDel:1},function(data){
+                if(data.status){
+                    obj.parent().parent().remove();
+                }else{
+                    layer.msg(data.msg, {icon: 2,time: 2000});
+                }
+                layer.close(index);
+            },'json');
+        });
+    }
+
+    function editPrice(id,obj){
+        <neq name="shop" value="exchange">
+            var cash = obj.parent().parent().find('td').eq(0).text();
+            var k_point = obj.parent().parent().find('td').eq(1).text();
+            var s_point = obj.parent().parent().find('td').eq(2).text();
+            $('#cash').val(cash);
+        <else/>
+            var k_point = obj.parent().parent().find('td').eq(0).text();
+            var s_point = obj.parent().parent().find('td').eq(1).text();
+        </neq>
+        $('#k_point').val(k_point);
+        $('#s_point').val(s_point);
+        $('#addEditBtn').attr('data-id',id).text('编辑').removeClass('add_pay').addClass('edit_pay');
+    }
+
+    function setMemPrice(id){
+        var url = "{:U('Goods/set_member_price')}?id="+id;
+        layer.open({
+            type: 2,
+            title: '设置会员价',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['70%', '70%'],
+            content: url
+        });
+    }
+</script>
+</html>

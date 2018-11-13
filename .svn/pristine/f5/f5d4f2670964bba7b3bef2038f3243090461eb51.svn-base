@@ -1,0 +1,250 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>发送记录列表</h3>
+        <h5>扩展工具</h5>
+      </div>
+    </div>
+  </div>
+
+  <div class="explanation" id="explanation">
+    <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+      <span id="explanationZoom" title="收起提示"></span>
+    </div>
+    <ul>
+      <li>发送记录展示了SA推送到顾客微信的商品及卡券信息</li>
+    </ul>
+  </div>
+
+  <div class="flexigrid">
+    <div class="mDiv" style="padding-bottom: 10px;">
+      <div class="ftitle">
+        <h3>发送记录列表</h3>
+        <h5>(共{$pager->totalRows|default=0}条记录)</h5>
+      </div>
+      <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+      <form id="search-form2" class="navbar-form form-inline" name="search-form2" method="post" action="{:U('/Admin/Tools/message')}">
+        <div class="sDiv" style="margin-right:50px;">
+          <div class="sDiv2">
+            <select name="type" id="type" class="select">
+              <option value="0">类型</option>
+              <option <if condition="$_POST['type'] == 1">selected</if> value=1>商品</option>
+              <option <if condition="$_POST['type'] == 2">selected</if> value=2>卡券</option>
+            </select>
+            <if condition="$_POST['type'] == 1"><input type="text" class="qsbox" id="g_name" placeholder="请输入商品名称" value="{$_POST['g_name']}" name="g_name"><elseif condition="$_POST['type'] == 2"/><input type="text" class="qsbox" id="c_name" placeholder="请输入卡券名称" value="{$_POST['c_name']}" name="c_name"><else/></if>
+          </div>
+          <div class="sDiv2">
+            <input type="text" class="qsbox" id="name" placeholder="请输入会员名称" value="{$_POST['name']}" name="name">
+          </div>
+          <div class="sDiv2">
+            <input type="text" size="30" id="time_begin" name="time_begin" value="{$_POST['time_begin']|default=''}" class="qsbox" placeholder="开始时间">
+          </div>
+          <div class="sDiv2">
+            <input type="text" size="30" id="time_end" name="time_end" value="{$_POST['time_end']|default=''}" class="qsbox" placeholder="结束时间">
+          </div>
+          <div class="sDiv2">
+            <input type="submit" class="btn" value="搜索">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="tDiv">
+      <div class="tDiv2">
+        <div class="fbutton">
+          <a href="javascript:exportReport()">
+            <div class="add" title="根据时间导出excel文件,如果不选中时间，将导出列表所有数据">
+              <span><i class="fa fa-download"></i>导出数据</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!--<div class="fbutton">
+        <a href="/index.php?m=Admin&c=Order&a=add_order">
+              <div class="add" title="添加订单">
+                <span><i class="fa fa-plus"></i>添加订单</span>
+              </div>
+          </a>
+      </div>-->
+      <div style="clear:both"></div>
+    </div>
+    <div class="hDiv">
+      <div class="hDivBox">
+        <table cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th class="sign" axis="col0">
+                <div style="width: 24px;"><i class="ico-check"></i></div>
+              </th>
+              <th align="left" abbr="article_title" axis="col3" class="">
+                <div style="text-align: left; width: 220px;" class="">SA名称/SA UnionID</div>
+              </th>
+              <th align="left" abbr="article_title" axis="col3" class="">
+                <div style="text-align: left; width: 220px;" class="">会员名称/会员UnionID</div>
+              </th>
+              <th align="left" abbr="article_title" axis="col3" class="">
+                <div style="text-align: center; width: 50px;" class="">消息类型</div>
+              </th>
+              <th align="left" abbr="article_title" axis="col3" class="">
+                <div style="text-align: center; width: 200px;" class="">商品/卡券 名称</div>
+              </th>
+              <th align="left" abbr="article_title" axis="col3" class="">
+                <div style="text-align: center; width: 200px;" class="">商品品牌</div>
+              </th>
+              <th align="left" abbr="article_title" axis="col3" class="">
+                <div style="text-align: center; width: 120px;" class="">发送时间</div>
+              </th>
+              <th align="left" abbr="article_title" axis="col3" class="">
+                <div style="text-align: center; width: 240px;" class="">发送状态</div>
+              </th>
+              <!--<th align="center" axis="col1">
+                <div style="text-align: center; width: 80px;">操作</div>
+              </th>-->
+              <th style="width:100%" axis="col7">
+                <div></div>
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+
+    <div class="bDiv" style="height: auto;">
+      <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+        <notempty name="messages">
+          <table>
+            <tbody>
+            <volist name="messages" id="list">
+              <tr>
+                <td class="sign">
+                  <div style="width: 24px;"><i class="ico-check"></i></div>
+                </td>
+                <td align="left" class="">
+                  <div style="text-align: left; width: 220px;">{$list.username}<br/>{$list.unionid}</div>
+                </td>
+                <td align="left" class="">
+                  <div style="text-align: left; width: 220px;">{$list.nick_name}<br/>{$list.union_id}</div>
+                </td>
+                <td align="left" class="">
+                  <div style="text-align: center; width: 50px;">
+                    <eq name="list.type" value="1"><span style="color: green">商品</span><else/><span style="color: blue">卡券</span></eq>
+                  </div>
+                </td>
+                <td align="left" class="">
+                  <div style="text-align: left; width: 200px;">{$list.content|getSubstr=0,24}</div>
+                </td>
+                <td align="left" class="">
+                  <div style="text-align: left; width: 200px;">{$list.brand_name|getSubstr=0,24}</div>
+                </td>
+                <td align="left" class="">
+                  <div style="text-align: center; width: 120px;">{$list.date}</div>
+                </td>
+                <td align="left" class="">
+                  <div style="text-align: left; width: 240px;">
+                    <eq name="list.result" value="1">
+                      <span style="color:green;">成功</span>
+                    <else/>
+                      <span style="color:red;">失败({$list.msg})</span>
+                    </eq>
+                  </div>
+                </td>
+                <!--<td align="center">
+                  <div style="text-align: center; width: 80px;">
+                      <if condition="$list[result] == 0 and $list['time'] + 86400*2-3600 gt time()">
+                        <a class="btn blue"  href="javascript:void(0)"  onclick="sendRepeat('{$list[id]}')"><i class="fa fa-fly"></i>重新推送</a>
+                      </if>
+                  </div>
+                </td>-->
+                <td align="" class="" style="width: 100%;">
+                  <div></div>
+                </td>
+              </tr>
+            </volist>
+            </tbody>
+          </table>
+          <!--分页位置-->
+          {$pager->show()}
+        </notempty>
+      </div>
+    </div>
+</div>
+  <script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<script>
+	 // 删除操作
+	function del(id)
+	{
+      layer.confirm('确认删除？', {
+                btn: ['确定', '取消'] //按钮
+              }, function () {
+                // 确定
+                $.ajax({
+                  url: "/index.php?m=Admin&c=goods&a=delBrand&id=" + id,
+                  success: function (v) {
+                    layer.closeAll();
+                    var v = eval('(' + v + ')');
+                    if (v.hasOwnProperty('status') && (v.status == 1))
+                      location.href = "{:U('Admin/goods/messages')}";
+                    else
+                      layer.msg(v.msg, {icon: 2, time: 1000}); //alert(v.msg);
+                  }
+                });
+              }, function (index) {
+                layer.close(index);
+              }
+      );
+	}
+
+     function pushBrands(){
+         layer.confirm('你确定要同步商品发送记录数据到K11CRM系统吗？',
+             function () {
+                 $.ajax({
+                   url: "{:url('Admin/goods/pushBrandsToK11')}",
+                   success: function (v) {
+                     layer.closeAll();
+                     var v = eval('(' + v + ')');
+                     if (v.hasOwnProperty('status') && (v.status == 1))
+                       layer.msg(v.msg, {icon: 1, time: 1000}); //alert(v.msg);
+                     else
+                       layer.msg(v.msg, {icon: 2, time: 2500}); //alert(v.msg);
+                   }
+                 });
+             }, function (index) {
+                  layer.close(index);
+             }
+         );
+     }
+
+    $(document).ready(function(){
+        $('#time_begin').layDate();
+        $('#time_end').layDate();
+
+        // 点击刷新数据
+		$('.fa-refresh').click(function(){
+			location.href = location.href;
+		});
+	});
+     function exportReport(){
+         var type = $('#type').val();
+         var g_name = $('#g_name').val();
+         var name = $('#name').val();
+         var c_name = $('#c_name').val();
+         var time_begin = $('#time_begin').val();
+         var time_end = $('#time_end').val();
+         location.href="{:url('Admin/Tools/message',['export'=>1])}?" +
+             "time_begin=" + time_begin +
+             '&time_end='+time_end +
+             '&type=' + type +
+             '&name=' + name +
+             '&g_name=' + g_name +
+             '&c_name=' + c_name;
+     }
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<include file="public/layout"/>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page" style="margin-top: -50px;">
+    <div class="flexigrid ncap-form-default">
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th abbr="article_title" axis="col3" class="" align="left">
+                            <div style="text-align: left; width: 50px;" class="">
+                                <input type="checkbox" onclick="$('input[name*=\'goods_ids\']').prop('checked', this.checked);">
+                            </div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 180px;" class="">商品名称</div>
+                        </th>
+
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="bDiv" style="height: auto;padding-bottom:0px; ">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <form id="branch_form">
+                    <input type="hidden" name="aid" value="{$aid|default=0}" />
+                    <input type="hidden" name="level_id" value="{$level_id|default=0}" />
+                    <table>
+                        <tbody>
+                        <notempty name="lists">
+                            <volist name="lists" id="list">
+                                <tr>
+                                    <td class="" align="left">
+                                        <div style="text-align: left; width: 50px;">
+                                            <input type="checkbox" name="goods_ids[]" value="{$list.goods_id}"/>
+                                        </div>
+                                    </td>
+                                    <td align="center" class="">
+                                        <div style="text-align: center; width: 180px;">{$list.goods_name}</div>
+                                    </td>
+
+                                    <td align="" class="" style="width: 100%;">
+                                        <div></div>
+                                    </td>
+                                </tr>
+                            </volist>
+                            <else/>
+                            <tr>
+                                <td class="no-data" align="center" axis="col0" colspan="50">
+                                    <i class="fa fa-exclamation-circle"></i>没有可选的商品了
+                                </td>
+                            </tr>
+                        </notempty>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+
+        <notempty name="lists">
+            <div class="bot">
+                <a onclick="select_goods();" data-status="0" style="margin:20px 90px;" class="ncap-btn-big ncap-btn-green" href="JavaScript:void(0);">确认提交</a>
+            </div>
+        </notempty>
+    </div>
+    <script>
+        function select_goods()
+        {
+            if($("input[type='checkbox']:checked").length == 0)
+            {
+                layer.alert('请选择活动商品', {icon: 2});
+                return false;
+            }
+            $.ajax({
+                url:"{:U('Admin/Index/addGoodsToActivity')}",
+                type:'post',
+                dataType:'json',
+                data: $("#branch_form").serialize(),
+                success:function(obj){
+                    if(obj.status !=1){
+                        layer.msg(obj.msg, {icon: 2, time: 3000}); //alert(v.msg);
+                    }else{
+                        layer.msg(obj.msg, {icon: 1, time: 1000}); //alert(v.msg);
+                        setTimeout(function(){
+                            parent.location.reload();
+                        },1000);
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            // 点击刷新数据
+            $('.fa-refresh').click(function () {
+                location.href = location.href;
+            });
+        });
+    </script>
+</body>
+</html>

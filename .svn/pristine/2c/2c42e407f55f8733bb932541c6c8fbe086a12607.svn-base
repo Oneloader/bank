@@ -1,0 +1,53 @@
+<style>
+    .has{
+        color:white!important;
+        background-color: #0ba4da!important;
+    }
+</style>
+<table>
+    <tbody>
+    <volist name="goodsList" id="list">
+        <tr>
+            <td class="sign">
+                <div style="width: 24px;"><i class="ico-check"></i></div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: left; width: 150px;">{$list.goods_name|getSubstr=0,15}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: center;width: 80px;">{$list[cat_str]}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: left; width: 150px;">{$list.goods_price|round=2}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: left; width: 150px;">{$list.goods_spu}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: center; width: 200px;">
+                    <img width="100" height="50" src="{$list.original_img}" title="{$list.goods_name}" />
+                </div>
+            </td>
+
+            <td align="center" class="">
+                <div style="text-align: center; width: 150px;">
+                    <a class="btn red" href="javascript:void(0)" onclick="del_goods('{$list[goods_id]}',this)"><i class="fa fa-trash-o"></i>删除</a>
+                    <a href="{:U('Admin/goods/addEditGoods',array('id'=>$list['goods_id']))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                </div>
+            </td>
+
+            <td align="" class="" style="width: 100%;">
+                <div>&nbsp;</div>
+            </td>
+        </tr>
+    </volist>
+    </tbody>
+</table>
+<!--分页位置--> {$page}
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function () {
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2', cur_page);
+    });
+</script>

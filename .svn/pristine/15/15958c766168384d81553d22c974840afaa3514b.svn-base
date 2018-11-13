@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加商品</title>
+    <link rel="stylesheet" href="__PUBLIC__/static/myown/css/iconfont.css" type="text/css">
+    <link href="__PUBLIC__/static/css/main.css" rel="stylesheet" type="text/css">
+    <link href="__PUBLIC__/static/css/page.css" rel="stylesheet" type="text/css">
+    <script src="__PUBLIC__/static/myown/js/jquery-1.9.1.min.js"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+
+    <style>
+        html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
+        html,body{font-family:"Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei","Hiragino Sans GB","Hiragino Sans GB W3",FontAwesome,sans-serif;font-size:12px;color:#000000;position: relative;overflow-x: hidden}
+        p,span,i{font-size:12px;}
+        ul,li{list-style:none;margin:0;padding:0;}
+
+        a{text-decoration:none;outline:none;}
+        .clearfix {  zoom: 1 }
+        .clearfix:after {clear: both;display: block;visibility: hidden;overflow: hidden;height: 0;content: "&nbsp;";zoom: 1;}
+        em{font-style: normal}
+
+        .shangpin_box{padding: 20px;}
+        .shangpin_box_hd{padding: 10px 0px;border-bottom: 1px solid #dddddd;}
+        .shangpin_box_hd>h2{font-size: 20px;font-weight: normal;}
+        .shangpin_box_hd>p{font-size: 14px;margin-top: 5px;}
+        .add_chose_step{padding: 10px 0px;}
+        .chose_step_list{width: 100%;display: block;}
+        .chose_step_list>li{width: 25%;float: left;position: relative;}
+        .picture_icon{font-size: 34px;float: left;padding-top: 6px;color: #cccccc}
+        .step_text{float: left;margin-left: 10px;color: #cccccc}
+        .step_text>span{font-size: 12px;}
+        .step_text>p{font-size: 22px;}
+        .icon-next1{float: left;line-height: 46px;margin-left: 20px;font-size: 18px;color: #cccccc}
+        .chose_step_list>li.active .picture_icon{color: #40ADE6}
+        .chose_step_list>li.active .step_text{color: #40ADE6}
+        .fenlei_chose{padding: 15px;background: #FAFAFA;display: none;}
+        .fenlei_chose.active{display: block;}
+        .chose_select{width: 80%;margin: 15px auto;}
+        .chose_select>p{font-size: 14px;float: left;line-height: 30px;}
+        .chose_select>select{float: left;height: 30px;width: 70%;margin-left: 10px;}
+
+        .list_box_item{width: 31.33333%;float: left;margin: 0px 1%;}
+        .list_box_item_in{background: #ffffff;padding: 10px;height: 300px;}
+        .list_box_item_in>li{padding: 5px 10px;cursor: pointer;}
+        .list_box_item_in>li>p{float: left;font-size: 12px;}
+        .list_box_item_in>li>i{float: right;font-size: 12px;display: none;}
+        .list_box_item_in>li:hover{background: #D8EDF8}
+        .list_box_item_in>li:hover>i{display: block;}
+
+        .list_box_item_in>li.active{background: #D8EDF8}
+        .list_box_item_in>li.active>i{display: block;}
+    </style>
+
+    <!--物流配置 css -start-->
+    <style>
+        .row .table-bordered td .btn,.row .table-bordered td img{
+            vertical-align: middle;
+        }
+        .row .table-bordered td{
+            padding: 8px;
+            line-height: 1.42857143;
+        }
+        .table-bordered{
+            width: 100%
+        }
+        .table-bordered tr td{
+            border: 1px solid #f4f4f4;
+        }
+        .table_input{
+            width: 50px;
+        }
+        .btn-success {
+            color: #fff;
+            background-color: #449d44;
+            border: #398439 solid 1px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .col-xs-8 {
+            width: 66.66666667%;
+        }
+        .col-xs-10 {
+            width: 95%;
+        }
+        .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+            float: left;
+        }
+        .row .tab-pane h4{
+            padding: 10px 0;
+        }
+        .row .tab-pane h4 input{
+            vertical-align: middle;
+        }
+        .table-striped>tbody>tr:nth-of-type(odd) {
+            background-color: #f9f9f9;
+        }
+    </style>
+    <!--物流配置 css -end-->
+
+    <style>
+        dd.opt table{
+            width: 100%;
+        }
+        dd.opt tr{
+            border: 1px solid #f4f4f4;
+            padding: 8px;
+        }
+        dd.opt tr td{
+            border: 1px solid #f4f4f4;
+        }
+    </style>
+</head>
+
+<!--以下是在线编辑器 代码 -->
+<script type="text/javascript">
+    /*
+     * 在线编辑器相 关配置 js
+     *  参考 地址 http://fex.baidu.com/ueditor/
+     */
+    /*window.UEDITOR_Admin_URL = "/public/plugins/Ueditor/";
+     var URL_upload = "{$URL_upload}";
+     var URL_fileUp = "{$URL_fileUp}";
+     var URL_scrawlUp = "{$URL_scrawlUp}";
+     var URL_getRemoteImage = "{$URL_getRemoteImage}";
+     var URL_imageManager = "{$URL_imageManager}";
+     var URL_imageUp = "{$URL_imageUp}";
+     var URL_getMovie = "{$URL_getMovie}";
+     var URL_home = "{$URL_home}";*/
+</script>
+<script type="text/javascript" charset="utf-8" src="/public/plugins/Ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/public/plugins/Ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+    var editor;
+    $(function () {
+        //具体参数配置在  editor_config.js  中
+        var options = {
+            zIndex: 999,
+            initialFrameWidth: 700, //初化宽度
+            initialFrameHeight: 350, //初化高度
+            scaleEnabled:true,//设置不自动调整高度
+            focus: true //初始化时，是否让编辑器获得焦点true或false
+        };
+        editor = new UE.ui.Editor(options);
+        editor.render("goods_content");  //  指定 textarea 的  id 为 goods_content
+    });
+</script>
+<!--以上是在线编辑器 代码  end-->
+
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="shangpin_box">
+    <div class="shangpin_box_hd">
+        <h2><notempty name="goodsInfo">编辑<else/>新增</notempty>商品</h2>
+        <empty name="goodsInfo"><p>银行发布线下新商品</p></empty>
+    </div>
+
+    <!--表单数据-->
+    <form method="post" id="addEditGoodsForm">
+        <div class="fenlei_chose active">
+            <div class="ncap-form-default">
+                <dl class="row">
+                    <dt class="tit">
+                        <label><em>*</em>一级名称：</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" value='{$goodsInfo.goods_name}' name="goods_name" class="input-txt"/>
+                        <span class="err" id="err_goods_name" style="color:#F00; display:none;"></span>
+                    </dd>
+                </dl>
+
+                <dl class="row">
+                    <dt class="tit">
+                        <label>二级名称：</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" value="{$goodsInfo.goods_name_en}" name="goods_name_en" class="input-txt"/>
+                    </dd>
+                </dl>
+
+                <dl class="row">
+                    <dt class="tit">
+                        <label><em>*</em>商品价格：</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" value="{$goodsInfo.goods_price}" name="goods_price" class="input-txt"/>
+                    </dd>
+                </dl>
+
+                <dl class="row">
+                    <dt class="tit">
+                        <label><em>*</em>商品规格：</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" value="{$goodsInfo.goods_spu}" name="goods_spu" class="input-txt"/>
+                    </dd>
+                </dl>
+
+                <dl class="row">
+                    <dt class="tit">
+                        <label><em>*</em>封面图片：</label>
+                    </dt>
+                    <dd class="opt">
+                        <div class="input-file-show">
+                        <span class="show">
+                            <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="javascript:void(0);">
+                                <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$goodsInfo.original_img}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                            </a>
+                        </span>
+                        <span class="type-file-box">
+                            <input type="text" id="imagetext" name="original_img" value="{$goodsInfo.original_img}" class="type-file-text">
+                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                            <input class="type-file-file" onClick="GetUploadify(1,'','goods','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo">
+                        </span>
+                        </div>
+                        <span class="err"></span>
+                        <p class="notic">请上传JPG,PNG格式文件，图片尺寸1200*1200px</p>
+                    </dd>
+                </dl>
+
+                <dl class="row">
+                    <dt class="tit">
+                        <label><em>*</em>商品简介：</label>
+                    </dt>
+                    <dd class="opt">
+                        <textarea rows="10" maxlength="80" cols="85" style="width:450px!important;height: 100px;" name="goods_remark" class="input-txt">{$goodsInfo.goods_remark}</textarea>
+                        <p class="notic">商品简介限制85个汉字。微信分享时会使用到该简介</p>
+                    </dd>
+                </dl>
+
+                <dl class="row" >
+                    <dt class="tit">
+                        <label><em>*</em>商品相册：</label>
+                    </dt>
+
+                    <dd class="opt">
+                        <div class="tab-pane" id="tab_goods_images">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <foreach name="goodsImages" item="vo" key="k" >
+                                            <div style="width:100px; text-align:center; margin: 5px; display:inline-block;" class="goods_xc">
+                                                <input type="hidden" value="{$vo['img_url']}" name="goods_images[]">
+                                                <a href="javascript:void(0)" target="_blank"><img width="100" height="100" src="{$vo['img_url']}"></a>
+                                                <br>
+                                                <a href="javascript:void(0)" onClick="ClearPicArr2(this,'{$vo['img_url']}')">删除</a>
+                                            </div>
+                                        </foreach>
+
+                                        <div class="goods_xc" style="width:100px; text-align:center; margin: 5px; display:inline-block;">
+                                            <input type="hidden" name="goods_images[]" value="" />
+                                            <a href="javascript:void(0);" onClick="GetUploadify(10,'','goods','call_back2');"><img src="/public/images/add-button.jpg" width="100" height="100" /></a>
+                                            <br/>
+                                            <a href="javascript:void(0)">&nbsp;&nbsp;</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="notic">请上传JPG,PNG格式文件，图片尺寸1200*1200px</p>
+                        <p class="notic">商品封面图会自动添加到该列表图中，无须重复上传</p>
+                    </dd>
+                </dl>
+
+                <dl class="row">
+                    <dt class="tit">
+                        <label>商品详情：</label>
+                    </dt>
+                    <dd class="opt" style="width: 10% !important;">
+                        <textarea class="ckeditor" style="width:600px;height: 400px;" id="goods_content" name="goods_content" title="">{$goodsInfo.goods_content}</textarea>
+                    </dd>
+                </dl>
+
+            </div>
+        </div>
+
+        <div class="ncap-form-default">
+            <input type="hidden" id="goods_id" name="goods_id" value="{$goodsInfo.goods_id|default=0}">
+            <input type="hidden" id="addEditType" name="addEditType" value="<empty name='goodsInfo'>1<else/>2</empty>">
+            <input type="hidden" name="__token__" value="{$Request.token}" />
+        </div>
+        <div id="submit_box" style="text-align: center;padding: 30px 0px;">
+            <a href="JavaScript:void(0);" data-status="0" id="confirm_edit_goods" class="next_chose_btn ncap-btn-big ncap-btn-green">确认提交</a>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="__PUBLIC__/static/js/layer/layer.js"></script><!-- 弹窗js 参考文档 http://layer.layui.com/-->
+<script src="__PUBLIC__/js/myFormValidate.js"></script>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+
+<script>
+    $('#confirm_edit_goods').on('click',function(){
+        var goods_name = $('input[name=goods_name]').val();
+        var original_img = $('input[name=original_img]').val();
+        var goods_price = $('input[name=goods_price]').val();
+        var goods_remark = $('textarea[name=goods_remark]').val();
+        if(goods_name == 0 || goods_name == '' || goods_name == null){
+            layer.msg('请输入商品名称', {icon: 2,time: 3000});return false;
+        }
+        if(goods_price == 0 || goods_price == '' || goods_price == null){
+            layer.msg('请输入商品价格', {icon: 2,time: 3000});return false;
+        }
+        if(original_img == 0 || original_img == '' || original_img == null){
+            layer.msg('请上传商品封面图片', {icon: 2,time: 3000});return false;
+        }
+        if(goods_remark == 0 || goods_remark == '' || goods_remark == null){
+            layer.msg('请输入商品简介', {icon: 2,time: 3000});return false;
+        }
+        ajax_submit_form('addEditGoodsForm','{:U("Goods/addEditGoods?is_ajax=1")}');
+    });
+
+    /*$('#submit_box').on('click','#confirm_edit_goods',function(){
+     var status = $(this).attr('data-status');
+     if(status == 1){
+     return false;
+     }else{
+     $(this).attr('data-status',1);
+     }
+     var url = "{:U('admin/Goods/pushGoodsToK11')}";
+     var type = $('#addEditType').val();
+     var goods_id = $('#goods_id').val();
+     $.post(url,{type:type,goods_id:goods_id},function(msg){
+     console.log(msg);
+     return true;
+     },'json');
+     });*/
+
+    /*
+     * 以下是图片上传方法
+     */
+    // 上传商品图片成功回调函数
+    function call_back(fileurl_tmp){
+        $("#original_img").val(fileurl_tmp);
+        $("#original_img2").attr('href', fileurl_tmp);
+    }
+
+    // 上传商品相册回调函数
+    function call_back2(paths){
+        var  last_div = $(".goods_xc:last").prop("outerHTML");
+        for (i=0;i<paths.length ;i++ )
+        {
+            $(".goods_xc:eq(0)").before(last_div);	// 插入一个 新图片
+            $(".goods_xc:eq(0)").find('a:eq(0)').attr('href',paths[i]).attr('onclick','').attr('target', "_blank");// 修改他的链接地址
+            $(".goods_xc:eq(0)").find('img').attr('src',paths[i]);// 修改他的图片路径
+            $(".goods_xc:eq(0)").find('a:eq(1)').attr('onclick',"ClearPicArr2(this,'"+paths[i]+"')").text('删除');
+            $(".goods_xc:eq(0)").find('input').val(paths[i]); // 设置隐藏域 要提交的值
+        }
+    }
+
+    /*
+     * 上传之后删除组图input
+     * @access   public
+     * @val      string  删除的图片input
+     */
+    function ClearPicArr2(obj,path)
+    {
+        // 删除数据库记录
+        $.ajax({
+            type:'GET',
+            url:"{:U('Admin/Goods/del_goods_images')}",
+            data:{filename:path},
+            success:function(){
+                $(obj).parent().remove(); // 删除完服务器的, 再删除 html上的图片
+            }
+        });
+    }
+
+    function img_call_back(fileurl_tmp)
+    {
+        $("#imagetext").val(fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+    function setPrice(box){
+        var goods_id = $('#goods_id').val();
+        if(goods_id == 0 || goods_id == ''){
+            layer.msg('请先设置商品名称', {icon: 2,time: 3000});return false;
+        }
+        var url = "{:U('Goods/set_price')}?box="+box + '&goods_id=' + goods_id;
+        layer.open({
+            type: 2,
+            title: '设置价格',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['80%', '80%'],
+            content: url
+        });
+    }
+
+    function DataLength(fData) {
+        var intLength=0
+        for (var i=0;i<fData.length;i++)
+        {
+            if ((fData.charCodeAt(i) < 0) || (fData.charCodeAt(i) > 255))
+                intLength=intLength+2
+            else
+                intLength=intLength+1
+        }
+        return intLength
+    }
+</script>
+</body>
+</html>

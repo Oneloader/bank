@@ -1,0 +1,181 @@
+<include file="public/layout"/>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default;">
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>欢迎语管理</h3>
+                <h5>顾客扫码关联欢迎语管理</h5>
+            </div>
+        </div>
+    </div>
+    <div id="explanation" class="explanation">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom"></span>
+        </div>
+        <ul>
+            <li>点击使用状态将切换并更新所有sales扫码欢迎语，请谨慎操作</li>
+            <li>编辑使用中的欢迎语，将同步更新到微信</li>
+        </ul>
+    </div>
+    <form method="post">
+        <input type="hidden" value="ok" name="form_submit">
+        <div class="flexigrid">
+            <div class="mDiv">
+                <div class="ftitle">
+                    <h3>关联欢迎语列表</h3>
+                    <h5></h5>
+                </div>
+                <div class="tDiv2" style="padding:0px;">
+                    <a href="{:U('Tools/add_edit_answer_msg')}">
+                        <div class="fbutton">
+                            <div title="新增欢迎语" class="add">
+                                <span><i class="fa fa-plus"></i>新增欢迎语</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="hDiv">
+                <div class="hDivBox">
+                    <table cellspacing="0" cellpadding="0">
+                        <thead>
+                        <tr>
+                            <th class="sign" axis="col0">
+                                <div style="width: 24px;"><i class="ico-check"></i></div>
+                            </th>
+                            <th align="left" abbr="article_title" axis="col3" class="">
+                                <div style="text-align: left; width: 80px;" class="">欢迎语类型</div>
+                            </th>
+                            <th align="left" abbr="ac_id" axis="col4" class="">
+                                <div style="text-align: left; width: 150px;" class="">欢迎语标题</div>
+                            </th>
+                            <th align="left" abbr="ac_id" axis="col4" class="">
+                                <div style="text-align: left; width: 100px;" class="">背景图</div>
+                            </th>
+                            <th align="left" abbr="ac_id" axis="col4" class="">
+                                <div style="text-align: left;width: 400px;" class="">欢迎语内容</div>
+                            </th>
+                            <th align="left" abbr="ac_id" axis="col4" class="">
+                                <div style="text-align: center; width: 100px;" class="">使用状态</div>
+                            </th>
+                            <th align="center" axis="col1" class="handle">
+                                <div style="text-align: center; width: 100px;">操作</div>
+                            </th>
+                            <th style="width:100%" axis="col7">
+                                <div></div>
+                            </th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bDiv" style="height: auto;">
+                <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                    <table>
+                        <tbody>
+                        <volist name="lists" id="list">
+                            <tr>
+                                <td class="sign">
+                                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: left; width: 80px;">{$types[$list.type]}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: left; width: 150px;">{$list.title|getSubstr=0,15}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: left; width: 100px;">
+                                        <notempty name="list.picurl">
+                                            <img width="40" height="30" src="{$list.picurl}"/>
+                                        </notempty>
+                                    </div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: left;width: 400px;">{$list.description|getSubstr=0,30}</div>
+                                </td>
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 100px;">
+                                        <if condition='$list["status"] eq 1'>
+                                            <span class="yes" onClick="changeMsgUseVal('{$list.id}',this)"><i class="fa fa-check-circle"></i>使用中</span>
+                                        <else/>
+                                            <span class="no" onClick="changeMsgUseVal('{$list.id}',this)"><i class="fa fa-ban"></i>未使用</span>
+                                        </if>
+                                    </div>
+                                </td>
+                                <td align="center" class="handle">
+                                    <div style="text-align: center; width: 100px;">
+                                        <a href="{:U('Admin/Tools/add_edit_answer_msg',array('id'=>$list['id'],'p'=>$_GET[p]))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                                        <neq name="list.status" value="1">
+                                            <a class="btn red" href="javascript:void(0)" onclick="del('{$list[id]}')"><i class="fa fa-trash-o"></i>删除</a>
+                                        </neq>
+                                    </div>
+                                </td>
+                                <td align="" class="" style="width: 100%;">
+                                    <div>&nbsp;</div>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                    <!--分页位置-->
+                    {$pager}
+                </div>
+            </div>
+        </div>
+        <script>
+            // 删除操作
+            function del(id) {
+                layer.confirm('你确定要删除该欢迎语吗？', function ()
+                {
+                    $.ajax({
+                        url: '{:url("Admin/Tools/del_msg")}?id='+id,
+                        dataType:'json',
+                        success: function (v) {
+                            if(v.status){
+                                location.reload();
+                            }else{
+                                layer.msg(v.msg, {icon: 2});
+                            }
+                        }
+                    });
+                });
+            }
+
+            // 修改指定表的指定字段值 包括有按钮点击切换是否 或者 排序 或者输入框文字
+            function changeMsgUseVal(id_value,obj)
+            {
+                if($(obj).hasClass('yes')){
+                    return false;
+                }
+                $.ajax({
+                    dataType:'json',
+                    url:'{:url("Admin/Tools/changeMsgUse")}?id='+id_value,
+                    success: function(data){
+                        if(data.status){
+                            /*if($(obj).hasClass('no')) // 图片点击是否操作
+                            {
+                                $(obj).removeClass('no').addClass('yes');
+                                $(obj).html("<i class='fa fa-check-circle'></i>使用中");
+
+                            }else if($(obj).hasClass('yes')){ // 图片点击是否操作
+                                $(obj).removeClass('yes').addClass('no');
+                                $(obj).html("<i class='fa fa-ban'></i>未使用");
+                            }
+                            layer.msg(data.msg, {icon: 1});*/
+                            layer.msg(data.msg, {icon: 1});
+                            setTimeout(function(){
+                                location.reload();
+                            },2000);
+                        }else{
+                            layer.msg(data.msg, {icon: 2});
+                        }
+                    }
+                });
+            }
+        </script>
+</body>
+</html>

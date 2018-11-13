@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>活动商品详情</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache,must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta name="format-detection" content="telephone=no, address=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+    <link rel="stylesheet" href="css/amazeui.min.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="top_bgs">
+    <img src="images/tops.jpg" alt="">
+    <img src="images/text.png" class="text_img" alt="">
+</div>
+<div class="shop_list">
+    <div class="input_form">
+        <div class="shop_numbers clearfix">
+            <img src="images/gift.jpg" alt="">
+            <div class="shop_names_number">
+                <p class="names">嘉億电热水壶</p>
+                <p class="add_num clearfix">
+                    <em>数量：</em>
+                    <i class="num_down">-</i>
+                    <span class="shop_num">1</span>
+                    <i class="num_up">+</i>
+                </p>
+            </div>
+        </div>
+        <div class="ipt_group">
+            <div class="ipt_item">
+                <span class="ipt_item_text">客户姓名</span>
+                <input type="text" placeholder="请输入姓名">
+            </div>
+            <div class="ipt_item">
+                <span class="ipt_item_text">身份证号</span>
+                <input type="text" placeholder="请输入身份证号码">
+            </div>
+            <div class="ipt_item">
+                <span class="ipt_item_text">收货人</span>
+                <input type="text" placeholder="请输入收货人姓名">
+            </div>
+            <div class="ipt_item">
+                <span class="ipt_item_text">手机号码</span>
+                <input type="text" placeholder="请输入手机号码">
+            </div>
+            <div class="ipt_item">
+                <span class="ipt_item_text">所在地区</span>
+                <div data-toggle="distpicker">
+                    <select data-province="---- 选择省 ----"></select>
+                    <select data-city="---- 选择市 ----"></select>
+                    <select data-district="---- 选择区 ----"></select>
+
+                </div>
+            </div>
+
+
+
+
+
+            <div class="ipt_item">
+                <span class="ipt_item_text">详细地址</span>
+                <input type="text" placeholder="请填写有效的收货地址">
+            </div>
+
+        </div>
+    </div>
+    <div class="button_dui">
+        <button class="btn_orange">提交信息</button>
+    </div>
+</div>
+
+<div class="center_box">
+    <div>
+        <div>
+            <div>
+                <div class="contents-box">
+                    <h2 style="line-height: 100px;">恭喜您兑换成功！</h2>
+                    <div class="user_btns clearfix" style="margin-top: 10px;">
+                        <a href="javasccript:void(0)" class="conform_btn btn_conform am-fl">确定</a>
+                        <a href="javasccript:void(0)" class="conform_btn cont_btn am-fr">继续兑换</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/amazeui.min.js"></script>
+<script src="js/jquery.imgpreload.min.js"></script>
+<script src="js/distpicker.data.js"></script>
+<script src="js/distpicker.js"></script>
+<script src="js/main.js"></script>
+<script>
+    $('.btn_orange').click(function(){
+        $('.center_box').fadeIn(200);
+    });
+
+    $('.btn_conform').click(function(){
+        $('.center_box').fadeOut(200);
+    });
+    $('.cont_btn').click(function(){
+        $('.center_box').fadeOut(200);
+    });
+
+
+
+    $('.num_up').click(function(){
+        var num = parseInt($('.shop_num').text());
+        $('.shop_num').text(num + 1);
+    });
+    $('.num_down').click(function(){
+        var num = parseInt($('.shop_num').text());
+        if(num > 1){
+            $('.shop_num').text(num - 1);
+        }
+
+    });
+</script>
+</body>
+</html>

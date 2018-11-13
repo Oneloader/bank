@@ -1,0 +1,189 @@
+<include file="public/layout"/>
+<body style="background-color: #FFF; overflow: auto; ">
+<div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation"
+         style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 95%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li></li>
+        </ul>
+    </div>
+
+    <form method="post" class="form-horizontal" id="branch_form">
+        <input type="hidden" name="oid" value="{$oid|default=0}" />
+        <input type="hidden" name="shipping_id" value="{$info.shipping_id|default=0}" />
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="username"><em>*</em>收货人姓名：</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="username" class="input-txt" name="username" value="{$info.username}" >
+                    <span class="err" id="err_username" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="phone"><em>*</em>联系电话：</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="phone" class="input-txt" name="phone" value="{$info.phone}" >
+                    <span class="err" id="err_phone" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="address"><em>*</em>收货地址：</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="address" class="input-txt" name="address" value="{$info.address}" >
+                    <span class="err" id="err_address" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="shipping_com"><em>*</em>快递公司：</label>
+                </dt>
+                <dd class="opt">
+                    <div>
+                        <select name="shipping_com" id="shipping_com" class="input-txt class-select valid">
+                            <option value="-1">请选择快递公司</option>
+                            <volist name="shipping_coms" id="v">
+                                <option value="{$key}">{$v}</option>
+                            </volist>
+                            <option value="0">其他快递</option>
+                        </select>
+                    </div>
+                    <span class="err" id="err_shipping_com" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+
+            <div id="shipping_names">
+                <dl class="row">
+                    <dt class="tit">
+                        <label for="shipping_name"><em>*</em>快递公司名称：</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" id="shipping_name" class="input-txt" name="shipping_name" value="{$info.shipping_com}" >
+                        <span class="err" id="err_shipping_name" style="color:#F00; display:none;"></span>
+                    </dd>
+                </dl>
+            </div>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="shipping_sn"><em>*</em>发货单号：</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="shipping_sn" class="input-txt" name="shipping_sn" value="{$info.shipping_sn}" >
+                    <span class="err" id="err_shipping_sn" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+
+            <div class="bot">
+                <a id="submitBtn" data-status="0" style="margin:20px 90px;" class="ncap-btn-big ncap-btn-green"
+                   href="JavaScript:void(0);">确认提交</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var chkObjs1 = $('#shipping_com option:selected') .val();
+        if(chkObjs1==0){
+            $('#shipping_names').show();
+        }else{
+            $("#shipping_names").hide();
+        }
+        $('#shipping_com').click(function () {
+            var chkObjs = $('#shipping_com option:selected') .val();
+            if(chkObjs!=0){
+                $('#shipping_names').hide();
+            }else{
+                $('#shipping_names').show();
+            }
+        });
+    });
+</script>
+<script>
+    $(function(){
+        $('#submitBtn').click(function(){
+            $('#branch_form').submit();
+        });
+
+        $("#branch_form").validate({
+            debug: false, //调试模式取消submit的默认提交功能
+            focusInvalid: false, //当为false时，验证无效时，没有焦点响应
+            onkeyup: false,
+            submitHandler: function(form){   //表单提交句柄,为一回调函数，带一个参数：form
+                $.ajax({
+                    url:"{:U('Admin/Orders/save_shipping')}",
+                    type:'post',
+                    dataType:'json',
+                    data: $("#branch_form").serialize(),
+                    success:function(obj){
+                        if(obj.status !=1){
+                            layer.msg(obj.msg, {icon: 2, time: 5000}); //alert(v.msg);
+                        }else{
+                            layer.msg(obj.msg, {icon: 1, time: 1000}); //alert(v.msg);
+                            setTimeout(function(){
+                                parent.location.reload();
+                            },1000);
+                        }
+                    }
+                });
+            },
+            ignore:":button",	//不验证的元素
+            rules:{
+                username:{
+                    required:true
+                },
+                phone:{
+                    required:true
+                },
+                address:{
+                    required:true
+                },
+                shipping_sn:{
+                    required:true
+                },
+                shipping_com:{
+                    required:true
+                }
+            },
+            messages:{
+                username:{
+                    required:"请输入收货人姓名"
+                },
+                phone:{
+                    required:"请输入收货人手机号码"
+                },
+                address:{
+                    required:"请输入收货人详细地址"
+                },
+                shipping_sn:{
+                    required:"请输入发货单号"
+                },
+                shipping_com:{
+                    required:"请选择快递公司"
+                }
+            }
+        });
+    });
+
+    function img_call_back(fileurl_tmp)
+    {
+        $("#img").val(fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+</script>

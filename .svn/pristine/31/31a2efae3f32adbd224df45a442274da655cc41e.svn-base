@@ -1,0 +1,257 @@
+<include file="public/layout"/>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>活动列表</h3>
+                <h5>活动管理</h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation"
+         style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>客户使用兑换码自助兑换</li>
+        </ul>
+    </div>
+
+    <div class="flexigrid">
+        <div class="mDiv" style="padding-bottom: 10px;">
+            <div class="ftitle">
+                <h3>活动列表</h3>
+                <h5>(共{$pager->totalRows|default=0}条记录)</h5>
+            </div>
+
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+
+            <div class="tDiv2" style="padding: 0px;">
+
+                <div class="fbutton">
+                    <a href="javascript:void(0)" onclick="addBank(0)">
+                        <div class="add" title="新增活动">
+                            <span><i class="fa fa-plus"></i>新增活动</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 150px;" class="">活动名称</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 150px;" class="">封面图片</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 350px;" class="">活动访问地址</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">开始时间</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">结束时间</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 80px;" class="">是否显示价格</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 80px;" class="">是否开放</div>
+                        </th>
+                        <th align="center" axis="col1" class="">
+                            <div style="text-align: center; width: 220px;">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <notempty name="lists">
+                        <volist name="lists" id="list">
+                            <tr>
+                                <td class="sign">
+                                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                                </td>
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 150px;">{$list.name}</div>
+                                </td>
+
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 150px;">
+                                        <img width="100" height="50" src="{$list.img}" alt="{$list.name}" />
+                                    </div>
+                                </td>
+
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 350px;">{$list.url}</div>
+                                </td>
+
+                                <td align="left" class="">
+                                    <div style="text-align: center; width: 120px;">{$list.start_time|date='Y-m-d H:i:s',###}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: center; width: 120px;">{$list.end_time|date='Y-m-d H:i:s',###}</div>
+                                </td>
+
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 80px;">
+                                        <if condition='$list[is_price] eq 1'>
+                                            <span class="yes" onClick="changeTableVal('activity','id','{$list.id}','is_price',this)"><i class="fa fa-check-circle"></i>是</span>
+                                            <else/>
+                                            <span class="no" onClick="changeTableVal('activity','id','{$list.id}','is_price',this)"><i class="fa fa-ban"></i>否</span>
+                                        </if>
+                                    </div>
+                                </td>
+
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 80px;">
+                                        <if condition='$list[status] eq 1'>
+                                            <span class="yes" onClick="changeTableVal('activity','id','{$list.id}','status',this)"><i class="fa fa-check-circle"></i>是</span>
+                                            <else/>
+                                            <span class="no" onClick="changeTableVal('activity','id','{$list.id}','status',this)"><i class="fa fa-ban"></i>否</span>
+                                        </if>
+                                    </div>
+                                </td>
+
+                                <td align="left">
+                                    <div style="text-align: left; width: 220px;">
+                                        <a class="btn red" href="javascript:void(0)" onclick="del('{$list[id]}')"><i class="fa fa-trash-o"></i>删除</a>
+                                        <a href="javascript:void(0)" onclick="addBank('{$list[id]}')" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                                        <!--<a href="javascript:void(0)" onclick="viewInfo('{$list[id]}')" class="btn blue"><i class="fa fa-eye"></i>兑换详情</a>-->
+                                        <eq name="list.is_level" value="1">
+                                            <a href="javascript:void(0)" onclick="setLevel('{$list[id]}')" class="btn blue"><i class="fa fa-list-ol"></i>设置档次</a>
+                                            <else/>
+                                            <a href="javascript:void(0)" onclick="viewGoods('{$list[id]}')" class="btn blue"><i class="fa fa-gift"></i>查看商品</a>
+                                        </eq>
+                                    </div>
+                                </td>
+                                <td align="" class="" style="width: 100%;">
+                                    <div></div>
+                                </td>
+                            </tr>
+                        </volist>
+                        <else/>
+                        <tr>
+                            <td class="no-data" align="center" axis="col0" colspan="50">
+                                <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+                            </td>
+                        </tr>
+                    </notempty>
+                    </tbody>
+                </table>
+                <notempty name="lists">
+                    <!--分页位置-->
+                    {$pager->show()}
+                </notempty>
+            </div>
+        </div>
+    </div>
+    <script>
+        function viewInfo(id){
+            var url = "{:U('Admin/Index/exchange_list')}?id="+id;
+            layer.open({
+                type: 2,
+                title: '兑换列表',
+                shadeClose: false,
+                shade: 0.2,
+                area: ['1000px', '550px'],
+                content: url
+            });
+        }
+
+        function setLevel(id){
+            var url = "{:U('Admin/Bank/change_level')}?aid="+id;
+            layer.open({
+                type: 2,
+                title: '活动档次列表',
+                shadeClose: false,
+                shade: 0.2,
+                area: ['1100px', '580px'],
+                content: url
+            });
+        }
+
+        function addBank(id){
+            var url = "{:U('Admin/Index/addEditSalesExchange')}?id="+id+'&type='+2;
+            layer.open({
+                type: 2,
+                title: '添加/编辑活动',
+                shadeClose: false,
+                shade: 0.2,
+                area: ['650px', '550px'],
+                content: url
+            });
+        }
+
+        function viewGoods(id){
+            var url = "{:U('Admin/Index/select_goods')}?aid="+id;
+            layer.open({
+                type: 2,
+                title: '查看活动商品',
+                shadeClose: false,
+                shade: 0.2,
+                area: ['1000px', '550px'],
+                content: url
+            });
+        }
+
+        // 删除操作
+        function del(id) {
+            layer.confirm('你确认要删除该活动吗？', function ()
+            {
+                // 确定
+                $.ajax({
+                    url: "{:U('Admin/Index/sales_exchange_del')}",
+                    type: 'post',
+                    data: {id: id},
+                    success: function (v) {
+                        layer.closeAll();
+                        var v = eval('(' + v + ')');
+                        if (v.hasOwnProperty('status') && (v.status == 1)) {
+                            layer.msg(v.msg, {icon: 1, time: 1000}); //alert(v.msg);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        } else
+                            layer.msg(v.msg, {icon: 2, time: 1000}); //alert(v.msg);
+                    }
+                });
+            }, function (index) {
+                layer.close(index);
+            });
+        }
+
+        $(document).ready(function () {
+            // 点击刷新数据
+            $('.fa-refresh').click(function () {
+                location.href = location.href;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,540 @@
+[ 2018-11-01T12:06:34+08:00 ] 127.0.0.1 127.0.0.1 GET /admin
+[ log ] www.bank.com/admin [运行时间：0.022000s][吞吐率：45.45req/s] [内存消耗：1,339.01kb] [文件加载：38]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:06:34+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Admin/login.html
+[ log ] www.bank.com/Admin/Admin/login.html [运行时间：0.054000s][吞吐率：18.52req/s] [内存消耗：1,286.38kb] [文件加载：37]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:06:35+08:00 ] 127.0.0.1 127.0.0.1 GET /admin/Admin/vertify.html
+[ log ] www.bank.com/admin/Admin/vertify.html [运行时间：0.136000s][吞吐率：7.35req/s] [内存消耗：1,271.44kb] [文件加载：35]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:06:37+08:00 ] 127.0.0.1 127.0.0.1 GET /index.php?m=Admin&c=Admin&a=vertify&r=57
+[ log ] www.bank.com/index.php?m=Admin&c=Admin&a=vertify&r=57 [运行时间：0.049000s][吞吐率：20.41req/s] [内存消耗：1,268.89kb] [文件加载：35]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:06:40+08:00 ] 127.0.0.1 127.0.0.1 GET /index.php?m=Admin&c=Admin&a=vertify&r=31
+[ log ] www.bank.com/index.php?m=Admin&c=Admin&a=vertify&r=31 [运行时间：0.068000s][吞吐率：14.71req/s] [内存消耗：1,268.89kb] [文件加载：35]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:06:45+08:00 ] 127.0.0.1 127.0.0.1 POST /Admin/Admin/login/t/66813859.html
+[ log ] www.bank.com/Admin/Admin/login/t/66813859.html [运行时间：0.381000s][吞吐率：2.62req/s] [内存消耗：1,915.71kb] [文件加载：43]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.031000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.159000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_admin` INNER JOIN `ka_admin_role` `ka_admin_role` ON `ka_admin`.`role_id`=`ka_admin_role`.`role_id` WHERE  `user_name` = 'admin'  AND `password` = '773f53c7a16fde9dc1e4d042b9cee221' LIMIT 1 [ RunTime:0.033000s ]
+[ sql ] [ SQL ] UPDATE `ka_admin`  SET `last_login`=1541045205,`last_ip`='127.0.0.1'  WHERE  (  admin_id = 1 ) [ RunTime:0.038000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin_log` [ RunTime:0.024000s ]
+[ sql ] [ SQL ] INSERT INTO `ka_admin_log` (`log_time` , `admin_id` , `log_info` , `action` , `log_ip` , `sid`) VALUES (1541045205 , 1 , '后台登录' , 'n' , '127.0.0.1' , 0) [ RunTime:0.039000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:06:45+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/pubs.html
+[ log ] www.bank.com/Admin/Index/pubs.html [运行时间：0.034000s][吞吐率：29.41req/s] [内存消耗：1,972.45kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_admin` WHERE  `admin_id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:06:45+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/pubs_list
+[ log ] www.bank.com/Admin/Index/pubs_list [运行时间：0.106000s][吞吐率：9.43req/s] [内存消耗：2,001.28kb] [文件加载：48]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.068000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_shop` LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shop` LIMIT 0,20 [ RunTime:0.002000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:00+08:00 ] 127.0.0.1 127.0.0.1 GET /bank/sales/Mzc=.html
+[ log ] www.bank.com/bank/sales/Mzc=.html [运行时间：0.076000s][吞吐率：13.16req/s] [内存消耗：1,938.02kb] [文件加载：45]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_sales_man` [ RunTime:0.029000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_sales_man` WHERE  `id` = null LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT `nav_color` FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:00+08:00 ] 127.0.0.1 127.0.0.1 GET /bank/sales/login/Mzc=.html
+[ log ] www.bank.com/bank/sales/login/Mzc=.html [运行时间：0.036000s][吞吐率：27.78req/s] [内存消耗：1,964.13kb] [文件加载：47]
+[ error ] [8]未定义变量: type[D:\project\bank_change.system\php\runtime\temp\3778c2c02b89d7f46f41f64a440d7a7a.php:42]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:10+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Goods/goodsList
+[ log ] www.bank.com/Admin/Goods/goodsList [运行时间：0.055000s][吞吐率：18.18req/s] [内存消耗：1,279.16kb] [文件加载：37]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:10+08:00 ] 127.0.0.1 127.0.0.1 POST /admin/Goods/ajaxGoodsList.html?p=1
+[ log ] www.bank.com/admin/Goods/ajaxGoodsList.html?p=1 [运行时间：0.161000s][吞吐率：6.21req/s] [内存消耗：2,295.69kb] [文件加载：50]
+[ error ] [8]未定义数组下标: 0[D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:446]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:452]
+[ error ] [8]未定义数组下标: 0[D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:446]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:452]
+[ error ] [8]未定义数组下标: 0[D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:446]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:452]
+[ error ] [8]未定义数组下标: 0[D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:446]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:452]
+[ error ] [8]未定义数组下标: 0[D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:446]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:452]
+[ error ] [8]未定义数组下标: 0[D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:446]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:452]
+[ error ] [8]未定义数组下标: 0[D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:446]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:452]
+[ error ] [8]未定义数组下标: 0[D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:446]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:452]
+[ error ] [8]未定义数组下标: 0[D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:446]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:452]
+[ error ] [8]未定义数组下标: 0[D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:446]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\logic\GoodsLogic.php:452]
+[ error ] [8]Use of undefined constant cat_str - assumed 'cat_str'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:22]
+[ error ] [8]Use of undefined constant goods_id - assumed 'goods_id'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:38]
+[ error ] [8]Use of undefined constant cat_str - assumed 'cat_str'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:22]
+[ error ] [8]Use of undefined constant goods_id - assumed 'goods_id'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:38]
+[ error ] [8]Use of undefined constant cat_str - assumed 'cat_str'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:22]
+[ error ] [8]Use of undefined constant goods_id - assumed 'goods_id'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:38]
+[ error ] [8]Use of undefined constant cat_str - assumed 'cat_str'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:22]
+[ error ] [8]Use of undefined constant goods_id - assumed 'goods_id'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:38]
+[ error ] [8]Use of undefined constant cat_str - assumed 'cat_str'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:22]
+[ error ] [8]Use of undefined constant goods_id - assumed 'goods_id'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:38]
+[ error ] [8]Use of undefined constant cat_str - assumed 'cat_str'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:22]
+[ error ] [8]Use of undefined constant goods_id - assumed 'goods_id'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:38]
+[ error ] [8]Use of undefined constant cat_str - assumed 'cat_str'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:22]
+[ error ] [8]Use of undefined constant goods_id - assumed 'goods_id'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:38]
+[ error ] [8]Use of undefined constant cat_str - assumed 'cat_str'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:22]
+[ error ] [8]Use of undefined constant goods_id - assumed 'goods_id'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:38]
+[ error ] [8]Use of undefined constant cat_str - assumed 'cat_str'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:22]
+[ error ] [8]Use of undefined constant goods_id - assumed 'goods_id'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:38]
+[ error ] [8]Use of undefined constant cat_str - assumed 'cat_str'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:22]
+[ error ] [8]Use of undefined constant goods_id - assumed 'goods_id'[D:\project\bank_change.system\php\runtime\temp\969282a61a91eb7105047be8b6ed4d18.php:38]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_goods` [ RunTime:0.033000s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM `ka_goods` WHERE  (  is_on_sale in (0,1,2)  ) LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_goods` WHERE  (  is_on_sale in (0,1,2)  ) ORDER BY `goods_id`  desc LIMIT 0,10 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_goods_category` [ RunTime:0.039000s ]
+[ sql ] [ SQL ] SELECT `id`,`parent_id`,`level` FROM `ka_goods_category` WHERE  `sid` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_goods_category` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`parent_id`,`level` FROM `ka_goods_category` WHERE  `sid` = 0 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_goods_category` WHERE  `id` = 12 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`parent_id`,`level` FROM `ka_goods_category` WHERE  `sid` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_goods_category` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`parent_id`,`level` FROM `ka_goods_category` WHERE  `sid` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_goods_category` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`parent_id`,`level` FROM `ka_goods_category` WHERE  `sid` = 0 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_goods_category` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`parent_id`,`level` FROM `ka_goods_category` WHERE  `sid` = 0 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_goods_category` WHERE  `id` = 17 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`parent_id`,`level` FROM `ka_goods_category` WHERE  `sid` = 0 [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_goods_category` WHERE  `id` = 16 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`parent_id`,`level` FROM `ka_goods_category` WHERE  `sid` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_goods_category` WHERE  `id` = 16 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`parent_id`,`level` FROM `ka_goods_category` WHERE  `sid` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_goods_category` WHERE  `id` = 18 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`parent_id`,`level` FROM `ka_goods_category` WHERE  `sid` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_goods_category` WHERE  `id` = 17 LIMIT 1 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:12+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/pubs_list
+[ log ] www.bank.com/Admin/Index/pubs_list [运行时间：0.088000s][吞吐率：11.36req/s] [内存消耗：2,001.55kb] [文件加载：48]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.023000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_shop` LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shop` LIMIT 0,20 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:14+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/goshop/sid/Mzc%3D.html
+[ log ] www.bank.com/Admin/Index/goshop/sid/Mzc%3D.html [运行时间：0.072000s][吞吐率：13.89req/s] [内存消耗：1,926.77kb] [文件加载：45]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.014000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `ka_shop` [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:14+08:00 ] 127.0.0.1 127.0.0.1 GET /admin/Index/index.html
+[ log ] www.bank.com/admin/Index/index.html [运行时间：0.051000s][吞吐率：19.61req/s] [内存消耗：1,981.16kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.013000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_admin` WHERE  `admin_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:14+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/code_exchange
+[ log ] www.bank.com/Admin/Index/code_exchange [运行时间：0.083000s][吞吐率：12.05req/s] [内存消耗：2,008.09kb] [文件加载：48]
+[ error ] [8]Use of undefined constant is_price - assumed 'is_price'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:270]
+[ error ] [8]Use of undefined constant status - assumed 'status'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:280]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:290]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:291]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:292]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:294]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.044000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `sid` = 37  AND `type` = 1  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_activity` WHERE  `sid` = 37  AND `type` = 1  AND `status` IN (0,1) ORDER BY `id`  desc LIMIT 0,20 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:21+08:00 ] 127.0.0.1 127.0.0.1 GET /bank/event/Mzc=/aid/MzA%3D.html
+[ log ] www.bank.com/bank/event/Mzc=/aid/MzA%3D.html [运行时间：0.067000s][吞吐率：14.93req/s] [内存消耗：1,887.94kb] [文件加载：47]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT `name`,`img`,`status` FROM `ka_activity` WHERE  `id` = 30 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.015000s ]
+[ sql ] [ SQL ] SELECT `nav_color` FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:26+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Code/index
+[ log ] www.bank.com/Admin/Code/index [运行时间：0.106000s][吞吐率：9.43req/s] [内存消耗：1,967.51kb] [文件加载：48]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\edf08809619917eb700922f6505a0ba1.php:235]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\edf08809619917eb700922f6505a0ba1.php:236]
+[ error ] [8]Use of undefined constant total - assumed 'total'[D:\project\bank_change.system\php\runtime\temp\edf08809619917eb700922f6505a0ba1.php:236]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\edf08809619917eb700922f6505a0ba1.php:237]
+[ error ] [8]Use of undefined constant total - assumed 'total'[D:\project\bank_change.system\php\runtime\temp\edf08809619917eb700922f6505a0ba1.php:237]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `sid` = 37  AND `type` = 1  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_activity` WHERE  `sid` = 37  AND `type` = 1  AND `status` IN (0,1) ORDER BY id desc LIMIT 0,20 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_codes` [ RunTime:0.040000s ]
+[ sql ] [ SQL ] SELECT `use_status` FROM `ka_codes` WHERE  `aid` = 30 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:28+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Code/code_list.html?aid=30
+[ log ] www.bank.com/Admin/Code/code_list.html?aid=30 [运行时间：0.109000s][吞吐率：9.17req/s] [内存消耗：1,986.69kb] [文件加载：48]
+[ error ] [8]Use of undefined constant batch - assumed 'batch'[D:\project\bank_change.system\php\runtime\temp\703b7170a09657a470e12fdf07ab1358.php:249]
+[ error ] [8]Use of undefined constant batch - assumed 'batch'[D:\project\bank_change.system\php\runtime\temp\703b7170a09657a470e12fdf07ab1358.php:250]
+[ error ] [8]Use of undefined constant batch - assumed 'batch'[D:\project\bank_change.system\php\runtime\temp\703b7170a09657a470e12fdf07ab1358.php:251]
+[ error ] [8]Use of undefined constant batch - assumed 'batch'[D:\project\bank_change.system\php\runtime\temp\703b7170a09657a470e12fdf07ab1358.php:249]
+[ error ] [8]Use of undefined constant batch - assumed 'batch'[D:\project\bank_change.system\php\runtime\temp\703b7170a09657a470e12fdf07ab1358.php:250]
+[ error ] [8]Use of undefined constant batch - assumed 'batch'[D:\project\bank_change.system\php\runtime\temp\703b7170a09657a470e12fdf07ab1358.php:251]
+[ error ] [8]Use of undefined constant batch - assumed 'batch'[D:\project\bank_change.system\php\runtime\temp\703b7170a09657a470e12fdf07ab1358.php:249]
+[ error ] [8]Use of undefined constant batch - assumed 'batch'[D:\project\bank_change.system\php\runtime\temp\703b7170a09657a470e12fdf07ab1358.php:250]
+[ error ] [8]Use of undefined constant batch - assumed 'batch'[D:\project\bank_change.system\php\runtime\temp\703b7170a09657a470e12fdf07ab1358.php:251]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_codes` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT COUNT(*) AS tp_count FROM ( SELECT count(id) FROM `ka_codes` WHERE  `aid` = 30  AND `sid` = 37 GROUP BY batch ) `_group_count_` LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `batch`,`level_id`,`use_status` FROM `ka_codes` WHERE  `aid` = 30  AND `sid` = 37 GROUP BY batch ORDER BY `id`  desc LIMIT 0,20 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_codes` WHERE  `aid` = 30  AND `sid` = 37  AND `use_status` = 1  AND `batch` = '201810301540_30_2' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_codes` WHERE  `aid` = 30  AND `sid` = 37  AND `use_status` = 0  AND `batch` = '201810301540_30_2' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_codes` WHERE  `batch` = '201810301540_30_2' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_codes` WHERE  `aid` = 30  AND `sid` = 37  AND `use_status` = 1  AND `batch` = '201810301445_30_1' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_codes` WHERE  `aid` = 30  AND `sid` = 37  AND `use_status` = 0  AND `batch` = '201810301445_30_1' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_codes` WHERE  `batch` = '201810301445_30_1' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_codes` WHERE  `aid` = 30  AND `sid` = 37  AND `use_status` = 1  AND `batch` = '201810291704_30_1' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_codes` WHERE  `aid` = 30  AND `sid` = 37  AND `use_status` = 0  AND `batch` = '201810291704_30_1' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_codes` WHERE  `batch` = '201810291704_30_1' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_change_level` [ RunTime:0.031000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_change_level` WHERE  `id` IN (25,24) [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:31+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Code/codes.html?aid=30&batch=201810291704_30_1
+[ log ] www.bank.com/Admin/Code/codes.html?aid=30&batch=201810291704_30_1 [运行时间：0.076000s][吞吐率：13.16req/s] [内存消耗：1,990.41kb] [文件加载：48]
+[ error ] [8]未定义数组索引: export[D:\project\bank_change.system\php\application\admin\controller\Code.php:122]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_codes` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_codes` WHERE  `aid` = 30  AND `batch` = '201810291704_30_1'  AND `sid` = 37 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`code`,`level_id`,`code_url`,`batch`,`create_time`,`use_status`,`use_time` FROM `ka_codes` WHERE  `aid` = 30  AND `batch` = '201810291704_30_1'  AND `sid` = 37 ORDER BY `id`  desc LIMIT 0,20 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_change_level` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_change_level` WHERE  `id` IN (24) [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:42+08:00 ] 127.0.0.1 127.0.0.1 POST /bank/doLogin/Mzc=/aid/MzA%3D.html
+[ log ] www.bank.com/bank/doLogin/Mzc=/aid/MzA%3D.html [运行时间：0.060000s][吞吐率：16.67req/s] [内存消耗：1,823.30kb] [文件加载：42]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_codes` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT `level_id`,`use_status` FROM `ka_codes` WHERE  `aid` = 30  AND `sid` = 37  AND `code` = 'WMEKHR41' LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:43+08:00 ] 127.0.0.1 127.0.0.1 GET /bank/goodsList/Mzc=/aid/MzA%3D.html
+[ log ] www.bank.com/bank/goodsList/Mzc=/aid/MzA%3D.html [运行时间：0.113000s][吞吐率：8.85req/s] [内存消耗：1,902.32kb] [文件加载：47]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_codes` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT `level_id`,`use_status` FROM `ka_codes` WHERE  `aid` = 30  AND `sid` = 37  AND `code` = 'WMEKHR41' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT `name`,`back_img`,`back_color`,`is_price`,`is_stock`,`status` FROM `ka_activity` WHERE  `id` = 30 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.039000s ]
+[ sql ] [ SQL ] SELECT `b`.`goods_id`,`b`.`goods_name`,`b`.`goods_name_en`,`b`.`goods_price`,`b`.`original_img`,`a`.`store` FROM `ka_activity_goods` `a` LEFT JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`aid` = '30'  AND `a`.`sid` = '37'  AND `a`.`level_id` = 24  AND `a`.`status` = 1  AND `a`.`store` > 0 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:44+08:00 ] 127.0.0.1 127.0.0.1 GET /bank/goods_info/Mzc=/aid/MzA%3D/good_id/12.html
+[ log ] www.bank.com/bank/goods_info/Mzc=/aid/MzA%3D/good_id/12.html [运行时间：0.091000s][吞吐率：10.99req/s] [内存消耗：1,898.49kb] [文件加载：47]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_codes` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT `level_id`,`use_status` FROM `ka_codes` WHERE  `aid` = 30  AND `sid` = 37  AND `code` = 'WMEKHR41' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_goods` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_goods` WHERE  `goods_id` = 12 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT `name`,`back_img`,`back_color` FROM `ka_activity` WHERE  `id` = 30 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:45+08:00 ] 127.0.0.1 127.0.0.1 GET /bank/order_details/Mzc=/aid/MzA%3D/good_id/12.html
+[ log ] www.bank.com/bank/order_details/Mzc=/aid/MzA%3D/good_id/12.html [运行时间：0.125000s][吞吐率：8.00req/s] [内存消耗：1,857.17kb] [文件加载：44]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_codes` [ RunTime:0.016000s ]
+[ sql ] [ SQL ] SELECT `level_id`,`use_status` FROM `ka_codes` WHERE  `aid` = 30  AND `sid` = 37  AND `code` = 'WMEKHR41' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_goods` [ RunTime:0.015000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_goods` WHERE  `goods_id` = 12 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.015000s ]
+[ sql ] [ SQL ] SELECT `type`,`name`,`back_img`,`back_color`,`must_name_id`,`id_length` FROM `ka_activity` WHERE  `id` = 30 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.016000s ]
+[ sql ] [ SQL ] SELECT `nav_color` FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:07:52+08:00 ] 127.0.0.1 127.0.0.1 GET /Bank/sales/get_message_code/sid/Mzc%3D.html?phone=18140191539
+[ log ] www.bank.com/Bank/sales/get_message_code/sid/Mzc%3D.html?phone=18140191539 [运行时间：0.099000s][吞吐率：10.10req/s] [内存消耗：1,927.44kb] [文件加载：45]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_sales_man` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_sales_man` WHERE  `phone` = '18140191539'  AND `sid` = 37 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_message_limit` [ RunTime:0.034000s ]
+[ sql ] [ SQL ] SELECT `num`,`end_time` FROM `ka_message_limit` WHERE  `phone` = '18140191539' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] UPDATE `ka_message_limit`  SET `code`=123456,`expire_time`=1541045332  WHERE  `phone` = '18140191539' [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:08:02+08:00 ] 127.0.0.1 127.0.0.1 POST /bank/sales/login/Mzc=.html
+[ log ] www.bank.com/bank/sales/login/Mzc=.html [运行时间：0.091000s][吞吐率：10.99req/s] [内存消耗：1,908.29kb] [文件加载：42]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_message_limit` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_message_limit` WHERE  `phone` = '18140191539' LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_sales_man` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_sales_man` WHERE  `phone` = '18140191539'  AND `sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:08:02+08:00 ] 127.0.0.1 127.0.0.1 GET /bank/sales/Mzc=.html
+[ log ] www.bank.com/bank/sales/Mzc=.html [运行时间：0.134000s][吞吐率：7.46req/s] [内存消耗：1,975.14kb] [文件加载：47]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_sales_man` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_sales_man` WHERE  `id` = 12 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT `nav_color` FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `name`,`branch_id` FROM `ka_sales_man` WHERE  `id` = 12 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_banks` [ RunTime:0.036000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_banks` WHERE  `id` = 12 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_auth` [ RunTime:0.040000s ]
+[ sql ] [ SQL ] SELECT `a`.`aid`,`a`.`is_leader`,`c`.`id`,`c`.`name`,`c`.`img`,`c`.`back_img`,`c`.`end_time` FROM `ka_activity_auth` `a` INNER JOIN `ka_activity` `c` ON `a`.`aid`=`c`.`id` WHERE  `a`.`sales_id` = 12  AND `a`.`sid` = '37'  AND `c`.`sid` = '37'  AND `c`.`status` = 1  AND `c`.`type` = 2  AND `c`.`end_time` > 1541045282 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `sign` FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:08:04+08:00 ] 127.0.0.1 127.0.0.1 GET /bank/sales/manager/Mzc=/aid/29.html
+[ log ] www.bank.com/bank/sales/manager/Mzc=/aid/29.html [运行时间：0.171000s][吞吐率：5.85req/s] [内存消耗：2,022.48kb] [文件加载：47]
+[ error ] [8]未定义数组索引: bank_name[D:\project\bank_change.system\php\application\bank\controller\Sales.php:411]
+[ error ] [8]未定义数组索引: activity[D:\project\bank_change.system\php\application\bank\controller\Sales.php:412]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_auth` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT `is_leader` FROM `ka_activity_auth` WHERE  `aid` = 29  AND `sales_id` = 12 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT `is_level`,`name` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_change_level` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_change_level` WHERE  `aid` = 29  AND `sid` = 37 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT `sign` FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_sales_man` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_sales_man` WHERE  `id` = 12  AND `sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_banks` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_banks` WHERE  `id` = 12 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `b`.`id`,`b`.`name` FROM `ka_sales_man` `b` INNER JOIN `ka_activity_auth` `a` ON `b`.`id`=`a`.`sales_id` WHERE  `b`.`branch_id` = 12  AND `a`.`aid` = '29' [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.036000s ]
+[ sql ] [ SQL ] SELECT `a`.`goods_id`,count(a.id) order_sum,sum(a.goods_num) goods_sum,`b`.`goods_name`,`b`.`original_img` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`operator_id` = 9  AND `a`.`aid` = '29'  AND `a`.`type` = 2  AND `a`.`sid` = '37' GROUP BY a.goods_id [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `a`.`goods_id`,count(a.id) order_sum,sum(a.goods_num) goods_sum,`b`.`goods_name`,`b`.`original_img` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`operator_id` = 10  AND `a`.`aid` = '29'  AND `a`.`type` = 2  AND `a`.`sid` = '37' GROUP BY a.goods_id [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `a`.`goods_id`,count(a.id) order_sum,sum(a.goods_num) goods_sum,`b`.`goods_name`,`b`.`original_img` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`operator_id` = 11  AND `a`.`aid` = '29'  AND `a`.`type` = 2  AND `a`.`sid` = '37' GROUP BY a.goods_id [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `a`.`goods_id`,count(a.id) order_sum,sum(a.goods_num) goods_sum,`b`.`goods_name`,`b`.`original_img` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`operator_id` = 12  AND `a`.`aid` = '29'  AND `a`.`type` = 2  AND `a`.`sid` = '37' GROUP BY a.goods_id [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `a`.`goods_id`,count(a.id) order_sum,sum(a.goods_num) goods_sum,`b`.`goods_name`,`b`.`original_img` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`operator_id` = 13  AND `a`.`aid` = '29'  AND `a`.`type` = 2  AND `a`.`sid` = '37' GROUP BY a.goods_id [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`goods_id`,count(a.id) order_sum,sum(a.goods_num) goods_sum,`b`.`goods_name`,`b`.`original_img` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`operator_id` = 137  AND `a`.`aid` = '29'  AND `a`.`type` = 2  AND `a`.`sid` = '37' GROUP BY a.goods_id [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`goods_id`,count(a.id) order_sum,sum(a.goods_num) goods_sum,`b`.`goods_name`,`b`.`original_img` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`operator_id` = 138  AND `a`.`aid` = '29'  AND `a`.`type` = 2  AND `a`.`sid` = '37' GROUP BY a.goods_id [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`goods_id`,count(a.id) order_sum,sum(a.goods_num) goods_sum,`b`.`goods_name`,`b`.`original_img` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`operator_id` = 139  AND `a`.`aid` = '29'  AND `a`.`type` = 2  AND `a`.`sid` = '37' GROUP BY a.goods_id [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:08:06+08:00 ] 127.0.0.1 127.0.0.1 GET /bank/sales/goodsList/Mzc=/aid/29/sales_id/12/level_id/21.html
+[ log ] www.bank.com/bank/sales/goodsList/Mzc=/aid/29/sales_id/12/level_id/21.html [运行时间：0.081000s][吞吐率：12.35req/s] [内存消耗：1,983.13kb] [文件加载：47]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: goods_price[D:\project\bank_change.system\php\runtime\temp\26321163b39ffe0cd09a6fcced2f451d.php:32]
+[ error ] [8]未定义数组索引: goods_price[D:\project\bank_change.system\php\runtime\temp\26321163b39ffe0cd09a6fcced2f451d.php:32]
+[ error ] [8]未定义数组索引: goods_price[D:\project\bank_change.system\php\runtime\temp\26321163b39ffe0cd09a6fcced2f451d.php:32]
+[ error ] [8]未定义数组索引: goods_price[D:\project\bank_change.system\php\runtime\temp\26321163b39ffe0cd09a6fcced2f451d.php:32]
+[ error ] [8]未定义数组索引: goods_price[D:\project\bank_change.system\php\runtime\temp\26321163b39ffe0cd09a6fcced2f451d.php:32]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT `name`,`back_img`,`back_color`,`is_price`,`is_stock`,`status` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT `b`.`goods_id`,`b`.`goods_name`,`b`.`goods_name_en`,`b`.`original_img`,`a`.`store` FROM `ka_activity_goods` `a` LEFT JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = '37'  AND `a`.`level_id` = '21'  AND `a`.`status` = 1  AND `a`.`store` > 0 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:08:07+08:00 ] 127.0.0.1 127.0.0.1 GET /bank/sales/goods_info/Mzc=/aid/Mjk%3D/good_id/16.html
+[ log ] www.bank.com/bank/sales/goods_info/Mzc=/aid/Mjk%3D/good_id/16.html [运行时间：0.077000s][吞吐率：12.99req/s] [内存消耗：1,977.09kb] [文件加载：47]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_goods` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_goods` WHERE  `goods_id` = 16 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT `name`,`back_img`,`back_color` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T12:08:08+08:00 ] 127.0.0.1 127.0.0.1 GET /Bank/Sales/order_details/sid/Mzc%3D/aid/Mjk%3D/good_id/16.html
+[ log ] www.bank.com/Bank/Sales/order_details/sid/Mzc%3D/aid/Mjk%3D/good_id/16.html [运行时间：0.097000s][吞吐率：10.31req/s] [内存消耗：1,937.87kb] [文件加载：44]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_goods` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_goods` WHERE  `goods_id` = 16 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_activity_goods` WHERE  `goods_id` = 16  AND `aid` = 29  AND `status` = 1  AND `sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT `type`,`name`,`back_img`,`back_color`,`choice_num`,`must_name_id`,`id_length` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT `nav_color` FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T14:06:21+08:00 ] 127.0.0.1 127.0.0.1 GET /admin
+[ log ] www.bank.com/admin [运行时间：0.058000s][吞吐率：17.24req/s] [内存消耗：1,981.55kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.019000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_admin` WHERE  `admin_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T14:06:21+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/code_exchange
+[ log ] www.bank.com/Admin/Index/code_exchange [运行时间：0.036000s][吞吐率：27.78req/s] [内存消耗：2,008.71kb] [文件加载：48]
+[ error ] [8]Use of undefined constant is_price - assumed 'is_price'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:270]
+[ error ] [8]Use of undefined constant status - assumed 'status'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:280]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:290]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:291]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:292]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:294]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `sid` = 37  AND `type` = 1  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_activity` WHERE  `sid` = 37  AND `type` = 1  AND `status` IN (0,1) ORDER BY `id`  desc LIMIT 0,20 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T14:06:23+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/sales_exchange
+[ log ] www.bank.com/Admin/Index/sales_exchange [运行时间：0.069000s][吞吐率：14.49req/s] [内存消耗：2,013.23kb] [文件加载：48]
+[ error ] [8]Use of undefined constant is_price - assumed 'is_price'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:263]
+[ error ] [8]Use of undefined constant status - assumed 'status'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:273]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:283]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:284]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:285]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:286]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:290]
+[ error ] [8]Use of undefined constant is_price - assumed 'is_price'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:263]
+[ error ] [8]Use of undefined constant status - assumed 'status'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:273]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:283]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:284]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:285]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:286]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:288]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `sid` = 37  AND `type` = 2  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_activity` WHERE  `sid` = 37  AND `type` = 2  AND `status` IN (0,1) ORDER BY `id`  desc LIMIT 0,20 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T14:06:25+08:00 ] 127.0.0.1 127.0.0.1 GET /admin/Index/pubs.html
+[ log ] www.bank.com/admin/Index/pubs.html [运行时间：0.069000s][吞吐率：14.49req/s] [内存消耗：1,973.38kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_admin` WHERE  `admin_id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T14:06:25+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/pubs_list
+[ log ] www.bank.com/Admin/Index/pubs_list [运行时间：0.037000s][吞吐率：27.03req/s] [内存消耗：2,002.09kb] [文件加载：48]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_shop` LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shop` LIMIT 0,20 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-01T15:18:21+08:00 ] 127.0.0.1 127.0.0.1 GET /admin
+[ log ] www.bank.com/admin [运行时间：0.031000s][吞吐率：32.26req/s] [内存消耗：1,329.05kb] [文件加载：38]
+
+---------------------------------------------------------------

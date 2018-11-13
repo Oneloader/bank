@@ -1,0 +1,119 @@
+<include file="public/layout" />
+<style>
+    .btn {
+        position: absolute;
+        top: 70%;
+        left: 45%;
+        padding: 5px 10px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background-color: #86754d;
+        color: white;
+    }
+    .opt table{
+        width: 100%;
+    }
+    .opt tr{
+        padding: 8px;
+    }
+    .opt tr th{
+        font-weight: bold;
+    }
+    .opt tr td{
+        padding : 20px 8px;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto; min-width:600px;">
+
+<div>
+    <table class="opt">
+        <tr class="levelBox">
+            <th width="80">&emsp;&nbsp;<input type="checkbox" id="levelAll"/>全部</th>
+            <volist name="levels" id="level">
+                <neq name="level.level_id" value="0">
+                <td><input type="checkbox" name="level" class="levelSingle" <if condition="in_array($level['level_id'],$limit_level)">checked</if> value="{$level.level_id}" data-name="{$level.level_name}" />{$level.level_name}</td>
+                </neq>
+            </volist>
+        </tr>
+        <tr class="originBox">
+            <th>&emsp;&nbsp;<input type="checkbox" id="originAll" />全部</th>
+            <volist name="origins" id="origin">
+                <neq name="origin.origin_id" value="0">
+                <td><input type="checkbox" name="origin" class="originSingle" <if condition="in_array($origin['origin_id'],$limit_origin)">checked</if> value="{$origin.origin_id}" data-name="{$origin.name}" />{$origin.name}</td>
+                </neq>
+            </volist>
+        </tr>
+
+        <input type="button" class="btn" id="submitBtn" name="submitBtn" value="确认" />
+    </table>
+</div>
+
+</body>
+<script>
+    var goods_id = '{$goods_id|default=0}';
+    $('#submitBtn').click(function(){
+        var limit_level = [];
+        var limit_level_name = [];
+        var limit_origin = [];
+        var limit_origin_name = [];
+        var $tr = $('.levelBox .levelSingle:checked');
+        $tr.each(function(){
+            if($(this).val() > 0){
+                limit_level.push($(this).val());
+                limit_level_name.push($(this).attr('data-name'));
+            }
+        });
+
+        var $tr1 = $('.originBox .originSingle:checked');
+        $tr1.each(function(){
+            if($(this).val() > 0){
+                limit_origin.push($(this).val());
+                limit_origin_name.push($(this).attr('data-name'));
+            }
+        });
+        if(limit_level.length > 0){
+            limit_level.join(",");
+            limit_level_name.join(",");
+        }else{
+            layer.msg('请至少设置一个可购买该商品的会员等级', {icon: 2,time: 3000});return;
+        }
+        if(limit_origin.length > 0){
+            limit_origin.join(",");
+            limit_origin_name.join(",");
+        }else{
+            layer.msg('请至少设置一个可购买该商品的会员归属地', {icon: 2,time: 3000});return;
+        }
+        window.parent.set_limit_call_back(limit_level,limit_level_name,limit_origin,limit_origin_name);
+    });
+
+    $('#levelAll').click(function(){
+        if($('#levelAll').attr('checked') == "checked"){
+            $("[name = level]:checkbox").attr("checked", true);
+        }else{
+            $("[name = level]:checkbox").attr("checked", false);
+        }
+    });
+
+    $('#originAll').click(function(){
+        if($('#originAll').attr('checked') == "checked") {
+            $("[name = origin]:checkbox").attr("checked", true);
+        }else{
+            $("[name = origin]:checkbox").attr("checked", false);
+        }
+    });
+</script>
+</html>

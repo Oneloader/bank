@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>客户经理-首页</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache,must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta name="format-detection" content="telephone=no, address=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+    <link rel="stylesheet" href="css/amazeui.min.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="head_menu clearfix">
+    <img src="images/white_logo.png" class="top_logo am-fl" alt="">
+    <div class="manage_names am-fl">
+        <p class="top_name activity_in"><span>高升桥支行</span><em>-</em><span>徐俊</span></p>
+        <span class="activity_name">2018贵宾升级，专享好礼</span>
+    </div>
+    <div class="righr_menu am-fr clearfix">
+         <p class="gift am-fl">
+             <i class="iconfont icon-gift"></i>
+             <span>礼物</span>
+         </p>
+         <a href="javascript:history.go(-1);" class="back am-fl">
+             <i class="iconfont icon-fanhui2"></i>
+             <span>返回</span>
+         </a>
+    </div>
+</div>
+
+<div class="tab_menu clearfix">
+    <a href="" class="menu_item am-fl active">数据统计</a>
+    <a href="" class="menu_item am-fl">订单详情</a>
+</div>
+
+<div class="data_content">
+    <ul class="data_list">
+        <li class="data_li clearfix">
+            <p class="li_data"><span>高升桥支行</span><em>69单</em></p>
+            <i class="iconfont icon-next"></i>
+            <div class="order_box">
+                <ol class="order_list">
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </li>
+        <li class="data_li clearfix">
+            <p class="li_data"><span>#徐俊</span><em>12单</em></p>
+            <i class="iconfont icon-next"></i>
+            <div class="order_box">
+                <ol class="order_list">
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </li>
+        <li class="data_li clearfix">
+            <p class="li_data"><span>#大平</span><em>27单</em></p>
+            <i class="iconfont icon-next"></i>
+            <div class="order_box">
+                <ol class="order_list">
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </li>
+        <li class="data_li clearfix">
+            <p class="li_data"><span>#王迪</span><em>30单</em></p>
+            <i class="iconfont icon-next"></i>
+            <div class="order_box">
+                <ol class="order_list">
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                    <li class="order_list_li clearfix">
+                        <img src="images/gift.jpg" class="am-fl" alt="">
+                        <div class="order_names am-fl">
+                            <p>荣事达电煮锅多功能电热锅</p>
+                            <span class="hui_text">兑换个数:6</span>
+                        </div>
+                        <div class="order_right am-fr">
+                            <span class="hui_text">单数:2</span>
+                            <a href="order_info.html">查看订单</a>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="center_box">
+    <div>
+        <div>
+            <div>
+                <div class="contents-box">
+                    <h2>请选择商品等级分类</h2>
+                    <select name="" id="" class="ipt_login">
+                        <option value="">空几行待付款</option>
+                        <option value="">空几行待付款</option>
+                        <option value="">空几行待付款</option>
+                        <option value="">空几行待付款</option>
+                        <option value="">空几行待付款</option>
+                        <option value="">空几行待付款</option>
+                        <option value="">空几行待付款</option>
+                        <option value="">空几行待付款</option>
+                        <option value="">空几行待付款</option>
+                    </select>
+                    <div class="user_btns clearfix">
+                        <a href="javasccript:void(0)" class="conform_cancel am-fl">取消</a>
+                        <a href="javasccript:void(0)" class="conform_btn am-fr">确认</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="js/amazeui.min.js"></script>
+<script src="js/jquery.imgpreload.min.js"></script>
+
+
+<script>
+    $('.data_list .data_li').on('click',function(){
+        var list_h = $(this).find('.order_list').height();
+        if($(this).hasClass('show')){
+            $(this).find('.order_box').css('height','0px');
+            $(this).removeClass('show');
+        }else{
+            $(this).find('.order_box').css('height',list_h);
+            $(this).addClass('show');
+        }
+    });
+
+    $('.gift').click(function(){
+        $('.center_box').fadeIn(200);
+    });
+
+    $('.conform_cancel').click(function(){
+        $('.center_box').fadeOut(200);
+    });
+
+
+</script>
+</body>
+</html>

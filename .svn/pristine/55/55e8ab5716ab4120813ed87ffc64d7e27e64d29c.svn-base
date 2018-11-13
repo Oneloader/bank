@@ -1,0 +1,104 @@
+<?php
+namespace app\bank\controller;
+use Couchbase\Document;
+use think\Db;
+
+/**
+ * 银行顾客自助兑换页面
+ * Class Index
+ * @package app\bank\controller
+ */
+class Index extends Base {
+    protected $code;
+    protected $code_level_id;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->getActivityId();
+
+        //验证code
+        if(!in_array(ACTION_NAME,['event','doLogin'])){
+            $r = $this->checkCode();
+            if(!$r['status']){
+                $this->error($r['msg']);
+            }
+        }
+    }
+
+    /**
+     * 顾客访问首页
+     */
+    public function event(){
+        session('code',null);
+        //是否带兑换码
+        $code = input('code/s','');
+        $this->assign([
+            'code' => $code
+        ]);
+        dump($code);die;
+    }
+
+    /**
+     * 登录验证code是否有效
+     */
+    public function doLogin(){
+        if(IS_POST || IS_AJAX){
+            $data = input('post.');
+            $code = $data['code'];
+            $r = $this->checkCode($code);
+            if($r['status']){
+                session('code',$code);
+            }
+            $this->ajaxReturn($r);
+        }
+    }
+
+
+    /**
+     *
+     */
+    public function goodsList(){
+        $activity_goods = D('activity_goods')
+            ->alias('a')
+            ->field('a.store,b.*')
+            ->join('ka_goods b','a.goods_id=b.goods_id','LEFT')
+            ->where(['a.aid'=>$this->activity_id,'a.sid'=>$this->sid,'a.level_id'=>$this->code_level_id])
+            ->select();
+        var_dump($activity_goods);exit;
+
+//        foreach ($activity_goods as $key=>$val){
+//            $goods[$key] = Db::name('goods')
+//                ->field('goods_id,goods_name,goods_name_en,goods_price,original_img')
+//                ->where(['goods_id'=>$val['goods_id']])
+//                ->find();
+//        }
+//        var_dump($goods);exit;
+    }
+
+
+    /**
+     * 验证兑换码
+     * @return array
+     */
+    private function checkCode($code=''){
+        if(empty($code)){
+            $code = session('code');
+        }
+        //验证code
+        $code_info = Db::name('codes')
+            ->field('level_id,use_status')
+            ->where(['aid'=>$this->activity_id,'sid'=>$this->sid,'code'=>$code])
+            ->find();
+        if(empty($code_info)){
+            return ['status'=>0,'msg'=>'无效的兑换码'];
+        }
+        if($code_info['use_status'] != 0){
+            return ['status'=>0,'msg'=>'兑换码已经被使用了'];
+        }
+        $this->code_level_id = $code_info['level_id'];
+        $this->code = $code;
+        return ['status'=>1,'msg'=>'success'];
+    }
+}

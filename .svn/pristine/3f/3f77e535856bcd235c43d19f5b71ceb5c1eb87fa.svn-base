@@ -1,0 +1,29 @@
+<?php
+namespace app\bank\controller;
+use think\Db;
+
+/**
+ * 银行客服经理兑换
+ * Class Sales
+ * @package app\bank\controller
+ */
+class Sales extends Base {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * 银行客服经理登陆页
+     */
+    public function login(){
+
+    }
+
+    /**
+     * 银行客服经理首页
+     */
+    public function index(){
+        return $this->fetch();
+    }
+}

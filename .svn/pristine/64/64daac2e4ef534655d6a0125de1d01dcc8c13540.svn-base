@@ -1,0 +1,152 @@
+<include file="public/layout"/>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>店铺列表</h3>
+                <h5>扩展工具</h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation"
+         style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>店铺数据不允许编辑；</li>
+        </ul>
+    </div>
+
+    <div class="flexigrid">
+        <div class="mDiv" style="padding-bottom: 10px;">
+            <div class="ftitle">
+                <h3>店铺列表</h3>
+                <h5>(共{$pager->totalRows|default=0}条记录)</h5>
+            </div>
+
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+
+            <div class="tDiv2" style="padding: 0px;">
+
+                <div class="fbutton">
+                    <a href="javascript:void(0)" onclick="import_store()">
+                        <div class="add" title="同步CRM+门店数据">
+                            <span><i class="fa fa-download"></i>同步CRM+店铺</span>
+                        </div>
+                    </a>
+                </div>
+                <span style="font-size: 12px;line-height: 26px;margin-left: 10px;">上次同步时间：{$date|default='暂无'}</span>
+            </div>
+
+            <form id="search-form2" class="navbar-form form-inline" method="post" action="{:U('/Admin/Tools/store')}">
+                <div class="sDiv">
+                    <div class="sDiv2">
+                        <input type="text" class="qsbox" id="input-order-id" placeholder="请输入店铺关键字"
+                               value="{$_POST['keyword']}" name="keyword">
+                        <input type="submit" class="btn" value="搜索">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th align="center" abbr="ac_id" axis="col8" class="">
+                            <div style="text-align: center; width: 200px;" class="">店铺名称</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 120px;" class="">店铺CODE</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 120px;" class="">楼层</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <notempty name="lists">
+                    <table>
+                        <tbody>
+                        <volist name="lists" id="list">
+                            <tr>
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 200px;">{$list.store_name}</div>
+                                </td>
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 120px;">{$list.store_code}</div>
+                                </td>
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 120px;">{$list.floor}</div>
+                                </td>
+                                <td align="" class="" style="width: 100%;">
+                                    <div></div>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                    <!--分页位置-->
+                    {$pager->show()}
+                </notempty>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        function import_store() {
+            layer.confirm('你确认要同步CRM+商铺到本地吗？', function (index) {
+                // 确定
+                layer.close(index);
+                //加载层-风格4
+                layer.msg('同步中...', {
+                    time:0,
+                    icon: 16,
+                    shade: 0.40
+                });
+                $.ajax({
+                    url: "{:U('Admin/Tools/import_store')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (v) {
+                        if (v.status == 1) {
+                            layer.msg(v.msg, {icon: 1, time: 1000}); //alert(v.msg);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            layer.msg(v.msg, {icon: 2, time: 1000}); //alert(v.msg);
+                        }
+                    }
+                });
+            }, function (index) {
+                layer.close(index);
+            });
+        }
+
+        $(document).ready(function () {
+            // 点击刷新数据
+            $('.fa-refresh').click(function () {
+                location.href = location.href;
+            });
+        });
+    </script>
+</body>
+</html>

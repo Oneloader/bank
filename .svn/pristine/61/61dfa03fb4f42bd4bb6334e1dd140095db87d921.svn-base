@@ -1,0 +1,227 @@
+<include file="public/layout" />
+<style>
+    .btn {
+        display: inline-block;
+        padding: 5px 10px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    dd.opt table{
+        width: 30%;
+    }
+    dd.opt tr{
+        border: 1px solid #f4f4f4;
+        padding: 8px;
+    }
+    dd.opt tr td{
+        border: 1px solid #f4f4f4;
+        text-align:center;
+    }
+</style>
+
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div class="page" style="padding: 0px 1% 0 1%;">
+    <!-- 操作说明 -->
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h4>推广渠道列表</h4>
+            </div>
+            <div style="float:right;margin-right: 50px;"><input class="btn" value="添加新渠道" type="button" onclick="showChannel();"></div>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th abbr="article_time" axis="col6" class="" align="left">
+                            <div style="text-align: left; width: 100px;" class="">渠道名称</div>
+                        </th>
+                        <eq name="type" value="1">
+                            <th abbr="ac_id" axis="col4" class="" align="left">
+                                <div style="text-align: center; width: 400px;" class="">链接地址</div>
+                            </th>
+                        </eq>
+                        <eq name="type" value="2">
+                        <th abbr="article_show" axis="col5" class="" align="center">
+                            <div style="text-align: center; width: 300px;" class="">二维码</div>
+                        </th>
+                        </eq>
+                        <th abbr="article_show" axis="col5" class="" align="center">
+                            <div style="text-align: center; width: 80px;" class="">访问量</div>
+                        </th>
+                        <th abbr="article_show" axis="col5" class="" align="center">
+                            <div style="text-align: center; width: 80px;" class="">购买量</div>
+                        </th>
+                        <th axis="col1" class="" align="center">
+                            <div style="text-align: center; width: 300px;">操作</div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table style="width:50%">
+                    <tbody>
+                    <volist name="channels" id="channel">
+                        <tr>
+                            <td class="" align="left">
+                                <div style="text-align: left; width: 100px;">{$channel.name}</div>
+                            </td>
+                            <eq name="type" value="1">
+                            <td align="left">
+                                <div style="text-align: center; width: 400px;">{$channel.url}</div>
+                            </td>
+                            </eq>
+                            <eq name="type" value="2">
+                            <td class="" align="left">
+                                <span class="show_ercode">
+                                    <img style="margin:0 133px;cursor:pointer;" width="50" height="50" data-src="{$channel.ercode}" src="/public/images/ercode.png" />
+                                </span>
+                            </td>
+                            </eq>
+                            <td class="" align="left">
+                                <div style="text-align: center; width: 80px;">{$channel.views}</div>
+                            </td>
+                            <td class="" align="left">
+                                <div style="text-align: center; width: 80px;">{$channel.buy}</div>
+                            </td>
+                            <td class="" align="center">
+                                <div style="text-align: center; width: 300px; ">
+                                    <a class="btn red" onclick="editChannel('{$channel.id}','{$channel.name}');"><i class="fa fa-trash-o"></i>编辑</a>
+                                    <a class="btn red" onclick="delChannel('{$channel.id}','{$channel.name}')"><i class="fa fa-pencil-square-o"></i>删除</a>
+                                    <a class="btn red" onclick="saleDetail('{$channel.id}','{$channel.goods_id}')" title="查看购买详情"><i class="fa fa-list"></i>购买详情</a>
+                                    <eq name="type" value="2"><a class="btn red" onclick="downloadChannel('{$channel.id}')"><i class="fa fa-download"></i>下载二维码</a></eq>
+                                </div>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="hover_box" style="position: fixed;width: 200px;height: 200px;background: #fff;padding: 10px;display: none;z-index: 99">
+    <img id="show_img" style="width: 100%" src="" alt="">
+</div>
+
+</body>
+
+</html>
+
+<script>
+    var id = '{$id|default=0}';
+    var type = '{$type|default=0}';
+    function showChannel(){
+        //prompt层
+        layer.prompt({title: '请输入渠道名称', formType: 3}, function(name, index){
+            $.get('{:U("Goods/addEditChannel")}',{id:id,name:name,type:type},function(msg){
+                layer.close(index);
+                if(msg.status){
+                    layer.msg('添加推广渠道成功', {icon: 1,time: 1000});
+                    window.location.href = window.location.href;
+                }else{
+                    layer.msg('添加推广渠道失败', {icon: 2,time: 2000});
+                }
+            },'json');
+        });
+    }
+
+    function editChannel(cid,value){
+        //prompt层
+        layer.prompt({title: '请输入渠道名称',value:value, formType: 3}, function(name, index){
+            $.get('{:U("Goods/addEditChannel")}',{cid:cid,name:name},function(msg){
+                layer.close(index);
+                if(msg.status){
+                    layer.msg('修改推广渠道成功', {icon: 1,time: 1000});
+                    setTimeout(function(){
+                        location.reload();
+                    },2000);
+                }else{
+                    layer.msg('修改推广渠道失败', {icon: 2,time: 2000});
+                }
+            },'json');
+        });
+    }
+
+    function delChannel(id,name){
+        //询问框
+        var submitS = 0;
+        layer.confirm('你确定要删除【'+name+'】吗？',function(){
+            if(submitS > 0){
+                return false;
+            }
+            submitS ++;
+            $.get('{:U("Goods/delChannel")}',{id:id},function(msg){
+                if(msg.status){
+                    layer.msg('删除成功！', {icon: 1,time: 1000});
+                    setTimeout(function(){
+                        location.reload();
+                    },2000);
+                }else{
+                    layer.msg('删除失败！', {icon: 2,time: 2000});
+                }
+            },'json');
+        });
+    }
+
+    $('.show_ercode>img').hover(
+            function(event){
+                var e = event || window.event;
+                var img_src = $(this).attr('data-src');
+//                alert(img_src);
+                $('#show_img').attr('src',img_src);
+                $('#hover_box').css({
+                    'top':e.clientY-50,
+                    'left':e.clientX-250,
+                    'display':'block'
+                });
+            },
+            function(){
+                $('#show_img').attr('src','');
+                $('#hover_box').css({
+                    'display':'none'
+                });
+            }
+    );
+
+    /**
+     * @param id
+     * @param goods_id
+     * 销售渠道购买详情
+     */
+    function saleDetail(id,goods_id){
+        var url = "{:U('Admin/goods/saleDetail')}?id=" + id + '&goods_id=' + goods_id;
+        layer.open({
+            type: 2,
+            title: '购买详情',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['95%', '95%'],
+            content: url
+        });
+    }
+
+    function downloadChannel(id){
+        //下载二维码
+        window.location.href = '{:U("Goods/downloadChannel")}?id=' + id;
+    }
+</script>

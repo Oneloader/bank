@@ -1,0 +1,183 @@
+<style>
+    .has{
+        color:white!important;
+        background-color: #0ba4da!important;
+    }
+</style>
+<table>
+    <tbody>
+    <volist name="goodsList" id="list">
+        <tr>
+            <td class="sign">
+                <div style="width: 24px;"><i class="ico-check"></i></div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: left; width: 100px;">{$list.goods_name|getSubstr=0,12}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: center; width: 80px;">{$list.goods_sn}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: center; width: 80px;">{$shops[$list.shop]}</div>
+            </td>
+            <td align="center" axis="col0">
+                <div style="text-align: left; width: 350px;">{$list.goods_url}</div>
+            </td>
+            <!--<td align="center" axis="col0">
+                <div style="text-align: left; width: 200px;">{$list[cat_str]|default=''}</div>
+            </td>-->
+           <!-- <td align="center" axis="col0">
+                <div style="text-align: center; width: 80px;">
+                    <eq name="list.is_on_sale" value="1">
+                        <span class="yes"
+                              onClick="changeTableVal('goods','goods_id','{$list.goods_id}','is_on_sale',this)"><i
+                                class="fa fa-check-circle"></i>是</span>
+                        <else/>
+                        <span class="no"
+                              onClick="changeTableVal('goods','goods_id','{$list.goods_id}','is_on_sale',this)"><i
+                                class="fa fa-ban"></i>否</span>
+                    </eq>
+                </div>
+            </td>-->
+            <td align="center" axis="col0">
+                <div style="text-align: center; width: 60px;">
+                    <if condition="$list['off_time'] lt time()">
+                        <span class="neuter">已过期</span>
+                        <else/>
+                        <eq name="list.is_on_sale" value="2">
+                            <span class="neuter" onClick="changeGoodStatus('{$list.goods_id}',this)" ><i class="fa fa-check-circle-o"></i>不显示</span>
+                            <else/>
+                            <eq name="list.is_on_sale" value="1">
+                                <span class="yes" onClick="changeGoodStatus('{$list.goods_id}',this)" ><i class="fa fa-check-circle"></i>是</span>
+                                <else/>
+                                <span class="no" onClick="changeGoodStatus('{$list.goods_id}',this)"><i class="fa fa-ban"></i>否</span>
+                            </eq>
+                        </eq>
+                    </if>
+                </div>
+            </td>
+
+            <td align="center" axis="col0">
+                <div style="text-align: center; width: 50px;">
+                    <input type="text" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')"
+                           onpaste="this.value=this.value.replace(/[^\d]/g,'')"
+                           onChange="changeTableVal('goods','goods_id','{$list.goods_id}','sort',this)" size="4"
+                           value="{$list.sort}"/>
+                </div>
+            </td>
+
+            <td align="center" class="">
+                <div style="text-align: center; width: 250px;">
+                    <a class="btn Light grey <notempty name='list.is_tag'>has</notempty>" href="javascript:void(0)"
+                     ><i class="fa fa-tags"></i>推荐对象</a>
+                    <!--<a class="btn green <notempty name='list.is_tag'>has</notempty>" href="javascript:void(0)"-->
+                       <!--onclick="setTags('{$list.goods_id}','{$list.goods_name}')"><i class="fa fa-tags"></i>推荐对象</a>-->
+                    <a class="btn green <notempty name='list.is_coupon'>has</notempty>" href="javascript:void(0)"
+                       onclick="setCoupon('{$list.goods_id}','{$list.goods_name}')"><i class="fa fa-star"></i>优惠券</a>
+                    <a class="btn green <notempty name='list.is_k11tag'>has</notempty>" href="javascript:void(0)"
+                       onclick="setGoodsTags('{$list.goods_id}','{$list.goods_name}')"><i class="fa fa-tag"></i>设置标签</a>
+                    <!--<a class="btn red" href="javascript:void(0)" onclick="del_goods('{$list[goods_id]}',this)"><i
+                            class="fa fa-trash-o"></i>删除</a>-->
+                </div>
+            </td>
+
+            <td align="" class="" style="width: 100%;">
+                <div>&nbsp;</div>
+            </td>
+        </tr>
+    </volist>
+    </tbody>
+</table>
+<!--分页位置--> {$page}
+<script>
+    //设置关联标签
+    function setTags(id, name) {
+        var url = "{:U('Admin/Goods/setTags')}?id=" + id;
+        layer.open({
+            type: 2,
+            title: '给商品【' + name + '】推荐对象',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['50%', '95%'],
+            content: url
+        });
+    }
+
+    //打标签
+    function setCoupon(id, name) {
+        var url = "{:U('Admin/Goods/setCoupons')}?id=" + id;
+        layer.open({
+            type: 2,
+            title: '给商品【' + name + '】设置优惠券',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['50%', '95%'],
+            content: url
+        });
+    }
+
+    /**
+     * 绑定商品标签
+     * @returns {boolean}
+     */
+    function setGoodsTags(goods_id,goods_name){
+        var url = "{:U('Goods/set_goods_tags')}?goods_id=" + goods_id;
+        layer.open({
+            type: 2,
+            title: '为商品【'+goods_name+'】设置商品标签',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['80%', '450px'],
+            content: url
+        });
+    }
+
+    function set_goods_tags_back(goods_tags){
+        if(goods_tags.length > 0){
+            /*var html = '';
+            for(var i=0;i<goods_tags.length;i++){
+                if(i== 0 || (i+1)%6 == 0){
+                    html += '<tr>';
+                }
+                html += '<td>' + goods_tags[i] + '</td>';
+                if((i+2)%6 == 0 || (i+1)== goods_tags.length){
+                    html += '</tr>';
+                }
+            }
+            $('#goods_k11tags').html(html);*/
+            layer.closeAll('iframe');
+            layer.msg('设置商品标签成功', {icon: 1, time: 1500});
+        }
+    }
+
+    function changeGoodStatus(goods_id,obj){
+        layer.load(2);
+        var url = '{:url("Admin/Goods/changeGoodStatus")}';
+        $.get(url,{goods_id:goods_id},function(msg){
+            layer.closeAll('loading');
+            if(msg.status == 1){
+                if($(obj).hasClass('neuter')) // 图片点击是否操作
+                {
+                    //特定地址访问
+                    $(obj).removeClass('neuter').addClass('no');
+                    $(obj).html("<i class='fa fa-ban'></i>否");
+                }else if($(obj).hasClass('yes')){ // 图片点击是否操作
+                    $(obj).removeClass('yes').addClass('neuter');
+                    $(obj).html("<i class='fa fa-check-circle-o'></i>不显示");
+                }else{
+                    $(obj).removeClass('no').addClass('yes');
+                    $(obj).html("<i class='fa fa-check-circle'></i>是");
+                }
+                layer.msg(msg.msg, {icon: 1,time: 2000});
+            }else{
+                layer.msg(msg.msg, {icon: 2,time: 3000});
+            }
+        },'json');
+    }
+
+    // 点击分页触发的事件
+    $(".pagination  a").click(function () {
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2', cur_page);
+    });
+</script>

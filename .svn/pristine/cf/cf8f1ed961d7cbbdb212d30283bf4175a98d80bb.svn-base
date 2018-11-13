@@ -1,0 +1,249 @@
+<?php
+namespace app\bank\controller;
+use Couchbase\Document;
+use think\Db;
+use think\Loader;
+use think\Request;
+
+/**
+ * 银行顾客自助兑换页面
+ * Class Index
+ * @package app\bank\controller
+ */
+class Index extends Base {
+    protected $code;
+    protected $code_level_id;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->getActivityId();
+
+        //验证code
+        if(!in_array(ACTION_NAME,['event','doLogin'])){
+            $r = $this->checkCode();
+            if(!$r['status']){
+                $this->error($r['msg']);
+            }
+        }
+    }
+
+    /**
+     * 顾客访问首页
+     */
+    public function event(){
+        session('code',null);
+        //是否带兑换码
+        $code = input('code/s','');
+        $activity = D('activity')
+            ->field('name,img')
+            ->where(['id'=>$this->activity_id])
+            ->find();
+        $this->assign([
+            'code' => $code,
+            'aid' => base64_encode($this->activity_id),
+            'sid' => base64_encode($this->sid),
+            'data' => $activity
+        ]);
+        return $this->fetch();
+    }
+
+    /**
+     * 登录验证code是否有效
+     */
+    public function doLogin(){
+        if(IS_POST && IS_AJAX){
+//        if(IS_POST){
+            $data = input('post.');
+            $code = $data['code'];
+            $r = $this->checkCode($code);
+            if($r['status'] == 1){
+                session('code',$code);
+                $goodsListUrl = SITE_URL . url('Bank/Index/goodsList',['sid'=>base64_encode($this->sid),'aid'=>base64_encode($this->activity_id)]);
+                successReturn($goodsListUrl,'兑换码验证成功');
+            }else{
+                $url = SITE_URL . url('Bank/Index/event',['sid'=>base64_encode($this->sid),'aid'=>base64_encode($this->activity_id)]);
+                $r['data'] = $url;
+                $this->ajaxReturn($r);
+            }
+        }
+    }
+
+    /**
+     *  获取商品列表
+     */
+    public function goodsList(){
+        if (IS_GET){
+            $activity = D('activity')
+                ->field('name,back_img,back_color,is_price')
+                ->where(['id'=>$this->activity_id])
+                ->find();
+            if ($activity['is_price']==1){
+                $activity_goods = D('activity_goods')
+                    ->alias('a')
+                    ->field('b.goods_id,b.goods_name,b.goods_name_en,b.goods_price,b.original_img,a.store')
+                    ->join('ka_goods b','a.goods_id=b.goods_id','LEFT')
+                    ->where(['a.aid'=>$this->activity_id,'a.sid'=>$this->sid,'a.level_id'=>$this->code_level_id,'a.status'=>1,'a.store'=>['>',0]])
+                    ->select();
+            }else{
+                $activity_goods = D('activity_goods')
+                    ->alias('a')
+                    ->field('b.goods_id,b.goods_name,b.goods_name_en,b.original_img,a.store')
+                    ->join('ka_goods b','a.goods_id=b.goods_id','LEFT')
+                    ->where(['a.aid'=>$this->activity_id,'a.sid'=>$this->sid,'a.level_id'=>$this->code_level_id,'a.status'=>1,'a.store'=>['>',0]])
+                    ->select();
+            }
+            foreach ($activity_goods as $key=>$val){
+                $activity_goods[$key]['url'] = SITE_URL . url('Bank/Index/goods_info',['sid'=>base64_encode($this->sid),'aid'=>base64_encode($this->activity_id),'good_id'=>$val['goods_id']]);
+            }
+            $this->assign([
+                'list' => $activity_goods,
+                'data' => $activity,
+            ]);
+            return $this->fetch();
+        }
+    }
+
+
+    /**
+     * 获取商品详情
+     */
+    public function goods_info(){
+        if (IS_GET){
+            $goods_id = input('get.good_id','','int');
+            $good_info = Db::name('goods')
+                ->where(['goods_id'=>$goods_id])
+                ->find();
+            $good_info['url'] = SITE_URL . url('Bank/Index/order_details',['sid'=>base64_encode($this->sid),'aid'=>base64_encode($this->activity_id),'good_id'=>$good_info['goods_id']]);
+            $activity = D('activity')
+                ->field('name,back_img,back_color')
+                ->where(['id'=>$this->activity_id])
+                ->find();
+            $this->assign([
+                'info' => $good_info,
+                'data' => $activity,
+            ]);
+            return $this->fetch();
+        }
+    }
+
+
+    /**
+     * 获取订单详情
+     */
+    public function order_details(){
+        if (IS_GET){
+            $good_id = input('get.good_id');
+            $good_info = Db::name('goods')
+                ->where(['goods_id'=>$good_id])
+                ->find();
+            $order_type = Db::name('activity')
+                ->field('type,name,back_img,back_color')
+                ->where(['id'=>$this->activity_id])
+                ->find();
+            $this->assign([
+                'aid' => base64_encode($this->activity_id),
+                'sid' => base64_encode($this->sid),
+                'info' => $good_info,
+                'type' => $order_type['type'],
+                'data' => $order_type
+            ]);
+            return $this->fetch();
+        }elseif(IS_POST){
+            $data = input('post.');
+            $validate = Loader::validate('Order');
+            if (!$validate->batch()->check($data)){
+                $error = $validate->getError();
+                $error_msg = array_values($error);
+                $return_arr = array(
+                    'status' => 0,
+                    'msg' => $error_msg,
+                    'data' => $error,
+                );
+                $this->ajaxReturn($return_arr);
+            }
+            $customer = input('post.customer','','string');
+            $ID_num = input('post.ID_num','','string');
+            $consignee = input('post.consignee','','string');
+            $phone = input('post.phone','','string');
+            $address = input('post.address','','string');
+            $good_id = input('post.good_id','','int');
+            $type = input('post.type','','int');
+            $order_sn = date('YmdHis',time()).rand(1000,9999);
+            $shop_num = input('post.shop_num','','string');
+            $goods_is_null = D('activity_goods')
+                ->where(['aid'=>$this->activity_id,'sid'=>$this->sid,'level_id'=>$this->code_level_id,'status'=>1,'goods_id'=>$good_id,'store'=>['>','0']])
+                ->find();
+            if (!$goods_is_null){
+                errorReturn('暂无库存,请另选商品');
+            }
+            if ($type==1){
+                $code = session('code');
+                $code_id = D('codes')
+                    ->field('id')
+                    ->where(['code'=>$code])
+                    ->find();
+            }
+            $shipping_data = array(
+                'username'=>$customer,
+                'phone'=>$phone,
+                'address'=>$address,
+                'ID_num'=>$ID_num,
+                'consignee'=>$consignee,
+            );
+            $shipping = D('shipping')->add($shipping_data);
+            if ($shipping){
+                $order_data = array(
+                    'order_sn'=>$order_sn,
+                    'goods_id'=>$good_id,
+                    'goods_num'=>$shop_num,
+                    'aid'=>$this->activity_id,
+                    'create_time'=>date('Y-m-d H:i:s',time()),
+                    'time'=>time(),
+                    'type'=>$type,
+                    'operator_id'=>$code_id['id'],
+                    'sid'=>$this->sid,
+                    'shipping_id'=>$shipping,
+                );
+                $orders = D('orders')->add($order_data);
+                if ($orders){
+                    D('codes')
+                        ->where(['id'=>$code_id['id']])
+                        ->save(['use_status'=>1,'use_orderid'=>$orders]);
+                    D('activity_goods')
+                        ->where(['aid'=>$this->activity_id,'sid'=>$this->sid,'level_id'=>$this->code_level_id,'status'=>1,'goods_id'=>$good_id])
+                        ->setDec('store',1);
+                    $url = SITE_URL . url('Bank/Index/event',['sid'=>base64_encode($this->sid),'aid'=>base64_encode($this->activity_id)]);
+                    successReturn($url,'兑换成功');
+                }
+            }
+        }
+//            successReturn($orders);exit;
+    }
+
+
+    /**
+     * 验证兑换码
+     * @return array
+     */
+    private function checkCode($code=''){
+        if(empty($code)){
+            $code = session('code');
+        }
+        //验证code
+        $code_info = Db::name('codes')
+            ->field('level_id,use_status')
+            ->where(['aid'=>$this->activity_id,'sid'=>$this->sid,'code'=>$code])
+            ->find();
+        if(empty($code_info)){
+            return ['status'=>0,'msg'=>'无效的兑换码'];
+        }
+        if($code_info['use_status'] != 0){
+            return ['status'=>0,'msg'=>'兑换码已经被使用了'];
+        }
+        $this->code_level_id = $code_info['level_id'];
+        $this->code = $code;
+        return ['status'=>1,'msg'=>'success'];
+    }
+}

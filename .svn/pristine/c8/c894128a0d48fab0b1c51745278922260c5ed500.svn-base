@@ -1,0 +1,363 @@
+<?php
+/**
+ * Author: QP
+ * Date: 2017-09-09
+ */
+namespace app\admin\controller;
+
+use think\AjaxPage;
+use think\Exception;
+use think\Page;
+use think\Db;
+
+/**
+ * 兑换订单
+ * Class Orders
+ * @package app\admin\controller
+ */
+class Orders extends Base
+{
+    /**
+     * 兑换型活动订单
+     * @return mixed
+     */
+    public function code_exchange(){
+        $data = $this->get_exchange();
+
+        $this->assign([
+            'lists' => $data['activitys'],
+            'pager' => $data['pager'],
+            'count' => $data['count']
+        ]);
+        return $this->fetch();
+    }
+
+    /**
+     * 发放型活动订单
+     */
+    public function sales_exchange(){
+        $data = $this->get_exchange(2);
+
+        $this->assign([
+            'lists' => $data['activitys'],
+            'pager' => $data['pager'],
+            'count' => $data['count']
+        ]);
+        return $this->fetch();
+    }
+
+    /**
+     * 获取活动订单概况
+     */
+    protected function get_exchange($type=1){
+        $where = [
+            'type'=>$type,
+            'sid'=>$this->sid,
+            'status'=>['in',[0,1]]
+        ];
+        $count = Db::name('activity')
+            ->where($where)
+            ->count('id');
+        $activitys = $pager = null;
+        if($count){
+            $page =  $pager = new Page($count,20);
+            //查询活动列表
+            $activitys = Db::name('activity')
+                ->field('id,name')
+                ->where($where)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->order('id desc')
+                ->select();
+            if($type == 1){
+                foreach($activitys as $k=>$v){
+                    $list = Db::name('orders')->field('shipping_time')->where(['aid'=>$v['id'],'sid'=>$this->sid])->select();
+                    $activitys[$k]['total'] = count($list);
+                    if(!empty($list)){
+                        $num = 0;
+                        foreach($list as $val){
+                            if($val['shipping_time'] > 0){
+                                ++ $num;
+                            }
+                        }
+                        $activitys[$k]['has_shipping'] = $num;
+                    }
+                }
+            }else{
+                foreach($activitys as $k=>$v){
+                    $list = Db::name('orders')
+                        ->field('shipping_time')
+                        ->where(['aid'=>$v['id'],'sid'=>$this->sid])
+                        ->select();
+                    $activitys[$k]['total'] = count($list);
+                    if(!empty($list)){
+                        $num = 0;
+                        foreach($list as $val){
+                            if($val['shipping_time'] > 0){
+                                ++ $num;
+                            }
+                        }
+                        $activitys[$k]['has_shipping'] = $num;
+                    }
+                }
+            }
+        }
+
+        return [
+            'count' => $count,
+            'activitys'=> $activitys,
+            'pager' => $pager
+        ];
+    }
+
+    /**
+     * 活动订单列表
+     * @return mixed
+     */
+    public function order_list()
+    {
+        $activity_id = input('aid',0);
+        if(empty($activity_id)){
+            exit('参数丢失');
+        }
+
+        //查询活动类型
+        $activity_info = Db::name('activity')->field('name,type')->where(['id'=>$activity_id])->find();
+        $activity_type = $activity_info['type'];
+        $where = ['a.aid'=>$activity_id,'a.sid'=>$this->sid,'a.type'=>$activity_type];
+
+        $count = Db::name('orders')->alias('a')->where($where)->count('a.id');
+
+        // 关键词搜索
+        $key_word = I('key_word') ? trim(I('key_word')) : '';
+        if($key_word) {
+//            $where = "$where and (a.order_sn like '%$key_word%' or b.goods_name like '%$key_word%')" ;
+            $where['a.order_sn|b.goods_name|g.name|s.name'] = ['like','%'.$key_word.'%'];
+        }
+
+        if($_GET['export'] == 1){
+            $lists = Db::name('orders')
+                ->alias('a')
+                ->join('goods b','a.goods_id=b.goods_id')
+                ->join('sales_man s','a.operator_id=s.id')
+                ->join('banks g','s.branch_id=g.id')
+//                ->field('a.id,a.order_sn,b.goods_name_en,a.goods_num,a.create_time,a.shipping_time,a.shipping_id,a.operator_id,b.goods_name')
+                ->field('a.id,a.order_sn,b.goods_name_en,a.goods_num,a.create_time,a.shipping_time,a.shipping_id,a.operator_id,a.type,b.goods_name,s.name as sales_name,g.name as bank_name')
+                ->where($where)
+                ->order(['a.id'=>'desc'])
+                ->select();
+
+            //导出数字码
+            $strTable = '<table width="500" border="1">';
+            $strTable .= '<tr>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">订单编号</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">商品名称</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">商品型号</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">商品数量</td>';
+
+            if($activity_type == 2){
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">银行网点</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">客户经理</td>';
+            }else{
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">银行</td>';
+                $strTable .= '<td style="text-align:center;font-size:12px;" width="*">使用的兑换码</td>';
+            }
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">兑换时间</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">发货时间</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">发货单号</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">联系人</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">联系电话</td>';
+            $strTable .= '<td style="text-align:center;font-size:12px;" width="*">详细地址</td>';
+
+            $strTable .= '</tr>';
+
+            if(!empty($lists)){
+                foreach($lists as $v){
+                    $shipping_time = empty($v['shipping_time']) ? '未发货' : date('Y-m-d H:i:s',$v['shipping_time']);
+                    $strTable .= '<tr>';
+                    $strTable .= '<td style="text-align:left;font-size:12px;">' .$v['order_sn'].'&emsp;'. '</td>';
+                    $strTable .= '<td style="text-align:left;font-size:12px;">' . $v['goods_name'] . '</td>';
+                    $strTable .= '<td style="text-align:left;font-size:12px;">' . $v['goods_name_en'] . '</td>';
+                    $strTable .= '<td style="text-align:left;font-size:12px;">' . $v['goods_num'] . '</td>';
+
+                    if($activity_type == 2){
+                        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">'. $v['bank_name'] .'</td>';
+                        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">'. $v['sales_name'] .'</td>';
+                    }else{
+                        $shop_name = Db::name('shop')->where(['id'=>$this->sid])->getField('name');
+                        $code = Db::name('codes')->where(['id'=>$v['operator_id']])->getField('code');
+                        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">' .$shop_name. '</td>';
+                        $strTable .= '<td style="text-align:center;font-size:12px;" width="*">' .$code. '</td>';
+                    }
+
+                    $strTable .= '<td style="text-align:left;font-size:12px;">' . $v['create_time'] . '</td>';
+                    $strTable .= '<td style="text-align:left;font-size:12px;">' . $shipping_time . '</td>';
+
+//                    if($v['shipping_time'] != 0){
+                    $shipping = Db::name('shipping')->where(['id'=>$v['shipping_id']])->find();
+//                    }else{
+//                        $shipping = [];
+//                    }
+                    $strTable .= '<td style="text-align:center;font-size:12px;" width="*">'. $shipping['shipping_sn'] .'&emsp;'.'</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;" width="*">'. $shipping['username'] .'</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;" width="*">'. $shipping['phone'] .'</td>';
+                    $strTable .= '<td style="text-align:center;font-size:12px;" width="*">'. $shipping['address'] .'</td>';
+
+                    $strTable .= '</tr>';
+                }
+            }
+
+            $strTable .= '</table>';
+            downloadExcel($strTable, $activity_info['name'].'活动的订单');
+            unset($lists,$strTable);
+            exit();
+        }
+
+        if($count){
+            $pager = $page = new Page($count,20);
+            $lists = Db::name('orders')
+                ->alias('a')
+                ->join('goods b','a.goods_id=b.goods_id')
+                ->join('sales_man s','a.operator_id=s.id')
+                ->join('banks g','s.branch_id=g.id')
+                ->field('a.id,a.order_sn,b.goods_name_en,a.goods_num,a.create_time,a.shipping_time,a.shipping_id,a.operator_id,a.type,b.goods_name,s.name as sales_name,g.name as bank_name')
+                ->where($where)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->order(['a.id'=>'desc'])
+                ->select();
+
+            //查询物流
+            foreach($lists as $k=>$v){
+                if($v['shipping_id']!==0){
+                    $shipping = Db::name('shipping')->where(['id'=>$v['shipping_id']])->find();
+                    $lists[$k]['shipping'] = $shipping;
+                }
+                if ($v['type']==1){
+                    $code = Db::name('codes')
+                        ->field('code')
+                        ->where(['id'=>$v['operator_id']])
+                        ->find();
+                    $shop = Db::name('shop')
+                        ->field('name')
+                        ->where(['id'=>$this->sid])
+                        ->find();
+                    $lists[$k]['shop_name'] = $shop['name'];
+                    $lists[$k]['code'] = $code['code'];
+                }
+//                else{
+//                    $sales_name = Db::name('sales_man')->where(['id'=>$v['operator_id']])->getField('name');
+//                    $branch_id = Db::name('sales_man')
+//                        ->where(['id'=>$v['operator_id']])
+//                        ->getField('branch_id');
+//                    $bank_name = Db::name('banks')
+//                        ->where(['id'=>$branch_id])
+//                        ->getField('name');
+//                    $lists[$k]['sales_name'] = $sales_name;
+//                    $lists[$k]['bank_name'] = $bank_name;
+//                }
+            }
+
+            $this->assign([
+                'lists' => $lists,
+                'pager' => $pager
+            ]);
+        }
+
+        $this->assign([
+            'count' => $count,
+            'aid' => $activity_id,
+            'activity_type' => $activity_type
+        ]);
+        return $this->fetch();
+    }
+
+    /**
+     * 订单发货
+     */
+    public function do_shipping(){
+        //查询活动订单
+        $order_id = input('oid',0);  //订单id
+        if(empty($order_id)){
+            exit('参数丢失');
+        }
+
+        //查询订单信息
+        $info = Db::name('orders')
+            ->alias('a')
+            ->join('shipping b','a.shipping_id=b.id')
+            ->field('b.id shipping_id,b.username,b.phone,b.address')
+            ->where(['a.id'=>$order_id])
+            ->find();
+
+        $this->assign([
+            'info' => $info,
+            'oid' => $order_id,
+            'shipping_coms' =>[
+                'STO' => '申通快递',
+                'YTO' => '圆通快递',
+                'ZTO' => '中通快递',
+                'SF' => '顺丰速运',
+                'YD' => '韵达快递',
+                'YZPY' => '邮政快递包裹',
+                'EMS' => 'EMS',
+                'HHTT' => '天天快递',
+                'HTKY' => '百世快递',
+            ]
+        ]);
+        return $this->fetch();
+    }
+
+    /**
+     * 保存发货信息
+     */
+    public function save_shipping(){
+        if(IS_POST && IS_AJAX){
+            $data = input('post.');
+            $id = $data['shipping_id'];
+            $order_id = $data['oid'];
+
+            if($id > 0){
+                unset($data['shipping_id'],$data['oid']);
+                $r = Db::name('shipping')->where(['id'=>$id])->save($data);
+                if($r !== false){
+                    //修改订单状态为 已发货
+                    Db::name('orders')->where(['id'=>$order_id])->save(['shipping_time'=>time()]);
+                    adminLog('订单【orderid：'.$order_id.'】发货成功');
+                    $this->ajaxReturn(['status'=>1,'msg'=>'发货成功']);
+                }else{
+                    $this->ajaxReturn(['status'=>0,'msg'=>'保存发货信息失败']);
+                }
+            }else{
+                $this->ajaxReturn(['status'=>0,'msg'=>'查询物流信息失败']);
+            }
+        }else{
+            exit('REQUEST ERROR');
+        }
+    }
+
+
+    public function check_logistics(){
+        //查询活动订单
+        $order_id = input('shipping_id',0);  //订单id
+        $shipping_info = Db::name('shipping')->where(['id'=>$order_id])->find();
+        $logistics_info = getOrderTracesByJson($shipping_info['shipping_com'],$shipping_info['shipping_sn']);
+        $log_info = json_decode($logistics_info,true);
+        if ($log_info['Success']==true){
+            $this->assign([
+                'data' => $log_info,
+                'shipping' => $shipping_info,
+                'shipping_coms' =>[
+                    'STO' => '申通快递',
+                    'YTO' => '圆通快递',
+                    'ZTO' => '中通快递',
+                    'SF' => '顺丰速运',
+                    'YD' => '韵达快递',
+                    'YZPY' => '邮政快递包裹',
+                    'EMS' => 'EMS',
+                    'HHTT' => '天天快递',
+                    'HTKY' => '百世快递',
+                ]
+            ]);
+            return $this->fetch();
+        }
+    }
+}

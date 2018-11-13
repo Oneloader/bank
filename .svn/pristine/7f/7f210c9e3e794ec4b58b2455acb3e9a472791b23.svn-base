@@ -1,0 +1,147 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>自定义栏目 - 编辑栏目</h3>
+                <h5>商场系统自定义栏目与管理</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>请先添加商品分类后，再将商品分类绑定在指定栏目下</li>
+        </ul>
+    </div>
+    <form class="form-horizontal" id="addEditNavForm" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="name"><em>*</em>栏目名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$navigation.name}" name="name" placeholder="请输入栏目名称" id="name" class="input-txt">
+                    <span class="err" id="name_err" style="display: none">栏目名称不能为空!!</span>
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="store_logo"><em>*</em>栏目图标</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                        <span class="show">
+                            <a id="img_a" class="nyroModal" rel="gal" href="{$navigation.icon}">
+                                <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$navigation.icon}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                            </a>
+                        </span>
+           	            <span class="type-file-box">
+                            <input type="text" id="store_logo" name="icon" value="{$navigation.icon}" class="type-file-text">
+                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                            <input class="type-file-file" onClick="GetUploadify(1,'','logo','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+                    <p class="notic">最佳显示尺寸为100px * 100px</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label ><em>*</em>栏目类型</label>
+                </dt>
+                <dd class="opt">
+                    <select class="input-txt form-control" name="type">
+                        <option value="1" selected>商品分类</option>
+                        <option value="2">超链接</option>
+                       <!-- <option value="4">电话号码</option>
+                        <option value="3">地图导航</option>-->
+                    </select>
+                    <span class="err"></span>
+                    <p class="notic">请选择栏目类型</p>
+                </dd>
+            </dl>
+            <!--<dl class="row">
+                <dt class="tit">
+                    <label ><em>*</em>选择系统商场</label>
+                </dt>
+                <dd class="opt">
+                    <select class="input-txt form-control" name="name">
+                        <option value="0">&#45;&#45; 请选择系统商场 &#45;&#45;</option>
+                        <volist name="cats" id="cat">
+                            <option data_key="{$key}" <eq name="navigation.name_en" value="$key">selected</eq>  value="{$cat}">{$cat}</option>
+                        </volist>
+                    </select>
+                    <input type="hidden" name="name_en" value="{$navigation.name_en}"/>
+                </dd>
+            </dl>-->
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="sort">排序</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$navigation.sort|default=10}" name="sort" id="sort">
+                    <p class="notic"></p>
+                </dd>
+            </dl>
+            <div class="bot"><a href="JavaScript:void(0);" onclick="checkForm();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+        <input type="hidden" name="id" value="{$navigation.id}">
+    </form>
+
+    <div id="response_1" style="display: none;">
+        <select class="input-txt form-control" name="response">
+            <volist name="goods_cat" id="goods_cat">
+                <option value="{$goods_cat.id}" selected>{$goods_cat.name}</option>
+            </volist>
+        </select>
+    </div>
+</div>
+<script type="text/javascript">
+    // 判断输入框是否为空
+    function checkForm(){
+        if($('select[name=name]').val() == '0'){
+            layer.msg('请选择系统商场', {icon: 2,time: 2000});return;
+        }
+        if($('select[name=response]').val() == '0'){
+            layer.msg('请绑定商品分类到该栏目', {icon: 2,time: 2000});return;
+        }
+        $('#addEditNavForm').submit();
+    }
+
+    $('select[name=type]').change(function(){
+        var val = $(this).val();
+        if(val == 1){
+            $('#responce_info').html($('#response_1').html());
+        }else if(val==2 || val==3){
+            $('#responce_info').html('<input name="response" type="text" value="" class="input-txt" placeholder="请输入响应内容" />');
+        }else{
+            //地图
+        }
+    });
+
+    $('select[name=name]').change(function(){
+        var key = $(this).find('option:selected').attr('data_key');
+        $('input[name=name_en]').val(key);
+    });
+
+    function img_call_back(fileurl_tmp)
+    {
+        $("#store_logo").val(fileurl_tmp);
+        $("#img_a").attr('href', fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+</script>
+</body>
+</html>

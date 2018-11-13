@@ -1,0 +1,202 @@
+<?php
+namespace Api\Controller;
+
+//发送消息示例
+$cityName = '成都';
+$date = '2018-05-20';
+$phone = '13800000000';
+$msg = '【BRP庞博】感谢您报名参加Sea-Doo喜度家年华［'.$cityName.'］站［'.$date.'］活动，将会有BRP授权经销商尽快与您联系确认活动细节，谢谢！';
+$messageModel = new MessageController();
+$messageModel->send($msg,$phone);
+
+
+class MessageController{
+    private $apikey = '5d01d162b83032f491743878898a9b36';    //BPR  修改为您的apikey(https://www.yunpian.com)登录官网后获取
+    //private $apikey = '1a72941f1a742a54b9bf8e829b1c60ba';    //上海迈桀 修改为您的apikey(https://www.yunpian.com)登录官网后获取
+    private $getUserUrl = 'https://sms.yunpian.com/v2/user/get.json';
+    private $sendMessUrl = 'https://sms.yunpian.com/v2/sms/single_send.json';   //单发信息
+    private $batchSendMessUrl = 'https://sms.yunpian.com/v2/sms/batch_send.json';   //群发信息
+    private $tplBatchSendMessUrl = 'https://sms.yunpian.com/v2/sms/tpl_batch_send.json';   //群发模板信息
+    private $tplSendMessUrl = 'https://sms.yunpian.com/v2/sms/tpl_single_send.json';    //发送模板消息
+    private $multiSendMessUrl = 'https://sms.yunpian.com/v2/sms/multi_send.json';  //批量个性化发送接口
+    private $voiceSendMessUrl = 'http://voice.yunpian.com/v2/voice/send.json';  //发送语音信息
+    private $notifySendMessUrl = 'https://voice.yunpian.com/v2/voice/tpl_notify.json';
+
+    //获得账户
+    public function get_user(){
+        $params = ['apikey' => $this->apikey];
+        $r = $this->applyApi($this->getUserUrl,$params);
+        return $r;
+    }
+
+    /**
+     * 发送消息
+     * @param $text
+     * @param $mobile
+     * @return array
+     */
+    public function send($text,$mobile){
+        $params = [
+            'text'=>$text,
+            'apikey'=>$this->apikey,
+            'mobile'=>$mobile
+        ];
+        $r = $this->applyApi($this->sendMessUrl,$params);
+        return $r;
+    }
+
+    /**
+     * 群发消息
+     * @param $text
+     * @param $mobiles
+     * @return array
+     */
+    public function batch_send($text,$mobiles){
+        if(is_array($mobiles)){
+            $mobiles = implode(',',$mobiles);
+        }
+        $params = [
+            'text'=>$text,
+            'apikey'=>$this->apikey,
+            'mobile'=>$mobiles
+        ];
+        $r = $this->applyApi($this->batchSendMessUrl,$params);
+        return $r;
+    }
+
+    /**
+     * 群发模板消息
+     * @param $text
+     * @param $mobiles
+     * @return array
+     */
+    public function tpl_batch_send($text,$mobiles,$tpl_id){
+        $tpl_value = '';
+        if(is_array($mobiles)){
+            $mobiles = implode(',',$mobiles);
+        }
+        $params = [
+            'text'=>$text,
+            'apikey'=>$this->apikey,
+            'mobile'=>$mobiles,
+            'tpl_id'=>$tpl_id,
+            'tpl_value'=>$tpl_value,
+        ];
+        $r = $this->applyApi($this->tplBatchSendMessUrl,$params);
+        return $r;
+    }
+
+    /**
+     * 批量个性化发送接口
+     * @param $text
+     * @param $mobiles
+     * @return array
+     */
+    public function multi_send($text,$mobiles){
+        if(is_array($mobiles)){
+            $mobiles = implode(',',$mobiles);
+        }
+        $params = [
+            'text'=>$text,
+            'apikey'=>$this->apikey,
+            'mobile'=>$mobiles
+        ];
+        $r = $this->applyApi($this->multiSendMessUrl,$params);
+        if($r['status'] != 1){
+            file_put_contents(RUNTIME_PATH.'/error/multi_send_msg_err'.date('m_d_H_i_s').'.php', var_export(['params'=>$params,'time'=>date('Y-m-d H:i:s'),'result'=>$r],true));
+        }
+        return $r;
+    }
+
+    /**
+     * 发送模板消息
+     * @param $mobile
+     * @return array
+     */
+    public function tpl_send($mobile){
+        $params = [
+            'tpl_id' => '1',
+            'tpl_value' => ('#code#').'='.urlencode('1234').'&'.urlencode('#company#').'='.urlencode('欢乐行'),
+            'apikey' => $this->apikey,
+            'mobile' => $mobile
+        ];
+        $r = $this->applyApi($this->tplSendMessUrl,$params);
+        return $r;
+    }
+
+    /**
+     * 发送语音消息
+     * @param $mobile
+     * @return array
+     */
+    public function voice_send($mobile){
+        $params = [
+            'code'=>'9876',
+            'apikey'=>$this->apikey,
+            'mobile'=>$mobile
+        ];
+        $r = $this->applyApi($this->voiceSendMessUrl,$params);
+        return $r;
+    }
+
+    /**
+     * 发送通知
+     * 模板： 课程#name#在#time#开始。 最终发送结果： 课程深度学习在14:00开始
+     * @param $mobile
+     * @return array
+     */
+    public function notify_send($mobile){
+        $params = [
+            'tpl_id'=>'123456',
+            'tpl_value'=>urlencode('name=深度学习&time=14:00'),
+            'apikey'=>$this->apikey,
+            'mobile'=>$mobile
+        ];
+        $r = $this->applyApi($this->notifySendMessUrl,$params);
+        return $r;
+    }
+
+    /**
+     * 接口调用基础方法
+     * @param $url
+     * @param $data
+     * @return array
+     */
+    private function applyApi($url,$data){
+        $ch = curl_init();
+        /* 设置验证方式 */
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept:text/plain;charset=utf-8','Content-Type:application/x-www-form-urlencoded', 'charset=utf-8'));
+        /* 设置返回结果为流 */
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        /* 设置超时时间*/
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        /* 设置通信方式 */
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        curl_setopt ($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        $result = curl_exec($ch);
+        $error = curl_error($ch);
+        $r = $this->checkErr($result,$error);
+        return $r;
+    }
+
+    /**
+     * 检查错误方法
+     * @param $result
+     * @param $error
+     * @return array
+     */
+    private function checkErr($result,$error) {
+        if($result === false)
+        {
+            return ['status'=>0,'msg'=>'Curl error: ' .$error];
+        }
+        else
+        {
+            $result = json_decode($result,true);
+            return ['status'=>1,'msg'=>$result];
+        }
+    }
+}

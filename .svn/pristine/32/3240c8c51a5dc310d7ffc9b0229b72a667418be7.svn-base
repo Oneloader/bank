@@ -1,0 +1,111 @@
+<include file="public/layout" />
+<style>
+    dl{
+        margin-left:15px;
+    }
+    dd.opt table{
+        width: 100%;
+    }
+    dd.opt tr{
+        border: 1px solid #f4f4f4;
+        padding: 8px;
+    }
+    dd.opt tr th{
+        font-weight: bold;
+        border: 1px solid #f4f4f4;
+        text-align: center!important;
+    }
+    dd.opt tr td{
+        border: 1px solid #f4f4f4;
+    }
+    dt.tit{
+        width: 16%!important;
+        text-align: center!important;
+    }
+    .tit input{
+        width:50px;
+    }
+</style>
+<body style="background-color: #FFF; overflow: auto; min-width:400px;">
+<div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 95%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>会员折扣价不能高于商品设置的现金总额</li>
+            <li>会员价积分不能高于初始积分</li>
+        </ul>
+    </div>
+    <!--表单数据-->
+    <form method="post" id="addEditSpecForm">
+        <input type="hidden" name="id" value="{$id}" />
+        <input type="hidden" name="doAdd" value="1" />
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label>会员等级：</label>
+                </dt>
+                <dt class="tit">
+                    <label>现金（￥）<br/><span id="price">{$price[0]}</span></label>
+                </dt>
+                <dt class="tit">
+                    <label>消费积分<br/><span id="kpoint">{$price[1]}</span></label>
+                </dt>
+                <dt class="tit">
+                    <label>互动积分<br/><span id="spoint">{$price[2]}</span></label>
+                </dt>
+            </dl>
+            <foreach name="levels" id="level">
+                <dl class="row">
+                    <dt class="tit">
+                        <label>{$level.level_name}：</label>
+                    </dt>
+                    <dt class="tit">
+                        <input type="text" data-type="price" class="setPrice" name="mprice[{$level.level_id}][]" value="{$mem_price[$level['level_id']][0]|default=0}" />
+                    </dt>
+                    <dt class="tit">
+                        <input type="text" data-type="kpoint" class="setPrice" name="mprice[{$level.level_id}][]" value="{$mem_price[$level['level_id']][1]|default=0}" />
+                    </dt>
+                    <dt class="tit">
+                        <input type="text" data-type="spoint" class="setPrice" name="mprice[{$level.level_id}][]" value="{$mem_price[$level['level_id']][2]|default=0}" />
+                    </dt>
+                </dl>
+            </foreach>
+            <div class="bot">
+                <a href="JavaScript:void(0);" style="margin-left: 30%;" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认</a>
+            </div>
+        </div>
+    </form>
+</div>
+ 
+</body>
+
+<script>
+    $('.setPrice').blur(function(){
+        var val = $(this).val();
+        var type = $(this).attr('data-type');
+        var rel = $('#'+type).text();
+        if(parseFloat(val) > parseFloat(rel)){
+            layer.msg(type + '不能大于'+rel, {icon: 2,time: 2000});
+            $(this).val('');
+        }
+    });
+
+    $('#submitBtn').click(function(){
+        $.ajax({
+            type : "POST",
+            url  : '{:U("Goods/set_member_price?doAdd=1")}',
+            data : $('#addEditSpecForm').serialize(),// 你的formid
+            error: function(request) {
+                alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function(v) {
+                parent.layer.closeAll();
+            }
+        });
+    });
+</script>
+</html>

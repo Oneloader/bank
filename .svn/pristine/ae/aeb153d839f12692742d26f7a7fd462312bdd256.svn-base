@@ -1,0 +1,94 @@
+<include file="public/layout"/>
+<body style="background-color: #FFF; overflow: auto; ">
+<div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation"
+         style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 95%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>请输入支行名称</li>
+        </ul>
+    </div>
+
+    <form method="post" class="form-horizontal" id="branch_form">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="name"><em>*</em>支行名称：</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="name" placeholder="请输入名称" class="input-txt" name="name" value="{$info.name}">
+                    <span class="err" id="err_name" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+
+            <!--<dl class="row">
+                <dt class="tit">
+                    <label>显示状态：</label>
+                </dt>
+                <dd class="opt">
+                    <input type="radio" value="0" name="status" checked />&nbsp;屏蔽&emsp;&emsp;
+                    <input type="radio" value="1" name="status" <eq name="info.status" value="1">checked</eq> />&nbsp;显示
+                </dd>
+            </dl>-->
+
+            <div class="bot">
+                <a id="submitBtn" data-status="0" style="margin:20px 90px;" class="ncap-btn-big ncap-btn-green"
+                   href="JavaScript:void(0);">确认提交</a>
+            </div>
+        </div>
+        <input type="hidden" name="id" value="{$info.id|default=0}">
+    </form>
+</div>
+</body>
+</html>
+<script>
+    $(function(){
+        $('#submitBtn').click(function(){
+            $('#branch_form').submit();
+        });
+
+        $("#branch_form").validate({
+            debug: false, //调试模式取消submit的默认提交功能
+            focusInvalid: false, //当为false时，验证无效时，没有焦点响应
+            onkeyup: false,
+            submitHandler: function(form){   //表单提交句柄,为一回调函数，带一个参数：form
+                var index = layer.load(2); //0代表加载的风格，支持0-2
+                $.ajax({
+                    url:"{:U('Admin/Bank/addEditBranch')}",
+                    type:'post',
+                    dataType:'json',
+                    data: $("#branch_form").serialize(),
+                    success:function(obj){
+                        layer.close(index);
+                        if(obj.status !=1){
+                            layer.msg(obj.msg, {icon: 2, time: 3000}); //alert(v.msg);
+                        }else{
+                            layer.msg(obj.msg, {icon: 1, time: 1000}); //alert(v.msg);
+                            setTimeout(function(){
+                                parent.location.reload();
+                            },1000);
+                        }
+                    },
+                    error:function () {
+                        layer.close(index);
+                    }
+                });
+            },
+            ignore:":button",	//不验证的元素
+            rules:{
+                name:{
+                    required:true
+                }
+            },
+            messages:{
+                name:{
+                    required:"请输入支行名称"
+                }
+            }
+        });
+    });
+</script>

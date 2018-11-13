@@ -1,0 +1,196 @@
+<include file="public/layout"/>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page" style="margin-top: -50px;">
+    <div class="flexigrid">
+        <div class="mDiv" style="padding-bottom: 10px;">
+            <div class="ftitle">
+                <h3>活动商品</h3>
+                <h5>(共{$pager->totalRows|default=0}条记录)</h5>
+            </div>
+
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+
+            <div class="tDiv2" style="padding: 0px;">
+
+                <div class="fbutton">
+                    <a href="javascript:void(0)" onclick="addGoods()">
+                        <div class="add" title="添加新商品">
+                            <span><i class="fa fa-plus"></i>添加新商品</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 180px;" class="">活动商品名称</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 180px;" class="">活动商品剩余库存</div>
+                        </th>
+                        <!--<th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 180px;" class="">是否使用</div>
+                        </th>-->
+                        <th align="center" axis="col1" class="">
+                            <div style="text-align: center; width: 250px;">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <notempty name="lists">
+                        <volist name="lists" id="list">
+                            <tr>
+                                <td class="sign">
+                                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                                </td>
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 180px;">{$list.goods_name}</div>
+                                </td>
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 180px;">
+                                        {$list.store}
+                                    </div>
+                                </td>
+                                <!--<td align="center" class="">
+                                    <div style="text-align: center; width: 180px;">
+                                        <if condition='$list["status"] eq 1'>
+                                            <span class="yes" onClick="changeTableVal('activity_goods','id','{$list.id}','status',this)"><i class="fa fa-check-circle"></i>是</span>
+                                            <else/>
+                                            <span class="no" onClick="changeTableVal('activity_goods','id','{$list.id}','status',this)"><i class="fa fa-ban"></i>否</span>
+                                        </if>
+                                    </div>
+                                </td>-->
+                                <td align="center">
+                                    <div style="text-align: center; width: 250px;">
+                                        <a class="btn red" href="javascript:void(0)" onclick="del('{$list[id]}')"><i class="fa fa-trash-o"></i>删除</a>
+                                        <a href="javascript:void(0)" onclick="edit_stores('{$list[id]}','{$list[store]}','{$list[goods_name]|htmlspecialchars}')" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                                    </div>
+                                </td>
+                                <td align="" class="" style="width: 100%;">
+                                    <div></div>
+                                </td>
+                            </tr>
+                        </volist>
+                        <else/>
+                        <tr>
+                            <td class="no-data" align="center" axis="col0" colspan="50">
+                                <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+                            </td>
+                        </tr>
+                    </notempty>
+                    </tbody>
+                </table>
+                <notempty name="lists">
+                    <!--分页位置-->
+                    {$pager->show()}
+                </notempty>
+            </div>
+        </div>
+    </div>
+    <script>
+        function addGoods(){
+            var aid = '{$aid|default=0}';
+            var level_id = '{$level_id|default=0}';
+            var url = "{:U('Admin/Index/addGoodsToActivity')}?aid="+aid+'&level_id='+level_id;
+            layer.open({
+                type: 2,
+                title: '添加活动商品',
+                shadeClose: false,
+                shade: 0.2,
+                area: ['550px', '500px'],
+                content: url
+            });
+        }
+
+        // 删除操作
+        function del(id) {
+            layer.confirm('你确认要删除该活动商品吗？', function ()
+            {
+                // 确定
+                $.ajax({
+                    url: "{:U('Admin/Index/delActivityGoods')}",
+                    type: 'post',
+                    data: {id: id},
+                    success: function (v) {
+                        layer.closeAll();
+                        var v = eval('(' + v + ')');
+                        if (v.hasOwnProperty('status') && (v.status == 1)) {
+                            layer.msg(v.msg, {icon: 1, time: 1000}); //alert(v.msg);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        } else
+                            layer.msg(v.msg, {icon: 2, time: 1000}); //alert(v.msg);
+                    }
+                });
+            }, function (index) {
+                    layer.close(index);
+            });
+        }
+
+        //修改库存
+        function edit_stores(activity_id, store_num, goods_name) {
+            layer.prompt({
+                formType: 0,
+                value: store_num,
+                title: '修改商品【' + goods_name + '】库存'
+            }, function (value, index) {
+                if (isNaN(value)) {
+                    layer.msg('请输入数字', {icon: 2, time: 2000});
+                    return false;
+                }
+                if (store_num == value) {
+                    layer.close(index);
+                } else {
+                    //修改商品库存
+                    $.ajax({
+                        type: 'post',
+                        dataType: 'json',
+                        data: {id: activity_id, store_num: value},
+                        url: "{:U('admin/Index/editGoodStore')}",
+                        success: function (v) {
+                            layer.close(index);
+                            if (v.status == 1) {
+                                layer.msg(v.msg, {icon: 1, time: 1000});
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000)
+                            }
+                            else {
+                                layer.msg(v.msg, {icon: 2, time: 2000});
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            // 点击刷新数据
+            $('.fa-refresh').click(function () {
+                location.href = location.href;
+            });
+        });
+    </script>
+</body>
+</html>

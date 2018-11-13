@@ -1,0 +1,283 @@
+<include file="public/layout" />
+<body style="background-color: #FFF; overflow: auto;"> 
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+      <div class="subject">
+        <h3>品牌详情</h3>
+        <h5>品牌添加与管理</h5>
+      </div>
+    </div>
+  </div>
+    <!--表单数据-->
+    <form method="post" id="addEditBrandForm" >
+    <div class="ncap-form-default">
+      <dl class="row">
+        <dt class="tit">
+          <label for="name">品牌名称</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" placeholder="请输入品牌名称" class="input-txt" id="name" name="name" value="{$brand.name}">
+		  <span class="err" id="err_name" style="color:#F00; display:none;"></span>
+            <p class="notic"></p>
+        </dd>
+      </dl>
+
+	  <dl class="row">
+        <dt class="tit" colspan="2">
+          <label for="floor">品牌楼层</label>
+        </dt>
+        <dd class="opt">
+          <div id="gcategory">
+           <select name="floor" id="floor" class="input-txt" >
+                <option value="0">请选择楼层</option>
+                <foreach name="floors" item="v" >
+                    <option value="{$key}"  <if condition="$key eq $brand[floor]"> selected="selected" </if>>{$v}</option>
+                </foreach>                                            
+            </select>
+              <span class="err" id="err_floor" style="color:#F00; display:none;"></span>
+              <p class="notic"></p>
+          </div>
+        </dd>
+      </dl>
+
+        <dl class="row">
+            <dt class="tit">
+                <label for="door">门牌号</label>
+            </dt>
+            <dd class="opt">
+                <input type="text" id="door" placeholder="请输入品牌门牌号" class="input-txt" name="door" value="{$brand.door}">
+                <span class="err" id="err_door" style="color:#F00; display:none;"></span>
+                <p class="notic"></p>
+            </dd>
+        </dl>
+
+      <dl class="row">
+        <dt class="tit">
+          <label>品牌logo</label>
+        </dt>
+        <dd class="opt">
+          <div class="input-file-show">
+              <span class="show">
+                  <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$brand.logo}">
+                    <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$brand.logo}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                  </a>
+              </span>
+              <span class="type-file-box">
+                  <input type="text" id="logo" name="logo" value="{$brand.logo}" class="type-file-text">
+                  <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                  <input class="type-file-file" onClick="GetUploadify(1,'','brands','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo"
+                         title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+              </span>
+          </div>
+          <p class="notic">请上传JPG,PNG格式文件,尺寸400px * 400px</p>
+        </dd>
+      </dl>
+
+        <!--<dl class="row">-->
+            <!--<dt class="tit">-->
+                <!--<label>品牌背景图</label>-->
+            <!--</dt>-->
+            <!--<dd class="opt">-->
+                <!--<div class="input-file-show">-->
+              <!--<span class="show">-->
+                  <!--<a id="img_bg" target="_blank" class="nyroModal" rel="gal" href="{$brand.background}">-->
+                      <!--<i id="img_i_bg" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$brand.background}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>-->
+                  <!--</a>-->
+              <!--</span>-->
+              <!--<span class="type-file-box">-->
+                  <!--<input type="text" id="background" name="background" value="{$brand.background}" class="type-file-text">-->
+                  <!--<input type="button" name="button" id="button2" value="选择上传..." class="type-file-button">-->
+                  <!--<input class="type-file-file" onClick="GetUploadify(1,'','brands','background_call_back')" size="30" hidefocus="true" nc_type="change_site_logo"-->
+                         <!--title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">-->
+              <!--</span>-->
+                <!--</div>-->
+                <!--<p class="notic">请上传JPG,PNG格式文件，颜色为深色调图片，尺寸560px * 240px</p>-->
+            <!--</dd>-->
+        <!--</dl>-->
+
+        <!--<dl class="row">-->
+            <!--<dt class="tit">-->
+                <!--<label>品牌背景图</label>-->
+            <!--</dt>-->
+            <!--<dd class="opt">-->
+                <!--<div class="input-file-show">-->
+              <!--<span class="show">-->
+                  <!--<a id="img_bg" target="_blank" class="nyroModal" rel="gal" href="{$brand.background}">-->
+                      <!--<i id="img_i_bg" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$brand.background}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>-->
+                  <!--</a>-->
+              <!--</span>-->
+              <!--<span class="type-file-box">-->
+                  <!--<input type="text" id="background" name="background" value="{$brand.background}" class="type-file-text">-->
+                  <!--<input type="button" name="button" id="button2" value="选择上传..." class="type-file-button">-->
+                  <!--<input class="type-file-file" onClick="GetUploadify(1,'','brands','background_call_back')" size="30" hidefocus="true" nc_type="change_site_logo"-->
+                         <!--title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">-->
+              <!--</span>-->
+                <!--</div>-->
+                <!--<p class="notic">请上传JPG,PNG格式文件，颜色为深色调图片，尺寸560px * 240px</p>-->
+            <!--</dd>-->
+        <!--</dl>-->
+
+        <dl class="row">
+            <dt class="tit">
+                <label>店铺图</label>
+            </dt>
+            <dd class="opt">
+                <div class="tab-pane" id="tab_goods_images">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <notempty name="storeImgs">
+                                    <foreach name="storeImgs" item="vo" >
+                                        <div style="width:100px; text-align:center; margin: 5px; display:inline-block;" class="goods_xc">
+                                            <input type="hidden" value="{$vo}" name="store_imgs[]">
+                                            <a onClick="" href="{$vo}" target="_blank"><img width="100" height="100" src="{$vo}"></a>
+                                            <br>
+                                            <a href="javascript:void(0)" onClick="ClearPicArr2(this,'{$vo}')">删除</a>
+                                        </div>
+                                    </foreach>
+                                </notempty>
+
+                                <div class="goods_xc" style="width:100px; text-align:center; margin: 5px; display:inline-block;">
+                                    <a href="javascript:void(0);" onClick="GetUploadify(10,'','stores','call_back2');"><img src="/public/images/add-button.jpg" width="100" height="100" /></a>
+                                    <a href="javascript:void(0)"></a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="notic">请上传JPG，PNG格式文件，尺寸560px * 240px</p>
+            </dd>
+        </dl>
+	  <dl class="row">
+        <dt class="tit">
+          <label>品牌描述</label>
+        </dt>
+        <dd class="opt">
+          <textarea rows="3" cols="60" style="height: 100px;" name="desc" class="input-txt">{$brand.desc}</textarea>
+          <span class="err" id="err_desc" style="color:#F00; display:none;"></span>                
+          <p class="notic">品牌描述字数不得超过110字</p>
+        </dd>
+      </dl>	
+                              
+      <div class="bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+    </div>
+        <notempty name="brand">
+            <input type="hidden" name="id" value="{$brand.id}">
+        </notempty>
+  </form>
+</div>
+
+<script>
+    $('#submitBtn').click(function(){
+        $('#addEditBrandForm').submit();
+    });
+
+    $("#addEditBrandForm").validate({
+        debug: false, //调试模式取消submit的默认提交功能
+        focusInvalid: false, //当为false时，验证无效时，没有焦点响应
+        onkeyup: false,
+        submitHandler: function(form){   //表单提交句柄,为一回调函数，带一个参数：form
+            $.ajax({
+                url:"{:U('Admin/Tools/addEditBrands')}",
+                type:'post',
+                dataType:'json',
+                data: $("#addEditBrandForm").serialize(),
+                success:function(obj){
+                    if(obj.status !=1){
+                        layer.msg(obj.msg, {icon: 2, time: 3000});
+                    }else{
+                        layer.msg(obj.msg, {icon: 1, time: 1000});
+                        setTimeout(function(){
+                            location.href = "{:url('Admin/Tools/brands')}";
+                        },1000)
+                    }
+                }
+            });
+        },
+        ignore:":button",	//不验证的元素
+        rules:{
+            name:{
+                required:true,
+                minlength:1
+            },
+            /*door:{
+                required:true
+            },*/
+            /*desc:{
+                required:true
+            }*/
+        },
+        messages:{
+            name:{
+                required:"请输入品牌名称",
+                minlength:"品牌名称长度不能少于1位"
+            },
+            /*door:{
+                required:"请输入名牌号"
+            },*/
+            /*desc:{
+                required:"请输入品牌描述"
+            }*/
+        }
+    });
+
+    // 上传商品相册回调函数
+    function call_back2(paths){
+        var  last_div = $(".goods_xc:last").prop("outerHTML");
+        console.log(last_div);
+        for (i=0;i<paths.length ;i++ )
+        {
+            $(".goods_xc:eq(0)").before(last_div);	// 插入一个 新图片
+            var box = $(".goods_xc:eq(0)");
+            box.find('a:eq(0)').attr('href',paths[i]).attr('onclick','').attr('target', "_blank");// 修改他的链接地址
+            box.find('img').attr('src',paths[i]).after('<input type="hidden" value="'+paths[i]+'" name="store_imgs[]">');// 修改他的图片路径
+            box.find('a:eq(1)').attr('onclick',"ClearPicArr2(this,'"+paths[i]+"')").text('删除');
+        }
+    }
+
+    /*
+     * 上传之后删除组图input
+     * @access   public
+     * @val      string  删除的图片input
+     */
+    function ClearPicArr2(obj,path)
+    {
+        //删除本地图片源
+        $.ajax({
+            type:'GET',
+            url:"{:U('Admin/Uploadify/delupload')}",
+            data:{action:"del", filename:path},
+            success:function(){
+                $(obj).parent().remove(); // 删除完服务器的, 再删除 html上的图片
+            }
+        });
+        // 删除数据库记录
+        $.ajax({
+            type:'GET',
+            url:"{:U('Admin/Tools/del_brand_images')}",
+            data:{filename:path},
+            success:function(){
+                //
+            }
+        });
+    }
+
+    function img_call_back(fileurl_tmp)
+    {
+      $("#logo").val(fileurl_tmp);
+      $("#img_a").attr('href', fileurl_tmp);
+      $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+    function background_call_back(fileurl_tmp)
+    {
+        $("#background").val(fileurl_tmp);
+        $("#img_bg").attr('href', fileurl_tmp);
+        $("#img_i_bg").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+</script>
+</body>
+</html>

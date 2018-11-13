@@ -1,0 +1,300 @@
+<?php
+namespace app\bank\controller;
+use think\Db;
+use think\Loader;
+
+/**
+ * 银行客服经理兑换
+ * Class Sales
+ * @package app\bank\controller
+ */
+class Sales extends Base {
+
+    protected $level_id;
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * 银行客服经理登陆页
+     */
+    public function login(){
+        if (IS_POST){
+            $phone = input('phone/s','');
+            $result = Db::name('sales_man')->where(['phone'=>$phone,'sid'=>$this->sid])->find();
+            if ($result){
+                session('sales_id',$result['id']);
+                $activityUrl = SITE_URL . url('Bank/sales/index',['sid'=>base64_encode($this->sid)]);
+                successReturn($activityUrl,'登陆成功');
+            }else{
+                errorReturn('登陆失败');
+            }
+        }else{
+            $this->assign([
+                'sid'=>base64_encode($this->sid),
+            ]);
+            return $this->fetch();
+        }
+    }
+
+    /**
+     * 银行客服经理退出登陆功能
+     */
+    public function logout(){
+        session('sales_id',null);
+        $activityUrl = SITE_URL . url('Bank/sales/index',['sid'=>base64_encode($this->sid)]);
+        successReturn($activityUrl,'注销成功');
+    }
+
+    /**
+     * 银行客服经理首页
+     */
+    public function index(){
+        $sales_id = session('sales_id');
+        if (empty($sales_id)){
+            $this->redirect(url('Bank/sales/login',['sid'=>base64_encode($this->sid)]));
+        }else{
+            $sales = Db::name('sales_man')
+                ->field('name,branch_id')
+                ->where(['id'=>$sales_id])
+                ->find();
+            $bank = Db::name('banks')
+                ->field('name')
+                ->where(['id'=>$sales['branch_id']])
+                ->find();
+            $activity_auth = D('activity_auth')
+                ->alias('a')
+                ->field('a.aid,a.is_leader,c.id,c.name,c.img,c.end_time')
+                ->join('ka_activity c','a.aid=c.id')
+                ->where(['a.sales_id'=>$sales_id,'a.sid'=>$this->sid,'c.sid'=>$this->sid,'c.status'=>1,'c.type'=>2])
+                ->select();
+            foreach ($activity_auth as $key=>$val){
+                $activity_auth[$key]['end_time'] = date('Y-m-d',$val['end_time']);
+            }
+            $this->assign([
+                'sales'=>$sales,
+                'bank'=>$bank,
+                'data'=>$activity_auth,
+                'sid' =>base64_encode($this->sid),
+            ]);
+            return $this->fetch();
+        }
+    }
+
+    public function manager(){
+        $leader = input('is_leader');
+        $activity_id = input('aid');
+        session('activity_id',$activity_id);
+        if ($leader == '1'){
+            $sales = D('activity_auth')
+                ->field('sales_id')
+                ->where(['aid'=>$activity_id])
+                ->select();
+//            var_dump($sales);exit;
+            $is_level = Db::name('activity')
+                ->field('is_level')
+                ->where(['id'=>$activity_id])
+                ->find();
+            $level = Db::name('change_level')
+                ->field('id,name')
+                ->where(['aid'=>$activity_id,'sid'=>$this->sid])
+                ->select();
+            foreach ($sales as $key=>$val){
+                $sales_order[$key] = Db::name('sales_man')
+//                    ->alias('m')
+//                    ->join('ka_orders o','o.operator_id=m.id')
+//                    ->where(['o.type'=>2,'m.id'=>$val['sales_id'],'m.sid'=>$this->sid])
+                    ->where(['id'=>$val['sales_id'],'sid'=>$this->sid])
+                    ->find();
+                $sales_order[$key]['order'] .= Db::name('orders')
+                    ->where(['type'=>2,'operator_id'=>$val['sales_id']])
+                    ->find();
+                $sales_order[$key]['count'].=Db::name('orders')
+                    ->where(['type'=>2,'operator_id'=>$val['sales_id']])
+                    ->count();;
+            }
+            $this->assign([
+                'data'=>$sales_order,
+                'is_level'=>$is_level['is_level'],
+                'level'=>$level,
+                'sales_id'=>session('sales_id'),
+                'aid'=>base64_encode($activity_id),
+                'sid'=>base64_encode($this->sid),
+            ]);
+            return $this->fetch();
+        }
+    }
+
+    /**
+     *  获取商品列表
+     */
+    public function goodsList(){
+        if (IS_GET){
+            $aid = base64_decode(input('aid'));
+            $sales_id = input('sales_id');
+            $level_id = input('level_id');
+            $activity = D('activity')
+                ->field('name,back_img,back_color,is_price,status')
+                ->where(['id'=>$aid])
+                ->find();
+            if ($activity['status']!==1){
+                errorReturn('该活动暂未开放!!!');
+            }
+            if ($activity['is_price']==1){
+                $activity_goods = D('activity_goods')
+                    ->alias('a')
+                    ->field('b.goods_id,b.goods_name,b.goods_name_en,b.goods_price,b.original_img,a.store')
+                    ->join('ka_goods b','a.goods_id=b.goods_id','LEFT')
+                    ->where(['a.aid'=>$aid,'a.sid'=>$this->sid,'a.level_id'=>$level_id,'a.status'=>1,'a.store'=>['>',0]])
+                    ->select();
+            }else{
+                $activity_goods = D('activity_goods')
+                    ->alias('a')
+                    ->field('b.goods_id,b.goods_name,b.goods_name_en,b.original_img,a.store')
+                    ->join('ka_goods b','a.goods_id=b.goods_id','LEFT')
+                    ->where(['a.aid'=>$aid,'a.sid'=>$this->sid,'a.level_id'=>$level_id,'a.status'=>1,'a.store'=>['>',0]])
+                    ->select();
+            }
+            foreach ($activity_goods as $key=>$val){
+                $activity_goods[$key]['url'] = SITE_URL . url('Bank/Sales/goods_info',['sid'=>base64_encode($this->sid),'aid'=>base64_encode($aid),'good_id'=>$val['goods_id']]);
+            }
+            $this->assign([
+                'list' => $activity_goods,
+                'data' => $activity,
+                'aid' => $aid,
+            ]);
+            return $this->fetch();
+        }
+    }
+
+
+    /**
+     * 获取商品详情
+     */
+    public function goods_info(){
+        if (IS_GET){
+            $aid = session('activity_id');
+            $goods_id = input('get.good_id','','int');
+            $good_info = Db::name('goods')
+                ->where(['goods_id'=>$goods_id])
+                ->find();
+            $good_info['url'] = SITE_URL . url('Bank/Sales/order_details',['sid'=>base64_encode($this->sid),'aid'=>base64_encode($aid),'good_id'=>$good_info['goods_id']]);
+            $activity = D('activity')
+                ->field('name,back_img,back_color')
+                ->where(['id'=>$aid])
+                ->find();
+            $this->assign([
+                'info' => $good_info,
+                'data' => $activity,
+            ]);
+            return $this->fetch();
+        }
+    }
+
+
+    /**
+     * 获取订单详情
+     */
+    public function order_details(){
+        if (IS_GET){
+            $aid = session('activity_id');
+            $good_id = input('get.good_id');
+            $good_info = Db::name('goods')
+                ->where(['goods_id'=>$good_id])
+                ->find();
+            $goods_total = Db::name('activity_goods')
+                ->where(['goods_id'=>$good_id,'aid'=>$aid,'status'=>1,'sid'=>$this->sid])
+                ->find();
+            $order_type = Db::name('activity')
+                ->field('type,name,back_img,back_color')
+                ->where(['id'=>$aid])
+                ->find();
+
+            $this->assign([
+                'aid' => base64_encode($aid),
+                'sid' => base64_encode($this->sid),
+                'info' => $good_info,
+                'total' => $goods_total,
+                'type' => $order_type['type'],
+                'data' => $order_type
+            ]);
+            return $this->fetch();
+        }elseif(IS_POST){
+            $aid = session('activity_id');
+            $data = input('post.');
+            $validate = Loader::validate('Order');
+            if (!$validate->batch()->check($data)){
+                $error = $validate->getError();
+                $error_msg = array_values($error);
+                $return_arr = array(
+                    'status' => 0,
+                    'msg' => $error_msg,
+                    'data' => $error,
+                );
+                $this->ajaxReturn($return_arr);
+            }
+            $customer = input('post.customer','','string');
+            $ID_num = input('post.ID_num','','string');
+            $consignee = input('post.consignee','','string');
+            $phone = input('post.phone','','string');
+            $address = input('post.address','','string');
+            $good_id = input('post.good_id','','int');
+            $type = input('post.type','','int');
+            $order_sn = date('YmdHis',time()).rand(1000,9999);
+            $shop_num = input('post.shop_num','','string');
+            $goods_is_null = Db::name('activity_goods')
+                ->where(['aid'=>$aid,'sid'=>$this->sid,'level_id'=>$this->code_level_id,'status'=>1,'goods_id'=>$good_id,'store'=>['>','0']])
+                ->find();
+            if (!$goods_is_null){
+                errorReturn('暂无库存,请另选商品');
+            }
+            if ($type==1){
+                $code = session('code');
+                $code_id = D('codes')
+                    ->field('id')
+                    ->where(['code'=>$code])
+                    ->find();
+            }
+            $shipping_data = array(
+                'username'=>$customer,
+                'phone'=>$phone,
+                'address'=>$address,
+                'ID_num'=>$ID_num,
+                'consignee'=>$consignee,
+            );
+            $shipping = D('shipping')->add($shipping_data);
+            if ($shipping){
+                $order_data = array(
+                    'order_sn'=>$order_sn,
+                    'goods_id'=>$good_id,
+                    'goods_num'=>$shop_num,
+                    'aid'=>$this->activity_id,
+                    'create_time'=>date('Y-m-d H:i:s',time()),
+                    'time'=>time(),
+                    'type'=>$type,
+                    'operator_id'=>$code_id['id'],
+                    'sid'=>$this->sid,
+                    'shipping_id'=>$shipping,
+                );
+                $orders = D('orders')->add($order_data);
+                if ($orders){
+                    D('codes')
+                        ->where(['id'=>$code_id['id']])
+                        ->save(['use_status'=>1,'use_orderid'=>$orders,'use_time'=>date('Y-m-d H:i:s',time())]);
+                    D('activity_goods')
+                        ->where(['aid'=>$this->activity_id,'sid'=>$this->sid,'level_id'=>$this->code_level_id,'status'=>1,'goods_id'=>$good_id])
+                        ->setDec('store',1);
+                    $url = SITE_URL . url('Bank/Index/event',['sid'=>base64_encode($this->sid),'aid'=>base64_encode($this->activity_id)]);
+                    successReturn($url,'兑换成功');
+                }
+            }
+        }
+//            successReturn($orders);exit;
+    }
+
+    public function checkLevel(){
+
+    }
+}

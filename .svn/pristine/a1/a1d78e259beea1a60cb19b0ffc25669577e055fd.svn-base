@@ -1,0 +1,124 @@
+<include file="public/layout"/>
+<body style="background-color: #FFF; overflow: auto; ">
+<div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation"
+         style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 95%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>生成的兑换码数量越多，需要的时间越长，请耐心等待</li>
+        </ul>
+    </div>
+
+    <form method="post" class="form-horizontal" id="branch_form">
+        <input type="hidden" name="aid" value="{$aid|default=0}" />
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="name">活动名称：</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="name" class="input-txt" name="name" value="{$info.name}" readonly disabled="disabled" >
+                    <span class="err" id="err_name" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>批次编号：</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" readonly name="batch" class="input-txt" value="{$batch}">
+                </dd>
+            </dl>
+
+            <eq name="info.is_level" value="1">
+                <dl class="row">
+                    <dt class="tit">
+                        <label><em>*</em>兑换码档次：</label>
+                    </dt>
+                    <dd class="opt">
+                        <div>
+                            <select name="level_id" id="level_id" class="input-txt class-select valid">
+                                <option value="0">请选择兑换码所属的档次</option>
+                                <volist name="levels" id="v">
+                                    <option value="{$key}">{$v}</option>
+                                </volist>
+                            </select>
+                        </div>
+                        <span class="err" id="err_level_id" style="color:#F00; display:none;"></span>
+                    </dd>
+                </dl>
+            </eq>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="num"><em>*</em>兑换码数量：</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="num" name="num" placeholder="请输入需要生成的兑换码数量" class="input-txt" value="" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" >
+                    <span class="err" id="err_num" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+
+            <div class="bot">
+                <a id="submitBtn" data-status="0" style="margin:20px 90px;" class="ncap-btn-big ncap-btn-green"
+                   href="JavaScript:void(0);">确认提交</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<script>
+    $(function(){
+        $('#submitBtn').click(function(){
+            $('#branch_form').submit();
+        });
+
+        $("#branch_form").validate({
+            debug: false, //调试模式取消submit的默认提交功能
+            focusInvalid: false, //当为false时，验证无效时，没有焦点响应
+            onkeyup: false,
+            submitHandler: function(form){   //表单提交句柄,为一回调函数，带一个参数：form
+                $.ajax({
+                    url:"{:U('Admin/Code/addCodes')}",
+                    type:'post',
+                    dataType:'json',
+                    data: $("#branch_form").serialize(),
+                    success:function(obj){
+                        if(obj.status !=1){
+                            layer.msg(obj.msg, {icon: 2, time: 5000}); //alert(v.msg);
+                        }else{
+                            layer.msg(obj.msg, {icon: 1, time: 1000}); //alert(v.msg);
+                            setTimeout(function(){
+                                parent.location.reload();
+                            },1000);
+                        }
+                    }
+                });
+            },
+            ignore:":button",	//不验证的元素
+            rules:{
+                num:{
+                    required:true
+                }
+            },
+            messages:{
+                num:{
+                    required:"请输入需要生成的兑换码数量"
+                }
+            }
+        });
+    });
+
+    function img_call_back(fileurl_tmp)
+    {
+        $("#img").val(fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+</script>

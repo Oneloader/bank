@@ -1,0 +1,134 @@
+<include file="public/layout"/>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page" style="margin-top: -50px;">
+    <div class="flexigrid">
+        <div class="mDiv">
+            <form class="navbar-form form-inline"  method="post" action="{:U('Admin/Index/addEditAuth')}"  name="search-form2" id="search-form2">
+                <input type="hidden" name="aid" value="{$aid|default=0}" />
+                <div class="sDiv">
+                    <div class="sDiv2">
+                        <select name="branch_id" id="branch_id" class="select">
+                            <option value="">所有分行</option>
+                            <foreach name="branches" item="v" key="key">
+                                <option value="{$key}" <if condition="$key eq $branch_id">selected</if> >{$v}</option>
+                            </foreach>
+                        </select>
+                    </div>
+                    <div class="sDiv2" style="border:0px">
+                        <input type="text" name="keywords" value="{$keywords}" placeholder="请输入销售经理姓名关键字" class="input-txt">
+                    </div>
+                    <div class="sDiv2" style="border:0px">
+                        <input type="submit" class="btn" value="搜索">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th abbr="article_title" axis="col3" class="" align="left">
+                            <div style="text-align: left; width: 50px;" class="">
+                                <input type="checkbox" onclick="$('input[name*=\'sales_ids\']').prop('checked', this.checked);">
+                            </div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 180px;" class="">销售经理名称</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 180px;" class="">所属分行</div>
+                        </th>
+
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="bDiv" style="height: auto;padding-bottom:0px; ">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <form id="branch_form">
+                    <input type="hidden" name="aid" value="{$aid|default=0}" />
+                    <table>
+                        <tbody>
+                        <notempty name="lists">
+                            <volist name="lists" id="list">
+                                <tr>
+                                    <td class="" align="left">
+                                        <div style="text-align: left; width: 50px;">
+                                            <input type="checkbox" name="sales_ids[]" value="{$list.id}"/>
+                                        </div>
+                                    </td>
+                                    <td align="center" class="">
+                                        <div style="text-align: center; width: 180px;">{$list.name}</div>
+                                    </td>
+                                    <td align="center" class="">
+                                        <div style="text-align: center; width: 180px;">{$branches[$list.branch_id]}</div>
+                                    </td>
+
+                                    <td align="" class="" style="width: 100%;">
+                                        <div></div>
+                                    </td>
+                                </tr>
+                            </volist>
+                            <else/>
+                            <tr>
+                                <td class="no-data" align="center" axis="col0" colspan="50">
+                                    <i class="fa fa-exclamation-circle"></i>没有可选的销售经理了
+                                </td>
+                            </tr>
+                        </notempty>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+
+        <notempty name="lists">
+            <div class="bot">
+                <a onclick="select_goods();" data-status="0" style="margin:20px 90px;" class="ncap-btn-big ncap-btn-green" href="JavaScript:void(0);">确认提交</a>
+            </div>
+        </notempty>
+    </div>
+    <script>
+        function select_goods()
+        {
+            if($("input[type='checkbox']:checked").length == 0)
+            {
+                layer.alert('请选择销售经理', {icon: 2});
+                return false;
+            }
+            $.ajax({
+                url:"{:U('Admin/Index/addEditAuth')}",
+                type:'post',
+                dataType:'json',
+                data: $("#branch_form").serialize(),
+                success:function(obj){
+                    if(obj.status !=1){
+                        layer.msg(obj.msg, {icon: 2, time: 3000}); //alert(v.msg);
+                    }else{
+                        layer.msg(obj.msg, {icon: 1, time: 1000}); //alert(v.msg);
+                        setTimeout(function(){
+                            parent.location.reload();
+                        },1000);
+                    }
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            // 点击刷新数据
+            $('.fa-refresh').click(function () {
+                location.href = location.href;
+            });
+        });
+    </script>
+</body>
+</html>

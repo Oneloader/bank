@@ -1,0 +1,172 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: #FFF; overflow: auto;">
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+      <div class="subject">
+        <h3> 广告详情</h3>
+        <h5>广告添加与管理</h5>
+      </div>
+    </div>
+  </div>
+  <!--表单数据-->
+  <form method="post" id="handleposition" action="{:U('Admin/Ad/adHandle')}">
+    <div class="ncap-form-default">
+      <dl class="row">
+        <dt class="tit">
+          <label><em>*</em>广告名称：</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" placeholder="名称" class="input-txt" name="ad_name" value="{$info.ad_name}">
+          <span class="err" id="err_ad_name" style="color:#F00; display:none;">广告名称不能为空</span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit" colspan="2">
+          <label><em>*</em>广告位置：</label>
+        </dt>
+        <dd class="opt">
+          <div>
+            <select name="pid" class="input-txt" class="form-control">
+              <volist name="position" id="item">
+                <option value="{$item.position_id}" <if condition="$info[pid] eq $item[position_id]">selected</if>>{$item.position_name}</option>
+              </volist>
+            </select>
+          </div>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit" colspan="2">
+          <label for="cat">广告分类：</label>
+        </dt>
+        <dd class="opt">
+          <div>
+            <select name="cat" id="cat" class="input-txt" class="form-control">
+                <option value="0" style="color:light gray" <if condition="$info[cat] eq 0">无分类</option>
+                <option value="1" id="goods" <if condition="$info[cat] eq 1">selected</if>>商品</option>
+                <option value="2" id="brands" <if condition="$info[cat] eq 2">selected</if>>品牌</option>
+                <option value="3" id="wechat_card" <if condition="$info[cat] eq 3">selected</if>>优惠券</option>
+            </select>
+            </div>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit">
+          <label>开始日期：</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" class="input-txt" id="start_time" name="begin"  value="{$info.start_time|default='2017-11-01'}"/>
+          <span class="err"></span>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit">
+          <label>结束时间：</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" class="input-txt" id="end_time" name="end"  value="{$info.end_time|default='2020-01-01'}"/>
+          <span class="err"></span>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit">
+          <label><em>*</em>广告图片：</label>
+        </dt>
+        <dd class="opt">
+          <div class="input-file-show">
+              <span class="show">
+                  <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$info.ad_code}">
+                    <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$info.ad_code}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                  </a>
+              </span>
+              <span class="type-file-box">
+                  <input type="text" id="ad_code" name="ad_code" value="{$info.ad_code}" class="type-file-text">
+                  <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                  <input class="type-file-file" onClick="GetUploadify(1,'','ad','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+              </span>
+          </div>
+          <span class="err"></span>
+          <p class="notic">请上传JPG,PNG格式文件，图片尺寸700px * 250px</p>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit">
+          <label>默认排序：</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" placeholder="排序" name="orderby" value="{$info.orderby|default=10}" class="input-txt">
+          <span class="err"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      <div class="bot">
+        <a href="JavaScript:void(0);" data-status="0" onclick="adsubmit()" id="submitBtn" class="ncap-btn-big ncap-btn-green">确认提交</a>
+      </div>
+    </div>
+    <input type="hidden" name="act" value="{$act}">
+    <input type="hidden" name="ad_id" value="{$info.ad_id}">
+  </form>
+</div>
+<script>
+
+  function adsubmit(){
+    var url = "{:U('Admin/Ad/adHandle')}";
+    var ad_id = $('input[name=ad_id]').val();
+    var ad_name = $('input[name=ad_name]').val();
+    var pid = $('select[name=pid]').val();
+    var cat = $('select[name=cat]').val();
+    var begin = $('input[name=begin]').val();
+    var end = $('input[name=end]').val();
+    var ad_code = $('input[name=ad_code]').val();
+    var orderby = $('input[name=orderby]').val();
+    var act = $('input[name=act]').val();
+    if(ad_name == ''){
+      layer.msg('请输入广告名称', {icon: 2, time: 3000});
+      return false;
+    }
+    if(pid == ''){
+      layer.msg('请选择所属广告位', {icon: 2, time: 3000});
+      return false;
+    }
+    if(cat == ''){
+        layer.msg('请选择所属广告类型', {icon: 2, time: 3000});
+        return false;
+    }
+    if(ad_code == ''){
+      layer.msg('请上传广告图片', {icon: 2, time: 3000});
+      return false;
+    }
+    var status = $(this).attr('data-status');
+    if(status == 1){
+      return false;
+    }else{
+      $(this).attr('data-status',1);
+    }
+    $.post(url,{ad_id:ad_id,ad_name:ad_name,cat:cat,pid:pid,begin:begin,end:end,ad_code:ad_code,orderby:orderby,act:act},function(msg){
+      if(msg.status){
+        layer.msg(msg.msg, {icon: 1, time: 1000}); //alert(v.msg);
+        setTimeout(function(){
+          location.href = "{:U('Admin/Ad/adList')}";
+        },1000);
+      }else{
+        $('#submitBtn').attr('data-status',0);
+        layer.msg(msg.msg, {icon: 2, time: 3000}); //alert(v.msg);
+      }
+    },'json');
+  }
+
+  $(document).ready(function(){
+    $('#start_time').layDate();
+    $('#end_time').layDate();
+  });
+  function img_call_back(fileurl_tmp)
+  {
+    $("#ad_code").val(fileurl_tmp);
+    $("#img_a").attr('href', fileurl_tmp);
+    $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+  }
+</script>
+</body>
+</html>

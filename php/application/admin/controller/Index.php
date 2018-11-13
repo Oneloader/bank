@@ -1,0 +1,643 @@
+<?php
+/**
+ * K11APP
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ * Author: QP
+ * Date: 2017-09-09
+ */
+namespace app\admin\controller;
+use app\common\model\Shop;
+use think\AjaxPage;
+use think\Controller;
+use think\Url;
+use think\Config;
+use think\Page;
+use think\Verify;
+use think\Db;
+class Index extends Base {
+    public function index(){
+        $admin_info = getAdminInfo(session('admin_id'));
+        $this->assign('admin_info',$admin_info);
+        $this->assign('menu',getMenuArr());    //左侧菜单
+        return $this->fetch();
+    }
+
+    //银行
+    public function goshop(){
+        $act_list = session('act_list');
+        //记录银行sid
+        $sid = I('get.sid','','base64_decode,intval');
+        //获取所有银行id
+        $sids = M('shop')->where(1)->getField('id',true);
+        if(!empty($sid) && in_array($sid,$sids) && $act_list == 'all'){
+            session('sid',base64_encode($sid));
+            $this->redirect(U('Index/index'));
+        }else{
+            $this->error('获取银行失败');
+        }
+    }
+
+    //超级管理员操作日志
+    public function adminlog(){
+        $p = I('p/d',1);
+        $count = DB::name('admin_log')
+            ->alias('l')
+            ->join('__ADMIN__ a','a.admin_id =l.admin_id')
+            ->where(array('l.sid'=>0))
+            ->count();
+        if($count>0){
+            $Page = new Page($count,20);
+            $logs = DB::name('admin_log')
+                ->alias('l')
+                ->join('__ADMIN__ a','a.admin_id =l.admin_id')
+                ->where(array('l.sid'=>0))
+                ->order('log_time DESC')
+                ->page($p.',20')
+                ->select();
+            $show = $Page->show();
+            $this->assign('pager',$Page);
+            $this->assign('page',$show);
+            $this->assign('list',$logs);
+        }
+        return $this->fetch();
+    }
+
+    //超级管理员公众号管理页面
+    public function pubs(){
+        if($this->check_root()){
+            session('sid',null);
+            $admin_info = getAdminInfo(session('admin_id'));
+            $this->assign('admin_info',$admin_info);
+            $this->assign('menu',getMenuArr());    //左侧菜单
+            return $this->fetch();
+        }else{
+            $this->error('权限不够，访问失败',U('Admin/Admin/index'));exit;
+        }
+    }
+
+    //添加微银行
+    public function pubs_add(){
+        if($this->check_root()) {
+            $shopModel = new Shop();
+            $shops = $shopModel->shops;
+            if (IS_AJAX && IS_POST) {
+                $name = input('shop_name', '');
+                $logo = input('logo', '');
+                $sign = input('sign', '');
+                $nav_color = input('nav_color', '');
+                if (empty($name)) {
+                    $this->error('请输入银行名称');
+                }
+                if (empty($logo)) {
+                    $this->error('请上传银行logo');
+                }
+                if (empty($sign)) {
+                    $this->error('请上传银行标志logo');
+                }
+                if (empty($nav_color)) {
+                    $this->error('请选择顶部导航颜色');
+                }
+
+                $data = [
+                    'name' => $name,
+                    'logo' => $logo,
+                    'sign' => $sign,
+                    'nav_color' => $nav_color,
+                    'add_time'=>date('Y-m-d'),
+                ];
+
+                //添加新银行
+                $sid = M('shop')->add($data);
+                if ($sid > 0) {
+                    adminLog('添加银行【'.$name.'】');
+                    exit(json_encode(array('status' => 1, 'msg' => 1)));
+                } else {
+                    exit(json_encode(array('status' => 0, 'msg' => '添加银行失败')));
+                }
+            }
+            $this->assign([
+                'url'   =>   U("Index/pubs_add"),
+                'shops' =>   $shops,
+            ]);
+            return $this->fetch();
+        }else{
+            $this->error('权限不够，访问失败',U('Admin/Admin/index'));exit;
+        }
+    }
+
+    public function pubs_del(){
+        if($this->check_root()) {
+            $shop_id = input('id');
+            // 删除此银行
+            Db::name('shop')
+                ->where(['id'=>$shop_id])
+                ->delete();
+            $return_arr = array('status' => 1,'msg' => '操作成功','data'  =>'');
+            $this->ajaxReturn($return_arr);
+        }else{
+            $this->error('权限不够，访问失败',U('Admin/Admin/index'));
+        }
+    }
+
+
+    //添加微银行
+    public function pubs_edit(){
+        if($this->check_root()) {
+            $id = input('sid');
+            $info = M('shop')
+                ->where(['id'=>$id])
+                ->find($id);
+            if (empty($info)) {
+                exit(json_encode(array('status' => 0, 'msg' => "查询银行失败")));
+            }
+            if (IS_AJAX && IS_POST) {
+                $name = input('shop_name', '');
+                $logo = input('logo', '');
+                $sign = input('sign', '');
+                $nav_color = input('nav_color', '');
+
+                if (empty($name)) {
+                    $this->error('请输入银行名称');
+                }
+                if (empty($logo)) {
+                    $this->error('请上传银行Logo');
+                }
+                if (empty($sign)) {
+                    $this->error('请上传银行标志logo');
+                }
+                if(empty($id)){
+                    $this->error('银行ID参数丢失');
+                }
+                if (empty($nav_color)) {
+                    $this->error('请选择顶部导航颜色');
+                }
+
+                //编辑银行
+                $r = M('shop')->where(['id' => $id])->save(['name' => $name,'logo'=>$logo,'sign'=>$sign,'nav_color'=>$nav_color]);
+                if ($r !== false) {
+                    exit(json_encode(array('status' => 1, 'msg' => 1)));
+                } else {
+                    exit(json_encode(array('status' => 0, 'msg' => "编辑银行【$name】失败")));
+                }
+            }
+
+            $this->assign([
+                'info'=> $info,
+                'url' => U("Index/pubs_edit")
+            ]);
+            return $this->fetch('pubs_add');
+        }else{
+            $this->error('权限不够，访问失败',U('Admin/Admin/index'));
+        }
+    }
+
+    //微银行列表
+    public function pubs_list(){
+        if($this->check_root()){
+            //获取所有银行
+            $count = M('shop')
+                ->where(1)
+                ->count('id');
+            if($count){
+                $pager = $page = new Page($count,20);
+                $shops = M('shop')
+                    ->where(1)
+                    ->limit($page->firstRow.','.$page->listRows)
+                    ->select();
+                foreach($shops as $k=>$v){
+                    $shops[$k]['url'] = U('Admin/Index/goshop',array('sid'=>base64_encode($v['id'])));
+                    $shops[$k]['site_url'] = SITE_URL . U('Bank/Sales/index',array('sid'=>base64_encode($v['id'])));
+                }
+
+                $this->assign([
+                    'shops' => $shops,
+                    'pager' => $pager
+                ]);
+            }
+            return $this->fetch();
+        }else{
+            $this->error('权限不够，访问失败',U('Admin/Admin/index'));
+        }
+    }
+
+    /**
+     * ajax 修改指定表数据字段  一般修改状态 比如 是否推荐 是否开启 等 图标切换的
+     * table,id_name,id_value,field,value
+     */
+    public function changeTableVal(){  
+        $table = I('table'); // 表名
+        $id_name = I('id_name'); // 表主键id名
+        $id_value = I('id_value'); // 表主键id值
+        $field  = I('field'); // 修改哪个字段
+        $value  = I('value'); // 修改字段值
+        $r = M($table)->where("$id_name = $id_value")->save(array($field=>$value)); // 根据条件保存修改的数据
+        if($r !== false){
+            $result = ['status'=>1,'msg'=>'更新成功'];
+        }else{
+            $result = ['status'=>0,'msg'=>'更新失败'];
+        }
+        $this->ajaxReturn($result);
+    }
+
+    /**
+     * 销售经理兑换活动
+     */
+    public function sales_exchange(){
+        //exit(111);
+        $data = $this->exchange_list(2);
+        $this->assign([
+            'lists' => $data['lists'],
+            'count' => $data['count'],
+            'pager' => $data['pager'],
+        ]);
+        return $this->fetch('sales_exchange');
+    }
+
+    /**
+     * 兑换活动列表
+     * @param int $type
+     * @return array
+     */
+    protected function exchange_list($type=1){
+        //exit(2222);
+        $where = ['sid'=>$this->sid,'type'=>$type,'status'=>['in',[0,1]]];
+        $count = Db::name('activity')->where($where)->count('id');
+        if($count){
+            $pager = $page = new Page($count,20);
+            $lists = Db::name('activity')
+                ->where($where)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->order(['id'=>'desc'])
+                ->select();
+
+            if($type == 1){
+                foreach($lists as $k=>$v){
+                    $lists[$k]['url'] = SITE_URL . url('Bank/Index/event',['sid'=>base64_encode($this->sid),'aid'=>base64_encode($v['id'])]);
+                }
+            }
+        }
+
+        return [
+            'count' => $count,
+            'lists' => $lists,
+            'pager' => $pager
+        ];
+    }
+
+    /**
+     * 操作销售经理活动
+     * @return mixed
+     */
+    public function addEditSalesExchange(){
+        $id = input('id/d');
+        $type = input('type/d',1);
+        if(IS_POST && IS_AJAX){
+            $data = input('post.');
+            if(empty($data['name'])){
+                $this->ajaxReturn(['status'=>0,'msg'=>'活动名称不能为空']);
+            }
+//            if(empty($data['img'])){
+//                $this->ajaxReturn(['status'=>0,'msg'=>'请上传活动封面图片']);
+//            }
+            if(empty($data['back_img'])){
+                $this->ajaxReturn(['status'=>0,'msg'=>'请上传活动内页图片']);
+            }
+//            if(empty($data['nav_color'])){
+//                $this->ajaxReturn(['status'=>0,'msg'=>'请上传顶部导航颜色']);
+//            }
+            if(empty($data['back_color'])){
+                $this->ajaxReturn(['status'=>0,'msg'=>'请上传活动内页背景颜色']);
+            }
+            if(empty($data['start_time'])){
+                $this->ajaxReturn(['status'=>0,'msg'=>'请选择活动开始时间']);
+            }
+            if(empty($data['end_time'])){
+                $this->ajaxReturn(['status'=>0,'msg'=>'请选择活动结束时间']);
+            }
+            if(strtotime($data['end_time']) <= strtotime($data['start_time'])){
+                $this->ajaxReturn(['status'=>0,'msg'=>'活动开始时间不能大于活动结束时间']);
+            }
+            $data['start_time'] = strtotime($data['start_time']);
+            $data['end_time'] = strtotime($data['end_time']);
+            if ($data['new_field']){
+                $data['new_field'] = json_encode(array_merge($data['new_field']));
+            }else{
+                $data['new_field'] = null;
+            }
+
+            if(!empty($id)){
+                unset($data['id'],$data['is_level']);
+                $r = Db::name('activity')->where(['id'=>$id,'sid'=>$this->sid])->save($data);
+                $log_msg = '编辑活动【'. $data['phone'] .'】成功';
+            }else{
+                $data['sid'] = $this->sid;
+
+                $r = Db::name('activity')->add($data);
+                $log_msg = '添加活动【'. $data['phone'] .'】成功';
+            }
+            if($r !== false){
+                adminLog($log_msg);
+                $result = ['status'=>1,'msg'=>'操作成功'];
+            }else{
+                $result = ['status'=>0,'msg'=>'操作失败'];
+            }
+            $this->ajaxReturn($result);
+        }
+
+        if($id){
+            $info = model('activity')->getInfo($id);
+            if ($info['new_field']){
+                $field = json_decode($info['new_field'],true);
+//                var_dump($field);exit;
+                $this->assign('new_field',$field);
+            }
+            $this->assign('info',$info);
+        }
+        $this->assign('type',$type);
+
+        return $this->fetch('_sales_exchange');
+    }
+
+    /**
+     * 删除兑换活动
+     * @throws \think\Exception
+     */
+    public function sales_exchange_del(){
+        if(IS_AJAX && IS_POST){
+            $id = input('id/d');
+            if($id > 0){
+                $info = Db::name('activity')->where(['sid'=>$this->sid,'id'=>$id])->find();
+                if(empty($info)){
+                    $this->ajaxReturn(['status'=>0,'msg'=>'活动不存在']);
+                }
+
+                $r = Db::name('activity')->where(['id'=>$id])->save(['status'=>2]);
+                if($r){
+                    adminLog('删除兑换活动成功【'.$info['name'].'】');
+                    $return = ['status'=>1,'msg'=>'删除成功'];
+                }else{
+                    $return = ['status'=>0,'msg'=>'删除失败'];
+                }
+                $id = $r = $cats = null;
+                $this->ajaxReturn($return);
+            }
+        }
+    }
+
+    /**
+     * 活动中已选择的销售经理列表
+     * @return mixed
+     */
+    public function authorityList(){
+        $activity_id = input('aid',0);
+        if(empty($activity_id)){
+            exit('参数丢失');
+        }
+        $where = ['a.aid'=>$activity_id,'a.sid'=>$this->sid];
+        $count = Db::name('activity_auth')->alias('a')->where($where)->count('a.id');
+        if($count){
+            $pager = $page = new Page($count,30);
+            $lists = Db::name('activity_auth')
+                ->alias('a')
+                ->field('a.id,a.is_leader,b.name,b.branch_id')
+                ->join('sales_man b','a.sales_id=b.id')
+                ->where($where)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->order(['id'=>'desc'])
+                ->select();
+
+            $branch_ids = array_column($lists,'branch_id');
+            $branches = Db::name('banks')->where(['id'=>['in',$branch_ids],'sid'=>$this->sid])->getField('id,name',true);
+
+            $this->assign([
+                'lists' => $lists,
+                'count' => $count,
+                'branches' => $branches,
+                'pager' => $pager
+            ]);
+        }
+
+        $this->assign([
+            'aid' => $activity_id
+        ]);
+        return $this->fetch('authority_list');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function addEditAuth(){
+        $activity_id = input('aid/d',0);
+        if(empty($activity_id)){
+            exit('参数丢失');
+        }
+
+        if(IS_POST && IS_AJAX){
+            $sales_ids = input('sales_ids/a');
+            if(!empty($sales_ids)){
+                $new_arr = [];
+                foreach($sales_ids as $v){
+                    array_push($new_arr,[
+                        'aid' => $activity_id,
+                        'sales_id' => $v,
+                        'sid' => $this->sid
+                    ]);
+                }
+                Db::name('activity_auth')->insertAll($new_arr);
+            }
+            $return = ['status'=>1,'msg'=>'授权成功'];
+            $this->ajaxReturn($return);
+        }
+
+        //查询已有权限的sales_id
+        $has_sales_ids = Db::name('activity_auth')->where(['aid'=>$activity_id,'sid'=>$this->sid])->getField('sales_id',true);
+        //查询没有权限的sales
+        $where = ['sid'=>$this->sid,'id'=>['not in',$has_sales_ids]];
+        $branch_id = input('branch_id/d',0);
+        if(!empty($branch_id)){
+            $where['branch_id'] = $branch_id;
+            $this->assign('branch_id',$branch_id);
+        }
+        $keywords = input('keywords/s');
+        if(!empty($keywords)){
+            $where['name'] = ['like',"%$keywords%"];
+            $this->assign('keywords',$keywords);
+        }
+
+        $sales = Db::name('sales_man')->field('id,name,branch_id')->where($where)->order('branch_id asc')->select();
+
+        $branches = Db::name('banks')->where(['sid'=>$this->sid])->getField('id,name',true);
+
+        $this->assign([
+            'lists' => $sales,
+            'aid'=>$activity_id,
+            'branches'=>$branches
+        ]);
+
+        return $this->fetch('sales_list');
+    }
+
+    /**
+     * 移除授权
+     * @throws \think\Exception
+     */
+    public function delAuth(){
+        if(IS_AJAX && IS_POST){
+            $id = input('id/d');
+            if($id > 0){
+                $r = Db::name('activity_auth')->where(['id'=>$id])->delete();
+                if($r){
+                    $return = ['status'=>1,'msg'=>'删除成功'];
+                }else{
+                    $return = ['status'=>0,'msg'=>'删除失败'];
+                }
+                $id = $r = $cats = null;
+                $this->ajaxReturn($return);
+            }
+        }
+    }
+
+    /**
+     * 查看活动已有商品
+     * @return mixed
+     */
+    public function select_goods(){
+        $activity_id = input('aid',0);
+        if(empty($activity_id)){
+            exit('参数丢失');
+        }
+
+        //等级id
+        $level_id = input('level_id/d',0);
+
+        $where = ['a.aid'=>$activity_id,'level_id'=>$level_id,'a.sid'=>$this->sid];
+        $count = Db::name('activity_goods')->alias('a')->where($where)->count('a.id');
+        if($count){
+            $pager = $page = new Page($count,30);
+            $lists = Db::name('activity_goods')
+                ->alias('a')
+                ->field('a.id,a.store,a.status,b.goods_name')
+                ->join('goods b','a.goods_id=b.goods_id')
+                ->where($where)
+                ->limit($page->firstRow.','.$page->listRows)
+                ->order(['a.id'=>'desc'])
+                ->select();
+
+            $this->assign([
+                'lists' => $lists,
+                'count' => $count,
+                'pager' => $pager
+            ]);
+        }
+
+        $this->assign([
+            'aid' => $activity_id,
+            'level_id' => $level_id
+        ]);
+
+        return $this->fetch();
+    }
+
+    /**
+     * 修改库存
+     */
+    public function editGoodStore(){
+        if(IS_POST && IS_AJAX){
+            $id = input('id/d',0);
+            $store = input('store_num/d',0);
+            if(empty($id)){
+                $return = ['status'=>0,'msg'=>'参数丢失'];
+            }else{
+                $r = Db::name('activity_goods')->where(['id'=>$id])->save(['store'=>$store]);
+                if($r){
+                    $return = ['status'=>1,'msg'=>'修改成功'];
+                }else{
+                    $return = ['status'=>0,'msg'=>'修改失败'];
+                }
+            }
+
+            $this->ajaxReturn($return);
+        }
+    }
+
+    /**
+     * 添加商品到活动中
+     * @return mixed
+     */
+    public function addGoodsToActivity(){
+        $activity_id = input('aid/d',0);
+        if(empty($activity_id)){
+            exit('参数丢失');
+        }
+
+        //等级id
+        $level_id = input('level_id/d',0);
+        if(IS_POST && IS_AJAX){
+            $goods_ids = input('goods_ids/a');
+            if(!empty($goods_ids)){
+                $new_arr = [];
+                foreach($goods_ids as $v){
+                    array_push($new_arr,[
+                        'aid' => $activity_id,
+                        'level_id' => $level_id,
+                        'goods_id' => $v,
+                        'sid' => $this->sid
+                    ]);
+                }
+                Db::name('activity_goods')->insertAll($new_arr);
+            }
+            $return = ['status'=>1,'msg'=>'添加成功'];
+            $this->ajaxReturn($return);
+        }
+
+        //查询已有权限的商品id
+        $has_goods_ids = Db::name('activity_goods')->where(['aid'=>$activity_id,'sid'=>$this->sid])->getField('goods_id',true);
+        //查询没有权限的goods
+        $goods = Db::name('goods')->field('goods_id,goods_name,goods_name_en')->where(['goods_id'=>['not in',$has_goods_ids],'is_on_sale'=>['in',[0,1,2]]])->order('goods_id asc')->select();
+
+        $this->assign([
+            'lists' => $goods,
+            'aid'=>$activity_id,
+            'level_id' =>$level_id
+        ]);
+        return $this->fetch('_activity_goods');
+    }
+
+    /**
+     * 将商品移除活动
+     */
+    public function delActivityGoods(){
+        $id = input('id/d');
+        if($id > 0){
+            $r = Db::name('activity_goods')->where(['id'=>$id])->delete();
+            if($r){
+                $return = ['status'=>1,'msg'=>'删除成功'];
+            }else{
+                $return = ['status'=>0,'msg'=>'删除失败'];
+            }
+            $id = $r = $cats = null;
+            $this->ajaxReturn($return);
+        }
+    }
+
+    /**
+     * 兑换码兑换
+     * @return mixed
+     */
+    public function code_exchange(){
+        $data = $this->exchange_list();
+        $this->assign([
+            'lists' => $data['lists'],
+            'count' => $data['count'],
+            'pager' => $data['pager'],
+        ]);
+        return $this->fetch('code_exchange');
+    }
+}

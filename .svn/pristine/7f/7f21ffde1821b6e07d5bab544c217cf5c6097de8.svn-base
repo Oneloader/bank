@@ -1,0 +1,223 @@
+<include file="public/layout"/>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>小票列表</h3>
+                <h5>扩展工具</h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation"
+         style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>同步所有小票审核状态，只同步“审核中”的小票最新审核状态，如需同步“审核不通过”栏的小票最新状态，可点击该行状态后的“刷新”按钮同步最新状态</li>
+            <li>点击审核状态旁的刷新可获取指定小票最新审核状态</li>
+        </ul>
+    </div>
+
+    <div class="flexigrid">
+        <div class="mDiv" style="padding-bottom: 10px;">
+            <div class="ftitle">
+                <h3>小票列表</h3>
+                <h5>(共{$pager->totalRows|default=0}条记录)</h5>
+            </div>
+
+            <div title="刷新列表" class="pReload"><i class="fa fa-refresh reloadpage"></i></div>
+
+            <div class="tDiv2" style="padding: 0px;">
+                <div class="fbutton">
+                    <a href="javascript:void(0)" onclick="getAllStatus()">
+                        <div class="add" title="同步审核中的小票状态">
+                            <span><i class="fa fa-download"></i>同步最新小票审核状态</span>
+                        </div>
+                    </a>
+                </div>
+                <span style="font-size: 12px;line-height: 26px;margin-left: 10px;">上次同步时间：{$date|default='暂无'}</span>
+            </div>
+        </div>
+
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 200px;" class="">SA名称/SA UnionID</div>
+                        </th>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 200px;" class="">会员名称/会员UnionID</div>
+                        </th>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 120px;" class="">小票图片</div>
+                        </th>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 120px;" class="">上传时间</div>
+                        </th>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 120px;" class="">最近查询时间</div>
+                        </th>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 100px;" class="">审核状态</div>
+                        </th>
+                        <th align="left" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: left; width: 250px;" class="">审核不通过原因</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <notempty name="bills">
+                    <table>
+                        <tbody>
+                        <volist name="bills" id="list">
+                            <tr>
+                                <td class="sign">
+                                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: left; width: 200px;">{$list.username}<br/>{$list.unionid}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: left; width: 200px;">{$list.nick_name}<br/>{$list.union_id}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: center; width: 120px;"><img style="cursor: pointer" onclick="showImg('{$list.img}')" src="{$list.img}" width="50" height="70"/></div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: center; width: 120px;">{$list.datetime}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: center; width: 120px;">{$list.last_check}</div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: center; width: 100px;">
+                                        <switch name="list.status">
+                                            <case value="10"><span style="color:blue;">审核中</span></case>
+                                            <case value="30"><span style="color:red;">审核未通过</span></case>
+                                            <case value="40"><span style="color:green;">审核通过</span></case>
+                                            <default>未知状态</default>
+                                        </switch>
+                                        <in name="list.status" value="20,30">
+                                            &nbsp;&nbsp;<i class="fa fa-refresh" onclick="getStatus({$list.id|default=0})" style="cursor: pointer;"></i>
+                                        </in>
+                                    </div>
+                                </td>
+                                <td align="left" class="">
+                                    <div style="text-align: left; width: 250px;">{$list.reason}</div>
+                                </td>
+                                <td align="" class="" style="width: 100%;">
+                                    <div>&nbsp;</div>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                    <!--分页位置-->
+                    {$pager->show()}
+                </notempty>
+            </div>
+        </div>
+    </div>
+    <script>
+        /**
+         *  获取所有待审核小票状态
+         */
+        function getAllStatus(){
+            layer.confirm('你确认要同步最新小票审核状态到本地吗？', function (index) {
+                //加载层-风格4
+                layer.msg('同步中...', {
+                    time: 0,
+                    icon: 16,
+                    shade: 0.40
+                });
+                $.ajax({
+                    url: "{:url('Admin/Tools/getAllBillStatus')}",
+                    success: function (v) {
+                        layer.closeAll();
+                        var v = eval('(' + v + ')');
+                        if (v.hasOwnProperty('status') && (v.status == 1))
+                            location.reload();
+                        else
+                            layer.msg(v.msg, {icon: 2, time: 2000}); //alert(v.msg);
+                    },
+                    error: function (v) {
+                        console.log(v);
+                        layer.closeAll();
+                    }
+                });
+            }, function (index) {
+                layer.close(index);
+            });
+        }
+
+        /**
+         * 获取单个小票最新状态
+         * @param id
+         */
+        function getStatus(id){
+            //加载层-风格4
+            layer.msg('同步中...', {
+                time:0,
+                icon: 16,
+                shade: 0.40
+            });
+            $.ajax({
+                url: "{:url('Admin/Tools/getBillStatus')}",
+                data:{id:id},
+                type:'POST',
+                success: function (v) {
+                    layer.closeAll();
+                    var v = eval('(' + v + ')');
+                    if (v.hasOwnProperty('status') && (v.status == 1))
+                        location.reload();
+                    else
+                        layer.msg(v.msg, {icon: 2, time: 2000}); //alert(v.msg);
+                },
+                error: function(v){
+                    layer.closeAll();
+                }
+            });
+        }
+
+        function showImg(img){
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: '420px',
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="'+img+'" width="100%" height="100%"/>'
+            });
+        }
+
+        $(document).ready(function () {
+            // 点击刷新数据
+            $('.reloadpage').click(function () {
+                location.href = location.href;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<?php
+namespace app\bank\controller;
+use think\Db;
+
+/**
+ * 银行客服经理兑换
+ * Class Sales
+ * @package app\bank\controller
+ */
+class Sales extends Base {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * 银行客服经理登陆页
+     */
+    public function login(){
+        if (IS_POST){
+            $phone = input('phone/s','');
+            $result = Db::name('sales_man')->where(['phone'=>$phone,'sid'=>$this->sid])->find();
+            if ($result){
+                session('sales_id',$result['id']);
+                $activityUrl = SITE_URL . url('Bank/sales',['sid'=>base64_encode($this->sid)]);
+                successReturn($activityUrl,'登陆成功');
+            }else{
+                errorReturn('登陆失败');
+            }
+        }else{
+            return $this->fetch();
+        }
+    }
+
+    /**
+     * 银行客服经理首页
+     */
+    public function index(){
+        $sales_id = session('sales_id');
+        if (empty($sales_id)){
+            $activityUrl = SITE_URL . url('Bank/sales/login',['sid'=>base64_encode($this->sid)]);
+            $this->error('暂未登陆,请先登陆',$activityUrl);
+
+        $this->redirect(url('Bank/sales/login',['sid'=>base64_encode($this->sid)]));
+//            errorReturn('暂未登陆,请先登陆');
+        }
+        return $this->fetch();
+    }
+}

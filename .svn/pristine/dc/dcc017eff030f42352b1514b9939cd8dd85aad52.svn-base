@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>客户经理-活动列表</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="application/xhtml+xml;charset=UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache,must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta name="format-detection" content="telephone=no, address=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+    <link rel="stylesheet" href="/public/static/change/css/amazeui.min.css">
+    <link rel="stylesheet" href="/public/static/change/css/iconfont.css">
+    <link rel="stylesheet" href="/public/static/change/css/style.css">
+</head>
+<body>
+<div class="head_menu clearfix">
+    <img src="/public/static/change/images/white_logo.png" class="top_logo am-fl" alt="">
+    <div class="manage_names am-fl">
+        <p class="top_name"><span>高升桥支行</span><em>-</em><span>徐俊</span></p>
+    </div>
+    <div class="righr_menu am-fr clearfix">
+
+        <p class="exit am-fr">
+            <i class="iconfont icon-tuichu"></i>
+            <span>退出</span>
+        </p>
+    </div>
+</div>
+<div class="page_content refreshWrap" id="app">
+    <ul class="activity_list">
+        <li class="activity_list_li">
+            <a class="list_link" href="manager.html">
+                <p class="item_title clearfix"><span class="am-fl">2018贵宾升级，专享好礼</span><em class="am-fr">截止：2019-09-30</em></p>
+                <img src="/public/static/change/images/item.jpg" alt="">
+                <span class="activity_status running">进行中</span>
+            </a>
+        </li>
+        <li class="activity_list_li">
+            <a class="list_link" href="manager.html">
+                <p class="item_title clearfix"><span class="am-fl">2018贵宾升级，专享好礼</span><em class="am-fr">截止：2019-09-30</em></p>
+                <img src="/public/static/change/images/item.jpg" alt="">
+                <span class="activity_status running">进行中</span>
+            </a>
+        </li>
+        <li class="activity_list_li">
+            <a class="list_link" href="manager.html">
+                <p class="item_title clearfix"><span class="am-fl">2018贵宾升级，专享好礼</span><em class="am-fr">截止：2019-09-30</em></p>
+                <img src="/public/static/change/images/item.jpg" alt="">
+                <span class="activity_status running">进行中</span>
+            </a>
+        </li>
+        <li class="activity_list_li">
+            <a class="list_link" href="manager.html">
+                <p class="item_title clearfix"><span class="am-fl">2018贵宾升级，专享好礼</span><em class="am-fr">截止：2019-09-30</em></p>
+                <img src="/public/static/change/images/item.jpg" alt="">
+                <span class="activity_status running">进行中</span>
+            </a>
+        </li>
+        <li class="activity_list_li">
+            <a class="list_link" href="manager.html">
+                <p class="item_title clearfix"><span class="am-fl">2018贵宾升级，专享好礼</span><em class="am-fr">截止：2019-09-30</em></p>
+                <img src="/public/static/change/images/item.jpg" alt="">
+                <span class="activity_status running">进行中</span>
+            </a>
+        </li>
+        <li class="activity_list_li">
+            <a class="list_link" href="manager.html">
+                <p class="item_title clearfix"><span class="am-fl">2018贵宾升级，专享好礼</span><em class="am-fr">截止：2019-09-30</em></p>
+                <img src="/public/static/change/images/item.jpg" alt="">
+                <span class="activity_status running">进行中</span>
+            </a>
+        </li>
+    </ul>
+
+</div>
+
+<!--<script src="js/jquery-1.9.1.min.js"></script>-->
+<!--<script src="js/amazeui.min.js"></script>-->
+<!--<script src="js/jquery.imgpreload.min.js"></script>-->
+<script type="text/javascript" src="/public/static/change/js/zepto.min.js"></script>
+<script type="text/javascript" src="/public/static/change/js/PullToRefresh.min.js"></script>
+<script>
+    var n=0,flag=true;
+    function appendTestData(){
+        var html = '';
+        html+=' <li class="activity_list_li">';
+        html+='<a class="list_link" href="manager.html">';
+        html+='<p class="item_title clearfix"><span class="am-fl">2018贵宾升级，专享好礼</span><em class="am-fr">截止：2019-09-30</em></p>';
+        html+='<img src="/public/static/change/images/item.jpg" alt="">';
+        html+='<span class="activity_status running">进行中</span>';
+        html+='</a>';
+        html+='</li>';
+        return html;
+    }
+    function addhtml(type){
+
+        $("#app .activity_list")[type](appendTestData())
+    }
+    var refreshBox=new PullToRefresh({
+        container:"#app",
+
+        up:{
+            callback:function(){
+                console.log(n);
+                setTimeout(function(){
+                    if(n<5){
+                        n++;
+
+                        addhtml("append");
+                        refreshBox.endUpLoading(true)
+                    }else{    //没有数据
+                        refreshBox.endUpLoading(false)
+                    }
+                },1000)
+            }
+        }
+    })
+</script>
+
+
+
+</body>
+</html>
