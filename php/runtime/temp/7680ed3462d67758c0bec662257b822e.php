@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:41:"./application/admin/view2/code\codes.html";i:1541750153;s:44:"./application/admin/view2/public\layout.html";i:1539765626;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:41:"./application/admin/view2/code\codes.html";i:1542092322;s:44:"./application/admin/view2/public\layout.html";i:1539765626;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -177,6 +177,20 @@
                         </div>
                     </a>
                 </div>
+
+                <form action="<?php echo U('code/codes',array('aid'=>$aid,'batch'=>$batch)); ?>" id="search-form2" class="navbar-form form-inline" method="post" style="float: right">
+                    <div class="sDiv" style="float: right">
+                        <span>兑换码筛选:</span>
+                        <div class="sDiv2">
+                            <select name="type" id="type">
+                                <option value="0" <?php if($type==0): ?> selected = "selected"<?php endif; ?>>未使用</option>
+                                <option value="1" <?php if($type==1): ?> selected = "selected"<?php endif; ?>>已使用</option>
+                            </select>
+                            <input type="text" size="30" name="key_word" class="qsbox" placeholder="订单编号/支行/经理名称" value="<?php echo $keyword; ?>">
+                            <input type="submit" class="btn" value="搜索">
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 
