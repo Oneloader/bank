@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:45:"./application/admin/view2/code\code_list.html";i:1539767773;s:44:"./application/admin/view2/public\layout.html";i:1539765626;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:45:"./application/admin/view2/code\code_list.html";i:1542186262;s:44:"./application/admin/view2/public\layout.html";i:1542249927;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -117,7 +117,7 @@
                         try {
                             log = hex ? hex : 'transparent';
                             if( opacity ) log += ', ' + opacity;
-                            console.log(log);
+//                            console.log(log);
                         } catch(e) {}
                     },
                     theme: 'default'
@@ -194,16 +194,19 @@
                             <div style="text-align: center; width: 120px;" class="">兑换码所属档次</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: center; width: 120px;" class="">兑换码总数</div>
+                            <div style="text-align: center; width: 100px;" class="">兑换码总数</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: center; width: 120px;" class="">已使用数量</div>
+                            <div style="text-align: center; width: 100px;" class="">已使用数量</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: center; width: 120px;" class="">待使用数量</div>
+                            <div style="text-align: center; width: 100px;" class="">待使用数量</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 100px;" class="">已作废数量</div>
                         </th>
                         <th align="center" axis="col1" class="">
-                            <div style="text-align: center; width: 280px;">操作</div>
+                            <div style="text-align: center; width: 200px;">操作</div>
                         </th>
                         <th style="width:100%" axis="col7">
                             <div></div>
@@ -230,22 +233,27 @@
                                     <div style="text-align: center; width: 120px;"><?php echo $levels[$list['level_id']]; ?></div>
                                 </td>
                                 <td align="center" class="">
-                                    <div style="text-align: center; width: 120px;">
+                                    <div style="text-align: center; width: 100px;">
                                         <?php echo (isset($list['total']) && ($list['total'] !== '')?$list['total']:0); ?>
                                     </div>
                                 </td>
                                 <td align="center" class="">
-                                    <div style="text-align: center; width: 120px;">
+                                    <div style="text-align: center; width: 100px;">
                                         <?php echo (isset($list['used']) && ($list['used'] !== '')?$list['used']:0); ?>
                                     </div>
                                 </td>
                                 <td align="center" class="">
-                                    <div style="text-align: center; width: 120px;">
+                                    <div style="text-align: center; width: 100px;">
                                         <?php echo (isset($list['not_use']) && ($list['not_use'] !== '')?$list['not_use']:0); ?>
                                     </div>
                                 </td>
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 100px;">
+                                        <?php echo (isset($list['cancel_count']) && ($list['cancel_count'] !== '')?$list['cancel_count']:0); ?>
+                                    </div>
+                                </td>
                                 <td align="center">
-                                    <div style="text-align: center; width: 280px;">
+                                    <div style="text-align: center; width: 200px;">
                                         <a class="btn blue" href="javascript:void(0)" onclick="viewCodes('<?php echo $list[batch]; ?>')"><i class="fa fa-eye"></i>查看详情</a>
                                         <a class="btn blue" href="javascript:void(0)" onclick="downloadErcodes('<?php echo $list[batch]; ?>','<?php echo $list['used'] + $list['not_use']; ?>',1)"><i class="fa fa-download"></i>下载二维码</a>
                                         <a class="btn blue" href="javascript:void(0)" onclick="downloadErcodes('<?php echo $list[batch]; ?>','<?php echo $list['used'] + $list['not_use']; ?>',0)"><i class="fa fa-angle-down"></i>导出数字码</a>
@@ -324,6 +332,7 @@
                 title: '查看兑换码【'+batch+'】列表',
                 shadeClose: false,
                 shade: 0.2,
+                maxmin:true,
                 area: ['900px', '500px'],
                 content: url
             });

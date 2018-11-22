@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:52:"./application/admin/view2/orders\sales_exchange.html";i:1539157296;s:44:"./application/admin/view2/public\layout.html";i:1539765626;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:52:"./application/admin/view2/orders\sales_exchange.html";i:1542190743;s:44:"./application/admin/view2/public\layout.html";i:1542249927;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -117,7 +117,7 @@
                         try {
                             log = hex ? hex : 'transparent';
                             if( opacity ) log += ', ' + opacity;
-                            console.log(log);
+//                            console.log(log);
                         } catch(e) {}
                     },
                     theme: 'default'
@@ -204,7 +204,7 @@
                             <div style="text-align: center; width: 150px;" class="">已发货数</div>
                         </th>
                         <th align="center" axis="col1" class="">
-                            <div style="text-align: center; width: 200px;">操作</div>
+                            <div style="text-align: center; width: 150px;">操作</div>
                         </th>
                         <th style="width:100%" axis="col7">
                             <div></div>
@@ -237,7 +237,7 @@
                                     <div style="text-align: center; width: 150px;"><?php echo (isset($list['has_shipping']) && ($list['has_shipping'] !== '')?$list['has_shipping']:0); ?></div>
                                 </td>
                                 <td align="center">
-                                    <div style="text-align: center; width: 200px;">
+                                    <div style="text-align: center; width: 150px;">
                                         <a class="btn blue" href="javascript:void(0)" onclick="viewOrders('<?php echo $list[id]; ?>')"><i class="fa fa-list"></i>查看订单列表</a>
                                     </div>
                                 </td>
@@ -268,6 +268,7 @@
                 title: '查看活动订单',
                 shadeClose: false,
                 shade: 0.2,
+                maxmin:true,
                 area: ['1000px', '550px'],
                 content: url
             });

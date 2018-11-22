@@ -1,0 +1,883 @@
+[ 2018-11-19T10:24:02+08:00 ] 127.0.0.1 127.0.0.1 GET /admin
+[ log ] www.bank.com/admin [运行时间：0.059000s][吞吐率：16.95req/s] [内存消耗：1,348.87kb] [文件加载：38]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:02+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Admin/login.html
+[ log ] www.bank.com/Admin/Admin/login.html [运行时间：0.066000s][吞吐率：15.15req/s] [内存消耗：1,290.50kb] [文件加载：37]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:03+08:00 ] 127.0.0.1 127.0.0.1 GET /admin/Admin/vertify.html
+[ log ] www.bank.com/admin/Admin/vertify.html [运行时间：0.157000s][吞吐率：6.37req/s] [内存消耗：1,275.63kb] [文件加载：35]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:24+08:00 ] 127.0.0.1 127.0.0.1 GET /index.php?m=Admin&c=Admin&a=vertify&r=23
+[ log ] www.bank.com/index.php?m=Admin&c=Admin&a=vertify&r=23 [运行时间：0.047000s][吞吐率：21.28req/s] [内存消耗：1,273.04kb] [文件加载：35]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:25+08:00 ] 127.0.0.1 127.0.0.1 GET /index.php?m=Admin&c=Admin&a=vertify&r=22
+[ log ] www.bank.com/index.php?m=Admin&c=Admin&a=vertify&r=22 [运行时间：0.066000s][吞吐率：15.15req/s] [内存消耗：1,273.04kb] [文件加载：35]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:25+08:00 ] 127.0.0.1 127.0.0.1 GET /index.php?m=Admin&c=Admin&a=vertify&r=6
+[ log ] www.bank.com/index.php?m=Admin&c=Admin&a=vertify&r=6 [运行时间：0.058000s][吞吐率：17.24req/s] [内存消耗：1,273.04kb] [文件加载：35]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:31+08:00 ] 127.0.0.1 127.0.0.1 POST /Admin/Admin/login/t/1407810176.html
+[ log ] www.bank.com/Admin/Admin/login/t/1407810176.html [运行时间：0.165000s][吞吐率：6.06req/s] [内存消耗：1,920.03kb] [文件加载：43]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_admin` INNER JOIN `ka_admin_role` `ka_admin_role` ON `ka_admin`.`role_id`=`ka_admin_role`.`role_id` WHERE  `user_name` = 'admin'  AND `password` = '773f53c7a16fde9dc1e4d042b9cee221' LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] UPDATE `ka_admin`  SET `last_login`=1542594271,`last_ip`='127.0.0.1'  WHERE  (  admin_id = 1 ) [ RunTime:0.038000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin_log` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] INSERT INTO `ka_admin_log` (`log_time` , `admin_id` , `log_info` , `action` , `log_ip` , `sid`) VALUES (1542594271 , 1 , '后台登录' , 'n' , '127.0.0.1' , 0) [ RunTime:0.041000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:31+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/pubs.html
+[ log ] www.bank.com/Admin/Index/pubs.html [运行时间：0.087000s][吞吐率：11.49req/s] [内存消耗：1,982.34kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_admin` WHERE  `admin_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:31+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/pubs_list
+[ log ] www.bank.com/Admin/Index/pubs_list [运行时间：0.110000s][吞吐率：9.09req/s] [内存消耗：2,010.98kb] [文件加载：48]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_shop` LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shop` LIMIT 0,20 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:34+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/goshop/sid/Mzc%3D.html
+[ log ] www.bank.com/Admin/Index/goshop/sid/Mzc%3D.html [运行时间：0.065000s][吞吐率：15.38req/s] [内存消耗：1,936.23kb] [文件加载：45]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `ka_shop` [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:35+08:00 ] 127.0.0.1 127.0.0.1 GET /admin/Index/index.html
+[ log ] www.bank.com/admin/Index/index.html [运行时间：0.067000s][吞吐率：14.93req/s] [内存消耗：1,990.66kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_admin` WHERE  `admin_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:35+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/code_exchange
+[ log ] www.bank.com/Admin/Index/code_exchange [运行时间：0.053000s][吞吐率：18.87req/s] [内存消耗：2,028.82kb] [文件加载：48]
+[ error ] [8]Use of undefined constant is_price - assumed 'is_price'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:270]
+[ error ] [8]Use of undefined constant status - assumed 'status'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:280]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:290]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:291]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:292]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:296]
+[ error ] [8]Use of undefined constant is_price - assumed 'is_price'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:270]
+[ error ] [8]Use of undefined constant status - assumed 'status'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:280]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:290]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:291]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:292]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:296]
+[ error ] [8]Use of undefined constant is_price - assumed 'is_price'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:270]
+[ error ] [8]Use of undefined constant status - assumed 'status'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:280]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:290]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:291]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:292]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:294]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `sid` = 37  AND `type` = 1  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_activity` WHERE  `sid` = 37  AND `type` = 1  AND `status` IN (0,1) ORDER BY `id`  desc LIMIT 0,20 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:37+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/code_exchange
+[ log ] www.bank.com/Admin/Orders/code_exchange [运行时间：0.121000s][吞吐率：8.26req/s] [内存消耗：1,990.80kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `r`.`aid` FROM `ka_admin` `a` INNER JOIN `ka_admin_role` `r` ON `a`.`role_id`=`r`.`role_id` WHERE  `a`.`admin_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `type` = 1  AND `sid` = 37  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_activity` WHERE  `type` = 1  AND `sid` = 37  AND `status` IN (0,1) ORDER BY id desc LIMIT 0,20 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 34  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 32  AND `sid` = 37  AND `status` = 0 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 30  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:40+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/sales_exchange
+[ log ] www.bank.com/Admin/Orders/sales_exchange [运行时间：0.072000s][吞吐率：13.89req/s] [内存消耗：1,990.92kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:241]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:241]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:241]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `r`.`aid` FROM `ka_admin` `a` INNER JOIN `ka_admin_role` `r` ON `a`.`role_id`=`r`.`role_id` WHERE  `a`.`admin_id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `type` = 2  AND `sid` = 37  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_activity` WHERE  `type` = 2  AND `sid` = 37  AND `status` IN (0,1) ORDER BY id desc LIMIT 0,20 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 35  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 31  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 29  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:41+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?aid=29
+[ log ] www.bank.com/Admin/Orders/order_list.html?aid=29 [运行时间：0.117000s][吞吐率：8.55req/s] [内存消耗：2,019.03kb] [文件加载：48]
+[ error ] [8]未定义数组索引: export[D:\project\bank_change.system\php\application\admin\controller\Orders.php:230]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:492]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:492]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:369]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:370]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:369]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:370]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.012000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`a`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name`,s.name as sales_name,g.name as bank_name FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` INNER JOIN `ka_sales_man` `s` ON `a`.`operator_id`=`s`.`id` INNER JOIN `ka_banks` `g` ON `s`.`branch_id`=`g`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc LIMIT 0,20 [ RunTime:0.002000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 28  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 83 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 16  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 81 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:24:42+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?export=1&aid=29
+[ log ] www.bank.com/Admin/Orders/order_list.html?export=1&aid=29 [运行时间：0.119000s][吞吐率：8.40req/s] [内存消耗：1,924.63kb] [文件加载：44]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:379]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:379]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`b`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name`,s.name as sales_name,g.name as bank_name FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` INNER JOIN `ka_sales_man` `s` ON `a`.`operator_id`=`s`.`id` INNER JOIN `ka_banks` `g` ON `s`.`branch_id`=`g`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `is_level`,`must_name_id`,`must_user_phone` FROM `ka_activity` WHERE  `id` = 29  AND `sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 28  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 83 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 16  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 81 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:32:01+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/code_exchange
+[ log ] www.bank.com/Admin/Orders/code_exchange [运行时间：0.094000s][吞吐率：10.64req/s] [内存消耗：1,990.93kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.017000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT `r`.`aid` FROM `ka_admin` `a` INNER JOIN `ka_admin_role` `r` ON `a`.`role_id`=`r`.`role_id` WHERE  `a`.`admin_id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `type` = 1  AND `sid` = 37  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_activity` WHERE  `type` = 1  AND `sid` = 37  AND `status` IN (0,1) ORDER BY id desc LIMIT 0,20 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 34  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 32  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 30  AND `sid` = 37  AND `status` = 0 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:32:02+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/sales_exchange
+[ log ] www.bank.com/Admin/Orders/sales_exchange [运行时间：0.130000s][吞吐率：7.69req/s] [内存消耗：1,991.10kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:241]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:241]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:241]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.012000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.028000s ]
+[ sql ] [ SQL ] SELECT `r`.`aid` FROM `ka_admin` `a` INNER JOIN `ka_admin_role` `r` ON `a`.`role_id`=`r`.`role_id` WHERE  `a`.`admin_id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.017000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `type` = 2  AND `sid` = 37  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_activity` WHERE  `type` = 2  AND `sid` = 37  AND `status` IN (0,1) ORDER BY id desc LIMIT 0,20 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.013000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 35  AND `sid` = 37  AND `status` = 0 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 31  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 29  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:32:05+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?aid=29
+[ log ] www.bank.com/Admin/Orders/order_list.html?aid=29 [运行时间：0.111000s][吞吐率：9.01req/s] [内存消耗：2,019.20kb] [文件加载：48]
+[ error ] [8]未定义数组索引: export[D:\project\bank_change.system\php\application\admin\controller\Orders.php:230]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:493]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:493]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:369]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:370]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:369]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:370]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.013000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`a`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name`,s.name as sales_name,g.name as bank_name FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` INNER JOIN `ka_sales_man` `s` ON `a`.`operator_id`=`s`.`id` INNER JOIN `ka_banks` `g` ON `s`.`branch_id`=`g`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc LIMIT 0,20 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 28  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 83 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 16  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 81 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:32:07+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?export=1&aid=29
+[ log ] www.bank.com/Admin/Orders/order_list.html?export=1&aid=29 [运行时间：0.092000s][吞吐率：10.87req/s] [内存消耗：1,924.73kb] [文件加载：44]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:380]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:380]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.013000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`b`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name`,s.name as sales_name,g.name as bank_name FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` INNER JOIN `ka_sales_man` `s` ON `a`.`operator_id`=`s`.`id` INNER JOIN `ka_banks` `g` ON `s`.`branch_id`=`g`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `is_level`,`must_name_id`,`must_user_phone` FROM `ka_activity` WHERE  `id` = 29  AND `sid` = 37 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 28  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 83 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 16  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 81 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:34:01+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?export=1&aid=29
+[ log ] www.bank.com/Admin/Orders/order_list.html?export=1&aid=29 [运行时间：0.091000s][吞吐率：10.99req/s] [内存消耗：1,924.59kb] [文件加载：44]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:380]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:380]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.013000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`b`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name`,s.name as sales_name,g.name as bank_name FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` INNER JOIN `ka_sales_man` `s` ON `a`.`operator_id`=`s`.`id` INNER JOIN `ka_banks` `g` ON `s`.`branch_id`=`g`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `is_level`,`must_name_id`,`must_user_phone` FROM `ka_activity` WHERE  `id` = 29  AND `sid` = 37 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 28  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.012000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 83 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 16  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 81 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:34:44+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/sales_exchange
+[ log ] www.bank.com/Admin/Orders/sales_exchange [运行时间：0.054000s][吞吐率：18.52req/s] [内存消耗：1,990.77kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:241]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:241]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:241]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `r`.`aid` FROM `ka_admin` `a` INNER JOIN `ka_admin_role` `r` ON `a`.`role_id`=`r`.`role_id` WHERE  `a`.`admin_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `type` = 2  AND `sid` = 37  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_activity` WHERE  `type` = 2  AND `sid` = 37  AND `status` IN (0,1) ORDER BY id desc LIMIT 0,20 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 35  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 31  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 29  AND `sid` = 37  AND `status` = 0 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:34:45+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?aid=29
+[ log ] www.bank.com/Admin/Orders/order_list.html?aid=29 [运行时间：0.093000s][吞吐率：10.75req/s] [内存消耗：2,018.84kb] [文件加载：48]
+[ error ] [8]未定义数组索引: export[D:\project\bank_change.system\php\application\admin\controller\Orders.php:230]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:492]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:492]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:369]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:370]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:369]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:370]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`a`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name`,s.name as sales_name,g.name as bank_name FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` INNER JOIN `ka_sales_man` `s` ON `a`.`operator_id`=`s`.`id` INNER JOIN `ka_banks` `g` ON `s`.`branch_id`=`g`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc LIMIT 0,20 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 28  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 83 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 16  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 81 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:34:46+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?export=1&aid=29
+[ log ] www.bank.com/Admin/Orders/order_list.html?export=1&aid=29 [运行时间：0.066000s][吞吐率：15.15req/s] [内存消耗：1,924.48kb] [文件加载：44]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:379]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:379]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`b`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name`,s.name as sales_name,g.name as bank_name FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` INNER JOIN `ka_sales_man` `s` ON `a`.`operator_id`=`s`.`id` INNER JOIN `ka_banks` `g` ON `s`.`branch_id`=`g`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`sid` = 37  AND `a`.`type` = 2  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `is_level`,`must_name_id`,`must_user_phone` FROM `ka_activity` WHERE  `id` = 29  AND `sid` = 37 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 28  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 83 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '29'  AND `a`.`goods_id` = 16  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 81 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 29 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:35:46+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/code_exchange
+[ log ] www.bank.com/Admin/Orders/code_exchange [运行时间：0.058000s][吞吐率：17.24req/s] [内存消耗：1,990.66kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `r`.`aid` FROM `ka_admin` `a` INNER JOIN `ka_admin_role` `r` ON `a`.`role_id`=`r`.`role_id` WHERE  `a`.`admin_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `type` = 1  AND `sid` = 37  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_activity` WHERE  `type` = 1  AND `sid` = 37  AND `status` IN (0,1) ORDER BY id desc LIMIT 0,20 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 34  AND `sid` = 37  AND `status` = 0 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 32  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 30  AND `sid` = 37  AND `status` = 0 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:35:47+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?aid=32
+[ log ] www.bank.com/Admin/Orders/order_list.html?aid=32 [运行时间：0.101000s][吞吐率：9.90req/s] [内存消耗：2,018.07kb] [文件加载：48]
+[ error ] [8]未定义数组索引: export[D:\project\bank_change.system\php\application\admin\controller\Orders.php:230]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]Use of undefined constant shipping - assumed 'shipping'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:338]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:338]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '32'  AND `a`.`sid` = 37  AND `a`.`type` = 1  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`a`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`aid` = '32'  AND `a`.`sid` = 37  AND `a`.`type` = 1  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc LIMIT 0,20 [ RunTime:0.010000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '32'  AND `a`.`goods_id` = 12  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 79 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_codes` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `code` FROM `ka_codes` WHERE  `id` = 63 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:35:47+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?export=1&aid=32
+[ log ] www.bank.com/Admin/Orders/order_list.html?export=1&aid=32 [运行时间：0.110000s][吞吐率：9.09req/s] [内存消耗：1,922.36kb] [文件加载：44]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '32'  AND `a`.`sid` = 37  AND `a`.`type` = 1  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`b`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`aid` = '32'  AND `a`.`sid` = 37  AND `a`.`type` = 1  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `is_level`,`must_name_id`,`must_user_phone` FROM `ka_activity` WHERE  `id` = 32  AND `sid` = 37 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_codes` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `c`.`code` FROM `ka_codes` `c` WHERE  `c`.`id` = 63 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 79 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:36:53+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/sales_exchange
+[ log ] www.bank.com/Admin/Orders/sales_exchange [运行时间：0.074000s][吞吐率：13.51req/s] [内存消耗：1,990.66kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:241]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:241]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:241]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `r`.`aid` FROM `ka_admin` `a` INNER JOIN `ka_admin_role` `r` ON `a`.`role_id`=`r`.`role_id` WHERE  `a`.`admin_id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `type` = 2  AND `sid` = 37  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_activity` WHERE  `type` = 2  AND `sid` = 37  AND `status` IN (0,1) ORDER BY id desc LIMIT 0,20 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 35  AND `sid` = 37  AND `status` = 0 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 31  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 29  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:36:55+08:00 ] 127.0.0.1 127.0.0.1 GET /admin/Index/pubs.html
+[ log ] www.bank.com/admin/Index/pubs.html [运行时间：0.046000s][吞吐率：21.74req/s] [内存消耗：1,982.27kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_admin` WHERE  `admin_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:36:55+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/pubs_list
+[ log ] www.bank.com/Admin/Index/pubs_list [运行时间：0.044000s][吞吐率：22.73req/s] [内存消耗：2,010.98kb] [文件加载：48]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_shop` LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shop` LIMIT 0,20 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:36:57+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/goshop/sid/MzI%3D.html
+[ log ] www.bank.com/Admin/Index/goshop/sid/MzI%3D.html [运行时间：0.054000s][吞吐率：18.52req/s] [内存消耗：1,936.23kb] [文件加载：45]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `ka_shop` [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:36:57+08:00 ] 127.0.0.1 127.0.0.1 GET /admin/Index/index.html
+[ log ] www.bank.com/admin/Index/index.html [运行时间：0.041000s][吞吐率：24.39req/s] [内存消耗：1,990.66kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_admin` WHERE  `admin_id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:36:57+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/code_exchange
+[ log ] www.bank.com/Admin/Index/code_exchange [运行时间：0.043000s][吞吐率：23.26req/s] [内存消耗：1,970.36kb] [文件加载：47]
+[ error ] [8]未定义变量: lists[D:\project\bank_change.system\php\application\admin\controller\Index.php:289]
+[ error ] [8]未定义变量: pager[D:\project\bank_change.system\php\application\admin\controller\Index.php:291]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `sid` = 32  AND `type` = 1  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:36:58+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/sales_exchange
+[ log ] www.bank.com/Admin/Index/sales_exchange [运行时间：0.070000s][吞吐率：14.29req/s] [内存消耗：2,019.29kb] [文件加载：48]
+[ error ] [8]Use of undefined constant is_price - assumed 'is_price'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:263]
+[ error ] [8]Use of undefined constant status - assumed 'status'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:273]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:283]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:284]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:285]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:286]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\8205976a861a5a52bcfa10b0849e6635.php:290]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `sid` = 32  AND `type` = 2  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_activity` WHERE  `sid` = 32  AND `type` = 2  AND `status` IN (0,1) ORDER BY `id`  desc LIMIT 0,20 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:36:59+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/code_exchange
+[ log ] www.bank.com/Admin/Orders/code_exchange [运行时间：0.075000s][吞吐率：13.33req/s] [内存消耗：1,963.15kb] [文件加载：47]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `r`.`aid` FROM `ka_admin` `a` INNER JOIN `ka_admin_role` `r` ON `a`.`role_id`=`r`.`role_id` WHERE  `a`.`admin_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `type` = 1  AND `sid` = 32  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:00+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/sales_exchange
+[ log ] www.bank.com/Admin/Orders/sales_exchange [运行时间：0.064000s][吞吐率：15.62req/s] [内存消耗：1,988.43kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0c4c6376552755e12161fb88ee047a1e.php:241]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `r`.`aid` FROM `ka_admin` `a` INNER JOIN `ka_admin_role` `r` ON `a`.`role_id`=`r`.`role_id` WHERE  `a`.`admin_id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `type` = 2  AND `sid` = 32  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_activity` WHERE  `type` = 2  AND `sid` = 32  AND `status` IN (0,1) ORDER BY id desc LIMIT 0,20 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 33  AND `sid` = 32  AND `status` = 0 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:01+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?aid=33
+[ log ] www.bank.com/Admin/Orders/order_list.html?aid=33 [运行时间：0.085000s][吞吐率：11.76req/s] [内存消耗：2,010.75kb] [文件加载：48]
+[ error ] [8]未定义数组索引: export[D:\project\bank_change.system\php\application\admin\controller\Orders.php:230]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:492]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:369]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:370]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 33 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '33'  AND `a`.`sid` = 32  AND `a`.`type` = 2  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`a`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name`,s.name as sales_name,g.name as bank_name FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` INNER JOIN `ka_sales_man` `s` ON `a`.`operator_id`=`s`.`id` INNER JOIN `ka_banks` `g` ON `s`.`branch_id`=`g`.`id` WHERE  `a`.`aid` = '33'  AND `a`.`sid` = 32  AND `a`.`type` = 2  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc LIMIT 0,20 [ RunTime:0.003000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '33'  AND `a`.`goods_id` = 43  AND `a`.`sid` = 32 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 80 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 33 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:02+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?export=1&aid=33
+[ log ] www.bank.com/Admin/Orders/order_list.html?export=1&aid=33 [运行时间：0.071000s][吞吐率：14.08req/s] [内存消耗：1,919.15kb] [文件加载：44]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: [D:\project\bank_change.system\php\application\admin\controller\Orders.php:379]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.007000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 33 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '33'  AND `a`.`sid` = 32  AND `a`.`type` = 2  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`b`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name`,s.name as sales_name,g.name as bank_name FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` INNER JOIN `ka_sales_man` `s` ON `a`.`operator_id`=`s`.`id` INNER JOIN `ka_banks` `g` ON `s`.`branch_id`=`g`.`id` WHERE  `a`.`aid` = '33'  AND `a`.`sid` = 32  AND `a`.`type` = 2  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `is_level`,`must_name_id`,`must_user_phone` FROM `ka_activity` WHERE  `id` = 33  AND `sid` = 32 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 33 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '33'  AND `a`.`goods_id` = 43  AND `a`.`sid` = 32 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 80 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 33 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:11+08:00 ] 127.0.0.1 127.0.0.1 GET /admin/Index/pubs.html
+[ log ] www.bank.com/admin/Index/pubs.html [运行时间：0.033000s][吞吐率：30.30req/s] [内存消耗：1,982.27kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_admin` WHERE  `admin_id` = 1 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:11+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/pubs_list
+[ log ] www.bank.com/Admin/Index/pubs_list [运行时间：0.035000s][吞吐率：28.57req/s] [内存消耗：2,010.98kb] [文件加载：48]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\ec16720a00a2c64404838ddfce25ea1b.php:256]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_shop` LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shop` LIMIT 0,20 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:13+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/goshop/sid/Mzc%3D.html
+[ log ] www.bank.com/Admin/Index/goshop/sid/Mzc%3D.html [运行时间：0.066000s][吞吐率：15.15req/s] [内存消耗：1,936.23kb] [文件加载：45]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `id` FROM `ka_shop` [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:13+08:00 ] 127.0.0.1 127.0.0.1 GET /admin/Index/index.html
+[ log ] www.bank.com/admin/Index/index.html [运行时间：0.043000s][吞吐率：23.26req/s] [内存消耗：1,990.66kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:49]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:51]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:186]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ error ] [8]Use of undefined constant child - assumed 'child'[D:\project\bank_change.system\php\runtime\temp\6a41c95d41d211b8ceb5fe604668568c.php:191]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_admin` WHERE  `admin_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:13+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Index/code_exchange
+[ log ] www.bank.com/Admin/Index/code_exchange [运行时间：0.044000s][吞吐率：22.73req/s] [内存消耗：2,028.82kb] [文件加载：48]
+[ error ] [8]Use of undefined constant is_price - assumed 'is_price'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:270]
+[ error ] [8]Use of undefined constant status - assumed 'status'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:280]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:290]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:291]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:292]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:296]
+[ error ] [8]Use of undefined constant is_price - assumed 'is_price'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:270]
+[ error ] [8]Use of undefined constant status - assumed 'status'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:280]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:290]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:291]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:292]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:296]
+[ error ] [8]Use of undefined constant is_price - assumed 'is_price'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:270]
+[ error ] [8]Use of undefined constant status - assumed 'status'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:280]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:290]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:291]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:292]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\fd2308a4531c1e373d09d7fd77a28dd8.php:294]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `sid` = 37  AND `type` = 1  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_activity` WHERE  `sid` = 37  AND `type` = 1  AND `status` IN (0,1) ORDER BY `id`  desc LIMIT 0,20 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:14+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/code_exchange
+[ log ] www.bank.com/Admin/Orders/code_exchange [运行时间：0.054000s][吞吐率：18.52req/s] [内存消耗：1,990.55kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.001000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `r`.`aid` FROM `ka_admin` `a` INNER JOIN `ka_admin_role` `r` ON `a`.`role_id`=`r`.`role_id` WHERE  `a`.`admin_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `type` = 1  AND `sid` = 37  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_activity` WHERE  `type` = 1  AND `sid` = 37  AND `status` IN (0,1) ORDER BY id desc LIMIT 0,20 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 34  AND `sid` = 37  AND `status` = 0 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 32  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 30  AND `sid` = 37  AND `status` = 0 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:15+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?aid=32
+[ log ] www.bank.com/Admin/Orders/order_list.html?aid=32 [运行时间：0.085000s][吞吐率：11.76req/s] [内存消耗：2,017.93kb] [文件加载：48]
+[ error ] [8]未定义数组索引: export[D:\project\bank_change.system\php\application\admin\controller\Orders.php:230]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]Use of undefined constant shipping - assumed 'shipping'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:338]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:338]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '32'  AND `a`.`sid` = 37  AND `a`.`type` = 1  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`a`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`aid` = '32'  AND `a`.`sid` = 37  AND `a`.`type` = 1  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc LIMIT 0,20 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '32'  AND `a`.`goods_id` = 12  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 79 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_codes` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `code` FROM `ka_codes` WHERE  `id` = 63 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.001000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:16+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?export=1&aid=32
+[ log ] www.bank.com/Admin/Orders/order_list.html?export=1&aid=32 [运行时间：0.099000s][吞吐率：10.10req/s] [内存消耗：1,922.23kb] [文件加载：44]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.011000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.007000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.007000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '32'  AND `a`.`sid` = 37  AND `a`.`type` = 1  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`b`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`aid` = '32'  AND `a`.`sid` = 37  AND `a`.`type` = 1  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `is_level`,`must_name_id`,`must_user_phone` FROM `ka_activity` WHERE  `id` = 32  AND `sid` = 37 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.007000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_codes` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `c`.`code` FROM `ka_codes` `c` WHERE  `c`.`id` = 63 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 79 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:54+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/code_exchange
+[ log ] www.bank.com/Admin/Orders/code_exchange [运行时间：0.082000s][吞吐率：12.20req/s] [内存消耗：1,990.55kb] [文件加载：48]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ error ] [8]未定义数组索引: has_shipping[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:234]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\0e30982e036d29813be1c6e5d8d6aab9.php:241]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_admin` [ RunTime:0.011000s ]
+[ sql ] [ SQL ] SELECT `r`.`aid` FROM `ka_admin` `a` INNER JOIN `ka_admin_role` `r` ON `a`.`role_id`=`r`.`role_id` WHERE  `a`.`admin_id` = 1 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(id) AS tp_count FROM `ka_activity` WHERE  `type` = 1  AND `sid` = 37  AND `status` IN (0,1) LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `id`,`name` FROM `ka_activity` WHERE  `type` = 1  AND `sid` = 37  AND `status` IN (0,1) ORDER BY id desc LIMIT 0,20 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 34  AND `sid` = 37  AND `status` = 0 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 32  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `shipping_time` FROM `ka_orders` WHERE  `aid` = 30  AND `sid` = 37  AND `status` = 0 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:55+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?aid=32
+[ log ] www.bank.com/Admin/Orders/order_list.html?aid=32 [运行时间：0.094000s][吞吐率：10.64req/s] [内存消耗：2,017.93kb] [文件加载：48]
+[ error ] [8]未定义数组索引: export[D:\project\bank_change.system\php\application\admin\controller\Orders.php:230]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ error ] [8]Use of undefined constant shipping - assumed 'shipping'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:338]
+[ error ] [8]Use of undefined constant id - assumed 'id'[D:\project\bank_change.system\php\runtime\temp\2b705c14a5a0560a75f23acb553e05b5.php:338]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.019000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '32'  AND `a`.`sid` = 37  AND `a`.`type` = 1  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`a`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`aid` = '32'  AND `a`.`sid` = 37  AND `a`.`type` = 1  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc LIMIT 0,20 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity_goods` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT `a`.`level_id`,`l`.`name`,`l`.`id` FROM `ka_activity_goods` `a` INNER JOIN `ka_change_level` `l` ON `a`.`level_id`=`l`.`id` WHERE  `a`.`aid` = '32'  AND `a`.`goods_id` = 12  AND `a`.`sid` = 37 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 79 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_codes` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `code` FROM `ka_codes` WHERE  `id` = 63 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------
+[ 2018-11-19T10:37:56+08:00 ] 127.0.0.1 127.0.0.1 GET /Admin/Orders/order_list.html?export=1&aid=32
+[ log ] www.bank.com/Admin/Orders/order_list.html?export=1&aid=32 [运行时间：0.063000s][吞吐率：15.87req/s] [内存消耗：1,922.23kb] [文件加载：44]
+[ error ] [8]未定义变量: class[D:\project\bank_change.system\php\thinkphp\helper.php:627]
+[ sql ] [ DB ] CONNECT:[ UseTime:0.010000s ] mysql:dbname=bank_change_system;host=127.0.0.1;port=3306;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_activity` [ RunTime:0.005000s ]
+[ sql ] [ SQL ] SELECT `name`,`type`,`is_level` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_orders` [ RunTime:0.006000s ]
+[ sql ] [ SQL ] SELECT COUNT(a.id) AS tp_count FROM `ka_orders` `a` WHERE  `a`.`aid` = '32'  AND `a`.`sid` = 37  AND `a`.`type` = 1  AND `a`.`status` = 0 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `a`.`id`,`a`.`order_sn`,`b`.`goods_id`,`b`.`goods_name_en`,`a`.`goods_num`,`a`.`create_time`,`a`.`shipping_time`,`a`.`shipping_id`,`a`.`operator_id`,`a`.`type`,`b`.`goods_name` FROM `ka_orders` `a` INNER JOIN `ka_goods` `b` ON `a`.`goods_id`=`b`.`goods_id` WHERE  `a`.`aid` = '32'  AND `a`.`sid` = 37  AND `a`.`type` = 1  AND `a`.`status` = 0 ORDER BY `a`.`id`  desc [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `is_level`,`must_name_id`,`must_user_phone` FROM `ka_activity` WHERE  `id` = 32  AND `sid` = 37 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shop` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `name` FROM `ka_shop` WHERE  `id` = 37 LIMIT 1 [ RunTime:0.001000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_codes` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT `c`.`code` FROM `ka_codes` `c` WHERE  `c`.`id` = 63 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `ka_shipping` [ RunTime:0.004000s ]
+[ sql ] [ SQL ] SELECT * FROM `ka_shipping` WHERE  `id` = 79 LIMIT 1 [ RunTime:0.000000s ]
+[ sql ] [ SQL ] SELECT `new_field` FROM `ka_activity` WHERE  `id` = 32 LIMIT 1 [ RunTime:0.000000s ]
+
+---------------------------------------------------------------

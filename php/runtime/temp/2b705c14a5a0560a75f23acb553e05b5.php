@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:48:"./application/admin/view2/orders\order_list.html";i:1541733193;s:44:"./application/admin/view2/public\layout.html";i:1539765626;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:48:"./application/admin/view2/orders\order_list.html";i:1542352186;s:44:"./application/admin/view2/public\layout.html";i:1542249927;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -117,7 +117,7 @@
                         try {
                             log = hex ? hex : 'transparent';
                             if( opacity ) log += ', ' + opacity;
-                            console.log(log);
+//                            console.log(log);
                         } catch(e) {}
                     },
                     theme: 'default'
@@ -191,32 +191,36 @@
                             <div style="text-align: center; width: 150px;" class="">商品型号</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: center; width: 120px;" class="">商品数量</div>
+                            <div style="text-align: center; width: 30px;" class="">数量</div>
                         </th>
 
-                        <?php if($activity_type == '1'): ?>
+                        <?php if($is_level == '1'): ?>
                             <th align="center" abbr="ac_id" axis="col4" class="">
-                                <div style="text-align: center; width: 120px;" class="">银行</div>
+                                <div style="text-align: center; width: 100px;" class="">商品档次</div>
+                            </th>
+                        <?php endif; if($activity_type == '1'): ?>
+                            <th align="center" abbr="ac_id" axis="col4" class="">
+                                <div style="text-align: center; width: 70px;" class="">银行</div>
                             </th>
                             <th align="center" abbr="ac_id" axis="col4" class="">
                                 <div style="text-align: center; width: 120px;" class="">使用的兑换码</div>
                             </th>
                             <?php else: ?>
                             <th align="center" abbr="ac_id" axis="col4" class="">
-                                <div style="text-align: center; width: 120px;" class="">支行名称</div>
+                                <div style="text-align: center; width: 70px;" class="">支行名称</div>
                             </th>
                             <th align="center" abbr="ac_id" axis="col4" class="">
                                 <div style="text-align: center; width: 120px;" class="">客户经理名称</div>
                             </th>
                         <?php endif; ?>
                         <th align="center" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: center; width: 120px;" class="">兑换客户姓名</div>
+                            <div style="text-align: center; width: 80px;" class="">兑换客户姓名</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
                             <div style="text-align: center; width: 120px;" class="">客户身份证号</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: center; width: 120px;" class="">兑换客户电话</div>
+                            <div style="text-align: center; width: 80px;" class="">兑换客户电话</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
                             <div style="text-align: center; width: 120px;" class="">兑换时间</div>
@@ -225,16 +229,16 @@
                             <div style="text-align: center; width: 120px;" class="">发货时间</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 70px;" class="">发货物流</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
                             <div style="text-align: center; width: 120px;" class="">发货单号</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: center; width: 120px;" class="">收货人</div>
+                            <div style="text-align: center; width: 60px;" class="">收货人</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: center; width: 120px;" class="">联系电话</div>
-                        </th>
-                        <th align="center" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: center; width: 120px;" class="">发货物流</div>
+                            <div style="text-align: center; width: 80px;" class="">联系电话</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
                             <div style="text-align: center; width: 120px;" class="">详细地址</div>
@@ -250,7 +254,7 @@
                             <div style="text-align: center; width: 120px;" class="">备注</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: center; width: 100px;">操作</div>
+                            <div style="text-align: center; width: 70px;">操作</div>
                         </th>
                         <th style="width:100%" axis="col7">
                             <div></div>
@@ -281,32 +285,36 @@
                                     <div style="text-align: left; width: 150px;"><?php echo $list['goods_name_en']; ?></div>
                                 </td>
                                 <td align="center" class="">
-                                    <div style="text-align: center; width: 120px;"><?php echo $list['goods_num']; ?></div>
+                                    <div style="text-align: center; width: 30px;"><?php echo $list['goods_num']; ?></div>
                                 </td>
 
-                                <?php if($activity_type == '1'): ?>
+                                <?php if($is_level == '1'): ?>
                                     <td align="center" class="">
-                                        <div style="text-align: center; width: 120px;"><?php echo $list['shop_name']; ?></div>
+                                        <div style="text-align: left; width: 100px;"><?php echo $list['level_title']; ?></div>
+                                    </td>
+                                <?php endif; if($activity_type == '1'): ?>
+                                    <td align="center" class="">
+                                        <div style="text-align: center; width: 70px;"><?php echo $list['shop_name']; ?></div>
                                     </td>
                                     <td align="center" class="">
                                         <div style="text-align: center; width: 120px;"><?php echo $list['code']; ?></div>
                                     </td>
                                     <?php else: ?>
                                     <td align="center" class="">
-                                        <div style="text-align: center; width: 120px;"><?php echo $list['bank_name']; ?></div>
+                                        <div style="text-align: center; width: 70px;"><?php echo $list['bank_name']; ?></div>
                                     </td>
                                     <td align="center" class="">
                                         <div style="text-align: center; width: 120px;"><?php echo $list['sales_name']; ?></div>
                                     </td>
                                 <?php endif; ?>
                                 <td align="center" class="">
-                                    <div style="text-align: center; width: 120px;"><?php echo $list['shipping']['username']; ?></div>
+                                    <div style="text-align: center; width: 80px;"><?php echo $list['shipping']['username']; ?></div>
                                 </td>
                                 <td align="center" class="">
                                     <div style="text-align: center; width: 120px;"><?php echo $list['shipping']['ID_num']; ?></div>
                                 </td>
                                 <td align="center" class="">
-                                    <div style="text-align: center; width: 120px;"><?php echo $list['shipping']['user_phone']; ?></div>
+                                    <div style="text-align: center; width: 80px;"><?php echo $list['shipping']['user_phone']; ?></div>
                                 </td>
                                 <td align="center" class="">
                                     <div style="text-align: center; width: 120px;"><?php echo $list['create_time']; ?></div>
@@ -320,6 +328,9 @@
                                         <?php endif; ?>
                                     </div>
                                 </td>
+                                <td align="center" class="">
+                                    <div style="text-align: center; width:70px;"><?php echo $list['shipping']['shipping_com']; ?></div>
+                                </td>
 
                                 <td align="center" class="">
                                     <div style="text-align: center; width: 120px;"><?php echo $list['shipping']['shipping_sn']; ?></br>
@@ -329,13 +340,10 @@
                                     </div>
                                 </td>
                                 <td align="center" class="">
-                                    <div style="text-align: center; width: 120px;"><?php echo $list['shipping']['consignee']; ?></div>
+                                    <div style="text-align: center; width: 60px;"><?php echo $list['shipping']['consignee']; ?></div>
                                 </td>
                                 <td align="center" class="">
-                                    <div style="text-align: center; width: 120px;"><?php echo $list['shipping']['phone']; ?></div>
-                                </td>
-                                <td align="center" class="">
-                                    <div style="text-align: center; width: 120px;"><?php echo $list['shipping']['shipping_com']; ?></div>
+                                    <div style="text-align: center; width: 80px;"><?php echo $list['shipping']['phone']; ?></div>
                                 </td>
                                 <td align="center" class="">
                                     <div style="text-align: left; width: 120px;"><?php echo $list['shipping']['address']; ?></div>
@@ -357,8 +365,9 @@
 
                                 <?php if($list['shipping_time'] == '0'): ?>
                                     <td align="center">
-                                        <div style="text-align: center; width: 100px;">
+                                        <div style="text-align: center; width: 70px;">
                                             <a class="btn blue" href="javascript:void(0)" onclick="doShipping('<?php echo $list[id]; ?>')"><i class="fa fa-plane"></i>发货</a>
+                                            <a class="btn blue" href="javascript:void(0)" onclick="doDelete('<?php echo $list[id]; ?>')"><i class="fa fa-close"></i>删除</a>
                                         </div>
                                     </td>
                                 <?php endif; ?>
@@ -424,6 +433,31 @@
                 shade: 0.2,
                 area: ['600px', '450px'],
                 content: url
+            });
+        }
+
+        function doDelete(id){
+            var url = "<?php echo U('Admin/Orders/do_delete'); ?>?oid="+id;
+            layer.confirm('你确认要删除该订单吗？删除后不可恢复', function ()
+            {
+                // 确定
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: {'oid':id},
+                    success: function (v) {
+                        layer.closeAll();
+                        if (v.status == 1) {
+                            layer.msg(v.msg, {icon: 1, time: 1000}); //alert(v.msg);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        } else
+                            layer.msg(v.msg, {icon: 2, time: 3000}); //alert(v.msg);
+                    }
+                });
+            }, function (index) {
+                layer.close(index);
             });
         }
         

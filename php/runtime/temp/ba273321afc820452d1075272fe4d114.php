@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:42:"./application/admin/view2/bank\branch.html";i:1540460855;s:44:"./application/admin/view2/public\layout.html";i:1539765626;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:42:"./application/admin/view2/bank\branch.html";i:1540460855;s:44:"./application/admin/view2/public\layout.html";i:1542249927;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -117,7 +117,7 @@
                         try {
                             log = hex ? hex : 'transparent';
                             if( opacity ) log += ', ' + opacity;
-                            console.log(log);
+//                            console.log(log);
                         } catch(e) {}
                     },
                     theme: 'default'

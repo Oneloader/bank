@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:41:"./application/admin/view2/code\index.html";i:1539138094;s:44:"./application/admin/view2/public\layout.html";i:1539765626;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:41:"./application/admin/view2/code\index.html";i:1542186231;s:44:"./application/admin/view2/public\layout.html";i:1542249927;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -117,7 +117,7 @@
                         try {
                             log = hex ? hex : 'transparent';
                             if( opacity ) log += ', ' + opacity;
-                            console.log(log);
+//                            console.log(log);
                         } catch(e) {}
                     },
                     theme: 'default'
@@ -195,10 +195,16 @@
                             <div style="text-align: center; width: 150px;" class="">活动名称</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: center; width: 150px;" class="">兑换码总数</div>
+                            <div style="text-align: center; width: 100px;" class="">兑换码总数</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: center; width: 150px;" class="">已使用数</div>
+                            <div style="text-align: center; width: 100px;" class="">已使用数</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 100px;" class="">未使用数</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 100px;" class="">已作废数</div>
                         </th>
                         <th align="center" axis="col1" class="">
                             <div style="text-align: center; width: 200px;">操作</div>
@@ -225,10 +231,16 @@
                                     <div style="text-align: center; width: 150px;"><?php echo $list['name']; ?></div>
                                 </td>
                                 <td align="center" class="">
-                                    <div style="text-align: center; width: 150px;"><?php echo (isset($list['total']) && ($list['total'] !== '')?$list['total']:0); ?></div>
+                                    <div style="text-align: center; width: 100px;"><?php echo (isset($list['total']) && ($list['total'] !== '')?$list['total']:0); ?></div>
                                 </td>
                                 <td align="center" class="">
-                                    <div style="text-align: center; width: 150px;"><?php echo (isset($list['used']) && ($list['used'] !== '')?$list['used']:0); ?></div>
+                                    <div style="text-align: center; width: 100px;"><?php echo (isset($list['used']) && ($list['used'] !== '')?$list['used']:0); ?></div>
+                                </td>
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 100px;"><?php echo (isset($list['not_used']) && ($list['not_used'] !== '')?$list['not_used']:0); ?></div>
+                                </td>
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 100px;"><?php echo (isset($list['cancel_count']) && ($list['cancel_count'] !== '')?$list['cancel_count']:0); ?></div>
                                 </td>
                                 <td align="center">
                                     <div style="text-align: center; width: 200px;">
@@ -264,6 +276,7 @@
                 title: '查看活动商品',
                 shadeClose: false,
                 shade: 0.2,
+                maxmin:true,
                 area: ['1000px', '550px'],
                 content: url
             });

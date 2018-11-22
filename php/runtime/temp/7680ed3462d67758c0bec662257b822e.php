@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:41:"./application/admin/view2/code\codes.html";i:1542092322;s:44:"./application/admin/view2/public\layout.html";i:1539765626;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:41:"./application/admin/view2/code\codes.html";i:1542188312;s:44:"./application/admin/view2/public\layout.html";i:1542249927;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -117,7 +117,7 @@
                         try {
                             log = hex ? hex : 'transparent';
                             if( opacity ) log += ', ' + opacity;
-                            console.log(log);
+//                            console.log(log);
                         } catch(e) {}
                     },
                     theme: 'default'
@@ -185,8 +185,9 @@
                             <select name="type" id="type">
                                 <option value="0" <?php if($type==0): ?> selected = "selected"<?php endif; ?>>未使用</option>
                                 <option value="1" <?php if($type==1): ?> selected = "selected"<?php endif; ?>>已使用</option>
+                                <option value="2" <?php if($type==2): ?> selected = "selected"<?php endif; ?>>已作废</option>
                             </select>
-                            <input type="text" size="30" name="key_word" class="qsbox" placeholder="订单编号/支行/经理名称" value="<?php echo $keyword; ?>">
+                            <input type="text" size="30" name="key_word" class="qsbox" placeholder="兑换码" value="<?php echo $keyword; ?>">
                             <input type="submit" class="btn" value="搜索">
                         </div>
                     </div>
@@ -272,7 +273,7 @@
                                             <?php if($list['use_status'] == '1'): ?>
                                                 <span style="color:blue;"><?php echo $list['use_time']; ?></span>
                                             <?php else: ?>
-                                                <span style="color:green;"></span>
+                                                <span style="color:red;"><?php echo $list['use_time']; ?></span>
                                             <?php endif; ?>
                                         </div>
                                     </td>

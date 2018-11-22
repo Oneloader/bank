@@ -1,0 +1,303 @@
+<include file="public/layout"/>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page" style="margin-top: -50px;">
+    <div class="flexigrid">
+        <div class="mDiv" style="padding-bottom: 10px;">
+            <div class="tDiv2" style="padding: 0px;">
+
+                <div class="fbutton">
+                    <a href="javascript:void(0)" onclick="downloadErcodes('{$batch}','{$lists|count}',0)">
+                        <div class="add" title="导出数字码Excel">
+                            <span><i class="fa fa-angle-down"></i>导出数字码Excel</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="fbutton">
+                    <a href="javascript:void(0)" onclick="downloadErcodes('{$batch}','{$lists|count}',1)">
+                        <div class="add" title="下载二维码">
+                            <span><i class="fa fa-download"></i>打包下载二维码</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="fbutton">
+                    <a onclick="annul_all_code();" href="javascript:void(0)" id="">
+                        <div class="add" title="作废">
+                            <span><i class="fa fa-remove"></i>作废二维码</span>
+                        </div>
+                    </a>
+                </div>
+
+                <form action="{:U('code/codes',array('aid'=>$aid,'batch'=>$batch))}" id="search-form2" class="navbar-form form-inline" method="post" style="float: right">
+                    <div class="sDiv" style="float: right">
+                        <span>兑换码筛选:</span>
+                        <div class="sDiv2">
+                            <select name="type" id="type">
+                                <option value="0" <if condition='$type==0'> selected = "selected"</if>>未使用</option>
+                                <option value="1" <if condition='$type==1'> selected = "selected"</if>>已使用</option>
+                            </select>
+                            <input type="text" size="30" name="key_word" class="qsbox" placeholder="兑换码" value="{$keyword}">
+                            <input type="submit" class="btn" value="搜索">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th align="sign" abbr="ac_id" axis="col0" class="">
+                            <div style="text-align: center; width: 80px;" class="">
+                                <input type="checkbox" id="chk_all" onclick="$('input[name*=\'code_id\']').prop('checked', this.checked);">
+                                全选
+                            </div>
+                        </th>
+                        <!--<th class="sign" axis="col0">-->
+                            <!--<div style="width: 24px;"><i class="ico-check"></i></div>-->
+                        <!--</th>-->
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 150px;" class="">兑换码编号</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 150px;" class="">二维码</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 120px;" class="">兑换码所属档次</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 120px;" class="">创建时间</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 120px;" class="">使用时间</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 120px;" class="">操作</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <notempty name="lists">
+                        <form id="code_form">
+                            <volist name="lists" id="list">
+                                <tr>
+                                    <td align="sign" class="">
+                                        <div style="text-align: center; width: 80px;">
+                                            <input type="checkbox" name="code_id[]" value="{$list.id}">
+                                        </div>
+                                    </td>
+                                    <!--<td class="sign">-->
+                                        <!--<div style="width: 24px;"><i class="ico-check"></i></div>-->
+                                    <!--</td>-->
+                                    <td align="center" class="">
+                                        <div style="text-align: center; width: 150px;">{$list.code}</div>
+                                    </td>
+                                    <td align="center" class="">
+                                        <div class="show_ercode" style="text-align: center; width: 150px;">
+                                            <img style="cursor:pointer;" width="50" height="50" data-src="{$list.code_url}" src="/public/images/ercode.png" />
+                                        </div>
+                                    </td>
+                                    <td align="center" class="">
+                                        <div style="text-align: center; width: 120px;">{$levels[$list.level_id]}</div>
+                                    </td>
+                                    <td align="center" class="">
+                                        <div style="text-align: center; width: 120px;">
+                                            {$list.create_time}
+                                        </div>
+                                    </td>
+                                    <td align="center" class="">
+                                        <div style="text-align: center; width: 120px;">
+                                            <eq name="list.use_status" value="1">
+                                                <span style="color:blue;">{$list.use_time}</span>
+                                            <else/>
+                                                <span style="color:red;">{$list.use_time}</span>
+                                            </eq>
+                                        </div>
+                                    </td>
+                                    <td align="center" class="">
+                                        <div style="text-align: center; width: 120px;">
+                                            <if condition="$list.use_status eq 1">
+                                                <span style="color:green;">已使用</span>
+                                                <elseif condition="$list.use_status eq 2"/>
+                                                <span style="color:red;">已作废</span>
+                                                <else/>
+                                                <div class="fbutton">
+                                                    <a href="javascript:void(0)" class="annul_code" id="{$list.id}">
+                                                        <div class="del" title="作废">
+                                                            <span><i class="fa fa-remove"></i>作废</span>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </if>
+                                        </div>
+                                    </td>
+                                    <td align="" class="" style="width: 100%;">
+                                        <div></div>
+                                    </td>
+                                </tr>
+                            </volist>
+                        </form>
+                        <else/>
+                        <tr>
+                            <td class="no-data" align="center" axis="col0" colspan="50">
+                                <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+                            </td>
+                        </tr>
+                    </notempty>
+                    </tbody>
+                </table>
+                <notempty name="lists">
+                    <!--分页位置-->
+                    {$pager->show()}
+                </notempty>
+            </div>
+        </div>
+    </div>
+
+    <div id="hover_box" style="position: fixed;width: 200px;height: 200px;background: #fff;padding: 10px;display: none;z-index: 99">
+        <img id="show_img" style="width: 100%" src="" alt="">
+    </div>
+
+    <script>
+        //全选
+        function ckAll(){
+            var flag=document.getElementById("chk_all").checked;
+            var cks=document.getElementsByName("check");
+            for(var i=0;i<cks.length;i++){
+                cks[i].checked=flag;
+            }
+        }
+
+        $('.show_ercode>img').hover(
+                function(event){
+                    var e = event || window.event;
+                    var img_src = $(this).attr('data-src');
+                    $('#show_img').attr('src',img_src);
+                    $('#hover_box').css({
+                        'top':e.clientY-50,
+                        'left':e.clientX-250,
+                        'display':'block'
+                    });
+                },
+                function(){
+                    $('#show_img').attr('src','');
+                    $('#hover_box').css({
+                        'display':'none'
+                    });
+                }
+        );
+
+        /**
+         * 导出兑换码
+         * @param batch
+         * @param num
+         * @param type
+         * @returns {boolean}
+         */
+        function downloadErcodes(batch,num,type){
+            var aid = '{$aid|default=0}';
+            if(num <= 0){
+                layer.msg('请先创建兑换码', {icon: 2, time: 3000});
+                return false;
+            }
+
+            window.location.href = '{:url("Admin/Code/codes")}?export=1&aid='+aid+'&batch='+batch+'&type='+type;
+        }
+
+        $(document).ready(function () {
+            // 点击刷新数据
+            $('.fa-refresh').click(function () {
+                location.href = location.href;
+            });
+        });
+
+        /**
+         * 作废兑换码
+         */
+        $('.annul_code').click(function () {
+            if((window.confirm("删除是不可恢复的，你确认要删除吗？"))){
+                var this_id = this.id;
+//                console.log(this_id);return;
+//            var aid = $("#a_id").val();
+                $.ajax({
+                    type: "POST",
+                    dataType:'json',
+                    url:"{:U('Admin/Code/change_status')}",
+                    data: {'id':this_id},// 你的formid
+                    success: function (data) {
+//                        console.log(data);return;
+                        alert("删除成功");
+                        window.location.reload();
+//                    $('#code_'+this_id).remove();
+                    },
+                    error : function() {
+                        alert("请求失败");
+                    }
+                });
+//            $.ajax({
+//                url : "{:U('Admin/Index/del_new_field')}",
+//                type:'post',
+//                dataType:'json',
+//                data :{"id" : this_id},
+//                // 成功后开启模态框
+//                success : function(obj){
+//                    console.log(obj);return;
+//                    $('#dl_'+this_id).remove();
+//                    alert("删除成功");
+//                },
+//                error : function() {
+//                    alert("请求失败");
+//                }
+//            });
+            }else{
+                return false;
+            }
+        });
+
+
+        function annul_all_code()
+        {
+            if((window.confirm("删除是不可恢复的，你确认要删除吗？"))){
+                if($("input[type='checkbox']:checked").length == 0)
+                {
+                    layer.alert('请选择要作废的兑换码', {icon: 2});
+                    return false;
+                }
+                $.ajax({
+                    url:"{:U('Admin/Code/change_all_status')}",
+                    type:'post',
+                    dataType:'json',
+                    data: $("#code_form").serialize(),
+                    success:function(obj){
+    //                    console.log(obj);return;
+                        if(obj.status !=1){
+                            layer.msg(obj.msg, {icon: 2, time: 3000}); //alert(v.msg);
+                        }else{
+                            layer.msg(obj.msg, {icon: 1, time: 1000}); //alert(v.msg);
+                            setTimeout(function(){
+                                window.location.reload();
+                            },1000);
+                        }
+                    }
+                });
+            }else{
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

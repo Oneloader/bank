@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:48:"./application/admin/view2/bank\change_level.html";i:1539138094;s:44:"./application/admin/view2/public\layout.html";i:1539765626;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:48:"./application/admin/view2/bank\change_level.html";i:1542186579;s:44:"./application/admin/view2/public\layout.html";i:1542249927;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -117,7 +117,7 @@
                         try {
                             log = hex ? hex : 'transparent';
                             if( opacity ) log += ', ' + opacity;
-                            console.log(log);
+//                            console.log(log);
                         } catch(e) {}
                     },
                     theme: 'default'
@@ -265,6 +265,7 @@
                 title: '查看活动商品',
                 shadeClose: false,
                 shade: 0.2,
+                maxmin:true,
                 area: ['1000px', '550px'],
                 content: url
             });

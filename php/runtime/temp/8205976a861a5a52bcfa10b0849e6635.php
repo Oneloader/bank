@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:51:"./application/admin/view2/index\sales_exchange.html";i:1540376983;s:44:"./application/admin/view2/public\layout.html";i:1539765626;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:51:"./application/admin/view2/index\sales_exchange.html";i:1542190835;s:44:"./application/admin/view2/public\layout.html";i:1542249927;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -117,7 +117,7 @@
                         try {
                             log = hex ? hex : 'transparent';
                             if( opacity ) log += ', ' + opacity;
-                            console.log(log);
+//                            console.log(log);
                         } catch(e) {}
                     },
                     theme: 'default'
@@ -203,7 +203,7 @@
                             <div style="width: 24px;"><i class="ico-check"></i></div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
-                            <div style="text-align: center; width: 150px;" class="">活动名称</div>
+                            <div style="text-align: center; width: 100px;" class="">活动名称</div>
                         </th>
                         <th align="center" abbr="ac_id" axis="col4" class="">
                             <div style="text-align: center; width: 150px;" class="">内页banner图</div>
@@ -215,13 +215,13 @@
                             <div style="text-align: center; width: 120px;" class="">结束时间</div>
                         </th>
                         <th align="center" abbr="article_time" axis="col6" class="">
-                            <div style="text-align: center; width: 80px;" class="">是否显示价格</div>
+                            <div style="text-align: center; width: 100px;" class="">是否显示价格</div>
                         </th>
                         <th align="center" abbr="article_time" axis="col6" class="">
                             <div style="text-align: center; width: 80px;" class="">是否开放</div>
                         </th>
                         <th align="center" axis="col1" class="">
-                            <div style="text-align: center; width: 300px;">操作</div>
+                            <div style="text-align: center; width: 100px;">操作</div>
                         </th>
                         <th style="width:100%" axis="col7">
                             <div></div>
@@ -242,7 +242,7 @@
                                     <div style="width: 24px;"><i class="ico-check"></i></div>
                                 </td>
                                 <td align="center" class="">
-                                    <div style="text-align: center; width: 150px;"><?php echo $list['name']; ?></div>
+                                    <div style="text-align: center; width: 100px;"><?php echo $list['name']; ?></div>
                                 </td>
 
                                 <td align="center" class="">
@@ -259,7 +259,7 @@
                                 </td>
 
                                 <td align="center" class="">
-                                    <div style="text-align: center; width: 80px;">
+                                    <div style="text-align: center; width: 100px;">
                                         <?php if($list[is_price] == 1): ?>
                                             <span class="yes" onClick="changeTableVal('activity','id','<?php echo $list['id']; ?>','is_price',this)"><i class="fa fa-check-circle"></i>是</span>
                                             <?php else: ?>
@@ -279,7 +279,7 @@
                                 </td>
 
                                 <td align="left">
-                                    <div style="text-align: left; width: 300px;">
+                                    <div style="text-align: left; width: 100px;">
                                         <a class="btn red" href="javascript:void(0)" onclick="del('<?php echo $list[id]; ?>')"><i class="fa fa-trash-o"></i>删除</a>
                                         <a href="javascript:void(0)" onclick="addBank('<?php echo $list[id]; ?>')" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
                                         <a href="javascript:void(0)" onclick="viewAuth('<?php echo $list[id]; ?>')" class="btn blue"><i class="fa fa-group"></i>授权</a>
@@ -318,6 +318,7 @@
                 title: '兑换列表',
                 shadeClose: false,
                 shade: 0.2,
+                maxmin:true,
                 area: ['1000px', '550px'],
                 content: url
             });
@@ -330,6 +331,7 @@
                 title: '活动档次列表',
                 shadeClose: false,
                 shade: 0.2,
+                maxmin:true,
                 area: ['1100px', '580px'],
                 content: url
             });
@@ -354,6 +356,7 @@
                 title: '查看活动商品',
                 shadeClose: false,
                 shade: 0.2,
+                maxmin:true,
                 area: ['1000px', '550px'],
                 content: url
             });
@@ -366,6 +369,7 @@
                 title: '设置活动权限',
                 shadeClose: false,
                 shade: 0.2,
+                maxmin:true,
                 area: ['1000px', '550px'],
                 content: url
             });

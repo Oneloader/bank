@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:49:"./application/admin/view2/index\select_goods.html";i:1539138094;s:44:"./application/admin/view2/public\layout.html";i:1539765626;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:49:"./application/admin/view2/index\select_goods.html";i:1542265025;s:44:"./application/admin/view2/public\layout.html";i:1542249927;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -117,7 +117,7 @@
                         try {
                             log = hex ? hex : 'transparent';
                             if( opacity ) log += ', ' + opacity;
-                            console.log(log);
+//                            console.log(log);
                         } catch(e) {}
                     },
                     theme: 'default'
@@ -186,11 +186,14 @@
                         <th align="center" abbr="ac_id" axis="col4" class="">
                             <div style="text-align: center; width: 180px;" class="">活动商品剩余库存</div>
                         </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 80px;" class="">是否下架</div>
+                        </th>
                         <!--<th align="center" abbr="ac_id" axis="col4" class="">
                             <div style="text-align: center; width: 180px;" class="">是否使用</div>
                         </th>-->
                         <th align="center" axis="col1" class="">
-                            <div style="text-align: center; width: 250px;">操作</div>
+                            <div style="text-align: center; width: 180px;">操作</div>
                         </th>
                         <th style="width:100%" axis="col7">
                             <div></div>
@@ -218,6 +221,17 @@
                                         <?php echo $list['store']; ?>
                                     </div>
                                 </td>
+
+                                <td align="center" class="">
+                                    <div style="text-align: center; width: 80px;">
+                                        <?php if($list[status] == 2): ?>
+                                            <span class="yes" onClick="under('<?php echo $list['id']; ?>',1)"><i class="fa fa-check-circle"></i>是</span>
+                                            <?php else: ?>
+                                            <span class="no" onClick="under('<?php echo $list['id']; ?>',2)"><i class="fa fa-ban"></i>否</span>
+                                        <?php endif; ?>
+                                    </div>
+                                </td>
+
                                 <!--<td align="center" class="">
                                     <div style="text-align: center; width: 180px;">
                                         <?php if($list["status"] == 1): ?>
@@ -228,7 +242,7 @@
                                     </div>
                                 </td>-->
                                 <td align="center">
-                                    <div style="text-align: center; width: 250px;">
+                                    <div style="text-align: center; width: 180px;">
                                         <a class="btn red" href="javascript:void(0)" onclick="del('<?php echo $list[id]; ?>')"><i class="fa fa-trash-o"></i>删除</a>
                                         <a href="javascript:void(0)" onclick="edit_stores('<?php echo $list[id]; ?>','<?php echo $list[store]; ?>','<?php echo htmlspecialchars($list[goods_name]); ?>')" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
                                     </div>
@@ -262,6 +276,7 @@
                 title: '添加活动商品',
                 shadeClose: false,
                 shade: 0.2,
+                maxmin:true,
                 area: ['550px', '500px'],
                 content: url
             });
@@ -290,6 +305,29 @@
                 });
             }, function (index) {
                     layer.close(index);
+            });
+        }
+
+        // 下架操作
+        function under(id,status) {
+            var aid = '<?php echo (isset($aid) && ($aid !== '')?$aid:0); ?>';
+            var level_id = '<?php echo (isset($level_id) && ($level_id !== '')?$level_id:0); ?>';
+                // 确定
+            $.ajax({
+                url: "<?php echo U('Admin/Index/underActivityGoods'); ?>",
+                type: 'post',
+                data: {id: id,aid:aid,level_id:level_id,status:status},
+                success: function (v) {
+                    layer.closeAll();
+                    var v = eval('(' + v + ')');
+                    if (v.hasOwnProperty('status') && (v.status == 1)) {
+                        layer.msg(v.msg, {icon: 1, time: 1000}); //alert(v.msg);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    } else
+                        layer.msg(v.msg, {icon: 2, time: 1000}); //alert(v.msg);
+                }
             });
         }
 
