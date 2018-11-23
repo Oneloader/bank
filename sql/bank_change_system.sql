@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 13/11/2018 10:35:01
+ Date: 23/11/2018 13:48:25
 */
 
 SET NAMES utf8mb4;
@@ -31,7 +31,7 @@ CREATE TABLE `ka_activity`  (
   `is_level` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0:不分级   1:分级',
   `is_stock` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0:不显示库存  1:显示库存',
   `is_price` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0:不显示价格  1:显示价格',
-  `choice_num` tinyint(1) NOT NULL COMMENT '0:不能选择商品数量  1:可以选择商品数量',
+  `choice_num` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0:不能选择商品数量  1:可以选择商品数量',
   `must_name_id` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '0:不显示客户姓名、身份证号 1:显示客户姓名、身份证号',
   `must_user_phone` tinyint(1) NOT NULL COMMENT '0:不显示客户手机号 1:显示客户手机号',
   `id_length` int(2) UNSIGNED NOT NULL COMMENT '需要输入的身份证号长度',
@@ -42,7 +42,7 @@ CREATE TABLE `ka_activity`  (
   `sid` mediumint(5) UNSIGNED NOT NULL DEFAULT 0,
   `new_field` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '自定义字段',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 33 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '活动表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 36 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '活动表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ka_activity
@@ -71,10 +71,13 @@ INSERT INTO `ka_activity` VALUES (25, '测试用户活动', 'http://www.bank.com
 INSERT INTO `ka_activity` VALUES (26, '测试销售活动test', 'http://ex.li99.com.cn/public/upload/activity/2018/10-24/30b3767ab150da2639c946812e898e97.jpg', 'http://ex.li99.com.cn/public/upload/activity/2018/10-24/ca5f63efeaa5fce2c8fd25dd14156741.jpg', '#e32d2d', NULL, 0, 0, 0, 0, 0, 0, 0, 0, 1540376686, 2, 2, 37, NULL);
 INSERT INTO `ka_activity` VALUES (27, '发放活动测试', '', 'http://ex.li99.com.cn/public/upload/activity/2018/10-24/2b43ab1ca740814a082625e961d7b8d8.jpg', '#750c22', NULL, 1, 0, 1, 0, 0, 0, 0, 0, 1540981666, 2, 2, 37, NULL);
 INSERT INTO `ka_activity` VALUES (28, '95561降级挽回活动', '', 'http://ex.li99.com.cn/public/upload/activity/2018/10-24/249496525efa82340beb28a2cd13fba4.jpg', '#ffffff', NULL, 1, 0, 0, 0, 0, 0, 0, 0, 1546300800, 1, 2, 37, NULL);
-INSERT INTO `ka_activity` VALUES (29, '95561降级挽回活动', 'http://www.bank.com/public/upload/activity/2018/10-30/770524992e71b6891e24fa9cce51bab3.jpg', 'http://ex.li99.com.cn/public/upload/activity/2018/10-25/2be62ccc9e5d5bc5e14d807c173f6afa.gif', '#b22c29', NULL, 1, 1, 0, 1, 1, 0, 6, 1538370715, 1546300800, 2, 1, 37, '[{\"title\":\"\\u5b66\\u6821\\u540d\",\"remarks\":\"\\u8bf7\\u8f93\\u5165\\u5b66\\u6821\\u5168\\u79f0\"},{\"title\":\"\\u5a5a\\u59fb\\u72b6\\u51b5\",\"remarks\":\"\\u662f\\u5426\\u7ed3\\u5a5a\"},{\"title\":\"\\u662f\\u5426\\u6709\\u5b50\\u5973\",\"remarks\":\"\\u662f\\u6216\\u5426\"}]');
-INSERT INTO `ka_activity` VALUES (30, '兑换活动test', 'http://www.bank.com/public/upload/activity/2018/10-29/6474bfe1398932a86205eb324ee84a38.jpg', 'http://www.bank.com/public/upload/activity/2018/10-29/25d10b8aead0aabe0f8d9fd8c25dd276.jpg', '#ba3737', '#421111', 1, 0, 1, 0, 1, 1, 4, 1538323200, 1546327360, 1, 1, 37, '[{\"title\":\"41\",\"en_title\":\"41\",\"remarks\":\"41\"},{\"title\":\"14\",\"en_title\":\"14\",\"remarks\":\"14\"}]');
+INSERT INTO `ka_activity` VALUES (29, '95561降级挽回活动', 'http://www.bank.com/public/upload/activity/2018/10-30/770524992e71b6891e24fa9cce51bab3.jpg', 'http://ex.li99.com.cn/public/upload/activity/2018/10-25/2be62ccc9e5d5bc5e14d807c173f6afa.gif', '#b22c29', NULL, 1, 0, 0, 1, 1, 0, 6, 1538370715, 1546300800, 2, 1, 37, '[{\"title\":\"\\u5b66\\u6821\\u540d\",\"remarks\":\"\\u8bf7\\u8f93\\u5165\\u5b66\\u6821\\u5168\\u79f0\"},{\"title\":\"\\u5a5a\\u59fb\\u72b6\\u51b5\",\"remarks\":\"\\u662f\\u5426\\u7ed3\\u5a5a\"},{\"title\":\"\\u662f\\u5426\\u6709\\u5b50\\u5973\",\"remarks\":\"\\u662f\\u6216\\u5426\"}]');
+INSERT INTO `ka_activity` VALUES (30, '兑换活动test', 'http://www.bank.com/public/upload/activity/2018/10-29/6474bfe1398932a86205eb324ee84a38.jpg', 'http://www.bank.com/public/upload/activity/2018/10-29/25d10b8aead0aabe0f8d9fd8c25dd276.jpg', '#ba3737', '#421111', 1, 1, 1, 0, 1, 1, 4, 1538323200, 1546327360, 1, 1, 37, '[{\"title\":\"41\",\"remarks\":\"41\"},{\"title\":\"14\",\"remarks\":\"14\"}]');
 INSERT INTO `ka_activity` VALUES (31, '测试活动test', 'http://www.bank.com/public/upload/activity/2018/10-29/0ec127712f8115a12b87ac5ecf9e471e.jpg', 'http://www.bank.com/public/upload/activity/2018/10-29/592cd0a0aab19da637ee8c93ae664c69.png', '#9c5353', '#505299', 0, 1, 0, 0, 0, 0, 6, 1540806048, 1548927651, 2, 1, 37, '[{\"title\":\"12\",\"en_title\":\"12\",\"remarks\":\"12\"},{\"title\":\"21\",\"en_title\":\"21\",\"remarks\":\"21\"}]');
 INSERT INTO `ka_activity` VALUES (32, '测试活动', 'http://www.bank.com/public/upload/activity/2018/11-12/fa3d049f88742ac0dfcbd8229c8fd610.jpg', 'http://www.bank.com/public/upload/activity/2018/11-12/554e29e612da136fc9b51e59d233c8c8.png', '#d43b3b', NULL, 0, 0, 0, 0, 0, 0, 4, 1541994750, 1548388352, 1, 1, 37, NULL);
+INSERT INTO `ka_activity` VALUES (33, '测试活动', 'http://www.bank.com/public/upload/activity/2018/11-13/8060da5d6311a0e77601dab55fe8e41c.png', 'http://www.bank.com/public/upload/activity/2018/11-13/f588023a5a8d0be4e17fcee234b4a830.jpg', '#f22e2e', NULL, 0, 0, 0, 0, 0, 0, 0, 1542093964, 1548919566, 2, 1, 32, NULL);
+INSERT INTO `ka_activity` VALUES (34, '兴业银行测试活动', 'http://www.bank.com/public/upload/activity/2018/11-15/e5105fc95bb9558958856a6bff7d6e62.jpg', 'http://www.bank.com/public/upload/activity/2018/11-15/49933104a70b5e48262034225cdce8e9.jpg', '#c44141', NULL, 0, 0, 0, 0, 0, 0, 0, 1542247682, 1546308484, 1, 0, 37, '[{\"title\":\"\",\"remarks\":\"\"}]');
+INSERT INTO `ka_activity` VALUES (35, '发放活动测试', 'http://www.bank.com/public/upload/activity/2018/11-15/fcd086b5f65bd2b882fcb37a36f28e4a.jpg', 'http://www.bank.com/public/upload/activity/2018/11-15/221220e79a0e05b7eec1cbcabc5126aa.jpg', '#ba1717', NULL, 0, 0, 0, 0, 1, 0, 0, 1542247996, 1546308798, 2, 1, 37, '[{\"title\":\"\",\"remarks\":\"\"}]');
 
 -- ----------------------------
 -- Table structure for ka_activity_auth
@@ -89,7 +92,7 @@ CREATE TABLE `ka_activity_auth`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `as`(`aid`, `sid`) USING BTREE,
   INDEX `ss`(`sales_id`, `sid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 155 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '活动权限表（与销售经理关系表）' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 156 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '活动权限表（与销售经理关系表）' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of ka_activity_auth
@@ -237,6 +240,7 @@ INSERT INTO `ka_activity_auth` VALUES (150, 29, 138, 0, 37);
 INSERT INTO `ka_activity_auth` VALUES (152, 29, 139, 0, 37);
 INSERT INTO `ka_activity_auth` VALUES (153, 31, 12, 0, 37);
 INSERT INTO `ka_activity_auth` VALUES (154, 29, 140, 1, 37);
+INSERT INTO `ka_activity_auth` VALUES (155, 33, 5, 1, 32);
 
 -- ----------------------------
 -- Table structure for ka_activity_goods
@@ -253,7 +257,7 @@ CREATE TABLE `ka_activity_goods`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ag`(`aid`, `goods_id`) USING BTREE,
   INDEX `alg`(`aid`, `level_id`, `goods_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 108 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 113 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of ka_activity_goods
@@ -304,23 +308,23 @@ INSERT INTO `ka_activity_goods` VALUES (62, 28, 20, 29, 100, 1, 37);
 INSERT INTO `ka_activity_goods` VALUES (63, 28, 20, 30, 100, 1, 37);
 INSERT INTO `ka_activity_goods` VALUES (64, 28, 20, 31, 100, 1, 37);
 INSERT INTO `ka_activity_goods` VALUES (65, 28, 20, 32, 100, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (67, 29, 21, 16, 51, 1, 37);
+INSERT INTO `ka_activity_goods` VALUES (67, 29, 21, 16, 50, 1, 37);
 INSERT INTO `ka_activity_goods` VALUES (68, 29, 21, 17, 100, 1, 37);
 INSERT INTO `ka_activity_goods` VALUES (69, 29, 21, 18, 92, 1, 37);
 INSERT INTO `ka_activity_goods` VALUES (70, 29, 21, 19, 100, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (71, 29, 21, 20, 99, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (74, 29, 22, 21, 99, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (75, 29, 22, 22, 100, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (76, 29, 22, 23, 100, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (77, 29, 22, 24, 100, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (78, 29, 22, 25, 90, 1, 37);
+INSERT INTO `ka_activity_goods` VALUES (71, 29, 21, 20, 96, 2, 37);
+INSERT INTO `ka_activity_goods` VALUES (74, 29, 22, 21, 99, 2, 37);
+INSERT INTO `ka_activity_goods` VALUES (75, 29, 22, 22, 100, 2, 37);
+INSERT INTO `ka_activity_goods` VALUES (76, 29, 22, 23, 100, 2, 37);
+INSERT INTO `ka_activity_goods` VALUES (77, 29, 22, 24, 100, 2, 37);
+INSERT INTO `ka_activity_goods` VALUES (78, 29, 22, 25, 90, 2, 37);
 INSERT INTO `ka_activity_goods` VALUES (79, 29, 22, 26, 100, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (81, 29, 23, 27, 96, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (82, 29, 23, 28, 100, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (83, 29, 23, 29, 100, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (84, 29, 23, 30, 100, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (85, 29, 23, 31, 100, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (86, 29, 23, 32, 100, 1, 37);
+INSERT INTO `ka_activity_goods` VALUES (81, 29, 23, 27, 96, 2, 37);
+INSERT INTO `ka_activity_goods` VALUES (82, 29, 23, 28, 98, 2, 37);
+INSERT INTO `ka_activity_goods` VALUES (83, 29, 23, 29, 100, 2, 37);
+INSERT INTO `ka_activity_goods` VALUES (84, 29, 23, 30, 100, 2, 37);
+INSERT INTO `ka_activity_goods` VALUES (85, 29, 23, 31, 100, 2, 37);
+INSERT INTO `ka_activity_goods` VALUES (86, 29, 23, 32, 100, 2, 37);
 INSERT INTO `ka_activity_goods` VALUES (88, 17, 16, 42, 500, 1, 33);
 INSERT INTO `ka_activity_goods` VALUES (89, 30, 25, 18, 50, 1, 37);
 INSERT INTO `ka_activity_goods` VALUES (90, 30, 25, 20, 50, 1, 37);
@@ -334,7 +338,12 @@ INSERT INTO `ka_activity_goods` VALUES (103, 31, 0, 7, 10, 1, 37);
 INSERT INTO `ka_activity_goods` VALUES (104, 31, 0, 10, 10, 1, 37);
 INSERT INTO `ka_activity_goods` VALUES (105, 31, 0, 11, 10, 1, 37);
 INSERT INTO `ka_activity_goods` VALUES (106, 31, 0, 12, 10, 1, 37);
-INSERT INTO `ka_activity_goods` VALUES (107, 32, 0, 12, 3, 1, 37);
+INSERT INTO `ka_activity_goods` VALUES (107, 32, 0, 12, 3, 2, 37);
+INSERT INTO `ka_activity_goods` VALUES (108, 33, 0, 12, 10, 1, 32);
+INSERT INTO `ka_activity_goods` VALUES (109, 33, 0, 25, 0, 1, 32);
+INSERT INTO `ka_activity_goods` VALUES (110, 33, 0, 43, 50, 1, 32);
+INSERT INTO `ka_activity_goods` VALUES (111, 30, 25, 7, 20, 2, 37);
+INSERT INTO `ka_activity_goods` VALUES (112, 30, 25, 11, 50, 2, 37);
 
 -- ----------------------------
 -- Table structure for ka_ad
@@ -400,7 +409,7 @@ CREATE TABLE `ka_admin`  (
 -- ----------------------------
 -- Records of ka_admin
 -- ----------------------------
-INSERT INTO `ka_admin` VALUES (1, 'admin', '654345353@qq.com', '773f53c7a16fde9dc1e4d042b9cee221', NULL, 1496768089, 1541993245, '127.0.0.1', '', '', 0, 0, NULL, 0, 1);
+INSERT INTO `ka_admin` VALUES (1, 'admin', '654345353@qq.com', '773f53c7a16fde9dc1e4d042b9cee221', NULL, 1496768089, 1542594271, '127.0.0.1', '', '', 0, 0, NULL, 0, 1);
 INSERT INTO `ka_admin` VALUES (2, 'wuzhi0913', '', '3975656c1468b9a88430c4a687b557cf', NULL, 1540387322, 0, '', NULL, '', 0, 0, NULL, 37, 0);
 INSERT INTO `ka_admin` VALUES (3, 'wangdi', '', '6f6430dcd6121af71f514c38afe79dfd', NULL, 1541410676, 1541478843, '127.0.0.1', NULL, '', 0, 0, NULL, 37, 2);
 
@@ -418,7 +427,7 @@ CREATE TABLE `ka_admin_log`  (
   `sid` int(10) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`log_id`) USING BTREE,
   INDEX `a`(`action`, `sid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3316 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3349 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of ka_admin_log
@@ -1155,6 +1164,39 @@ INSERT INTO `ka_admin_log` VALUES (3312, 1, 'n', '编辑活动【】成功', '12
 INSERT INTO `ka_admin_log` VALUES (3313, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1541995556, 37);
 INSERT INTO `ka_admin_log` VALUES (3314, 1, 'n', '生成兑换码成功，批次编号【201811121207_32_2】', '127.0.0.1', 1541995638, 37);
 INSERT INTO `ka_admin_log` VALUES (3315, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1541995727, 37);
+INSERT INTO `ka_admin_log` VALUES (3316, 1, 'n', '后台登录', '127.0.0.1', 1542090003, 0);
+INSERT INTO `ka_admin_log` VALUES (3317, 1, 'n', '添加支行【测试】成功', '127.0.0.1', 1542093676, 33);
+INSERT INTO `ka_admin_log` VALUES (3318, 1, 'n', '添加销售经理【18140191539】成功', '127.0.0.1', 1542093684, 33);
+INSERT INTO `ka_admin_log` VALUES (3319, 1, 'n', '添加活动【】成功', '127.0.0.1', 1542093970, 32);
+INSERT INTO `ka_admin_log` VALUES (3320, 1, 'n', '后台登录', '127.0.0.1', 1542165555, 0);
+INSERT INTO `ka_admin_log` VALUES (3321, 1, 'n', '生成兑换码成功，批次编号【201811141728_30_1】', '127.0.0.1', 1542187718, 37);
+INSERT INTO `ka_admin_log` VALUES (3322, 1, 'n', '订单【orderid：2】发货成功', '127.0.0.1', 1542190332, 37);
+INSERT INTO `ka_admin_log` VALUES (3323, 1, 'n', '后台登录', '127.0.0.1', 1542246569, 0);
+INSERT INTO `ka_admin_log` VALUES (3324, 1, 'n', '添加银行【工商银行】', '127.0.0.1', 1542247630, 0);
+INSERT INTO `ka_admin_log` VALUES (3325, 1, 'n', '添加活动【】成功', '127.0.0.1', 1542247690, 37);
+INSERT INTO `ka_admin_log` VALUES (3326, 1, 'n', '添加活动【】成功', '127.0.0.1', 1542248002, 37);
+INSERT INTO `ka_admin_log` VALUES (3327, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542248018, 37);
+INSERT INTO `ka_admin_log` VALUES (3328, 1, 'n', '生成兑换码成功，批次编号【201811151254_30_1】', '127.0.0.1', 1542257738, 37);
+INSERT INTO `ka_admin_log` VALUES (3329, 1, 'n', '生成兑换码成功，批次编号【201811151506_32_1】', '127.0.0.1', 1542265605, 37);
+INSERT INTO `ka_admin_log` VALUES (3330, 1, 'n', '后台登录', '127.0.0.1', 1542347590, 0);
+INSERT INTO `ka_admin_log` VALUES (3331, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542348473, 37);
+INSERT INTO `ka_admin_log` VALUES (3332, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542348500, 37);
+INSERT INTO `ka_admin_log` VALUES (3333, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542349263, 37);
+INSERT INTO `ka_admin_log` VALUES (3334, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542349574, 37);
+INSERT INTO `ka_admin_log` VALUES (3335, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542349581, 37);
+INSERT INTO `ka_admin_log` VALUES (3336, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542349782, 37);
+INSERT INTO `ka_admin_log` VALUES (3337, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542349800, 37);
+INSERT INTO `ka_admin_log` VALUES (3338, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542349819, 37);
+INSERT INTO `ka_admin_log` VALUES (3339, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542349825, 37);
+INSERT INTO `ka_admin_log` VALUES (3340, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542349879, 37);
+INSERT INTO `ka_admin_log` VALUES (3341, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542349889, 37);
+INSERT INTO `ka_admin_log` VALUES (3342, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542349923, 37);
+INSERT INTO `ka_admin_log` VALUES (3343, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542350146, 37);
+INSERT INTO `ka_admin_log` VALUES (3344, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542350213, 37);
+INSERT INTO `ka_admin_log` VALUES (3345, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542350482, 37);
+INSERT INTO `ka_admin_log` VALUES (3346, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542350822, 37);
+INSERT INTO `ka_admin_log` VALUES (3347, 1, 'n', '编辑活动【】成功', '127.0.0.1', 1542350888, 37);
+INSERT INTO `ka_admin_log` VALUES (3348, 1, 'n', '后台登录', '127.0.0.1', 1542594271, 0);
 
 -- ----------------------------
 -- Table structure for ka_admin_role
@@ -1186,7 +1228,7 @@ CREATE TABLE `ka_banks`  (
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '银行支行名称',
   `sid` mediumint(5) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 130 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 131 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ka_banks
@@ -1318,6 +1360,7 @@ INSERT INTO `ka_banks` VALUES (126, '宜宾江北五粮液大道支行', 37);
 INSERT INTO `ka_banks` VALUES (127, '莱茵河畔社区支行', 37);
 INSERT INTO `ka_banks` VALUES (128, '临港地中海蓝湾社区支行', 37);
 INSERT INTO `ka_banks` VALUES (129, '石油路社区支行', 37);
+INSERT INTO `ka_banks` VALUES (130, '测试', 33);
 
 -- ----------------------------
 -- Table structure for ka_change_level
@@ -1377,7 +1420,7 @@ CREATE TABLE `ka_codes`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ag`(`aid`, `code`) USING BTREE,
   INDEX `alg`(`aid`, `level_id`, `code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 68 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 336 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of ka_codes
@@ -1385,8 +1428,8 @@ CREATE TABLE `ka_codes`  (
 INSERT INTO `ka_codes` VALUES (1, 12, 8, '201810171828_12_1', 'JMMKOVOH', '/public/upload/ercode/201810171828_12_1/JMMKOVOH.png', '2018-10-17', '2018-10-17 18:28:19', 0, 0, NULL, 31);
 INSERT INTO `ka_codes` VALUES (2, 12, 8, '201810171828_12_1', 'EEUBE1KD', '/public/upload/ercode/201810171828_12_1/EEUBE1KD.png', '2018-10-17', '2018-10-17 18:28:19', 1, 22, '2018-10-23 14:56:34', 31);
 INSERT INTO `ka_codes` VALUES (3, 12, 8, '201810171828_12_1', 'BNDMWSTM', '/public/upload/ercode/201810171828_12_1/BNDMWSTM.png', '2018-10-17', '2018-10-17 18:28:19', 1, 26, '2018-10-24 10:55:54', 31);
-INSERT INTO `ka_codes` VALUES (4, 12, 8, '201810171828_12_1', '77EBBZDE', '/public/upload/ercode/201810171828_12_1/77EBBZDE.png', '2018-10-17', '2018-10-17 18:28:19', 1, 25, '2018-10-23 18:44:42', 31);
-INSERT INTO `ka_codes` VALUES (5, 12, 8, '201810171828_12_1', 'GNHGXK13', '/public/upload/ercode/201810171828_12_1/GNHGXK13.png', '2018-10-17', '2018-10-17 18:28:19', 1, 7, '2018-10-19 17:44:24', 31);
+INSERT INTO `ka_codes` VALUES (4, 12, 8, '201810171828_12_1', '77EBBZDE', '/public/upload/ercode/201810171828_12_1/77EBBZDE.png', '2018-10-17', '2018-10-17 18:28:19', 0, 25, '2018-10-23 18:44:42', 31);
+INSERT INTO `ka_codes` VALUES (5, 12, 8, '201810171828_12_1', 'GNHGXK13', '/public/upload/ercode/201810171828_12_1/GNHGXK13.png', '2018-10-17', '2018-10-17 18:28:19', 0, 0, '0000-00-00 00:00:00', 31);
 INSERT INTO `ka_codes` VALUES (6, 12, 8, '201810171828_12_1', 'TD3EB8QB', '/public/upload/ercode/201810171828_12_1/TD3EB8QB.png', '2018-10-17', '2018-10-17 18:28:19', 1, 6, '2018-10-19 17:12:27', 31);
 INSERT INTO `ka_codes` VALUES (7, 12, 8, '201810171828_12_1', 'AVPFG5MD', '/public/upload/ercode/201810171828_12_1/AVPFG5MD.png', '2018-10-17', '2018-10-17 18:28:19', 1, 5, '2018-10-19 15:53:10', 31);
 INSERT INTO `ka_codes` VALUES (8, 12, 8, '201810171828_12_1', 'PFXGKQ5J', '/public/upload/ercode/201810171828_12_1/PFXGKQ5J.png', '2018-10-17', '2018-10-17 18:28:19', 1, 4, '2018-10-18 14:50:06', 31);
@@ -1412,9 +1455,9 @@ INSERT INTO `ka_codes` VALUES (38, 17, 17, '201810201209_17_4', 'LVHOTPBN', '/pu
 INSERT INTO `ka_codes` VALUES (39, 17, 17, '201810201209_17_4', 'HKNGVLLB', '/public/upload/ercode/201810201209_17_4/HKNGVLLB.png', '2018-10-20', '2018-10-20 12:09:48', 0, 0, NULL, 33);
 INSERT INTO `ka_codes` VALUES (40, 17, 17, '201810201209_17_4', 'IQNUI3JC', '/public/upload/ercode/201810201209_17_4/IQNUI3JC.png', '2018-10-20', '2018-10-20 12:09:48', 0, 0, NULL, 33);
 INSERT INTO `ka_codes` VALUES (41, 17, 17, '201810201209_17_4', 'WXTDHDKC', '/public/upload/ercode/201810201209_17_4/WXTDHDKC.png', '2018-10-20', '2018-10-20 12:09:48', 1, 50, '2018-11-06 14:29:27', 33);
-INSERT INTO `ka_codes` VALUES (44, 30, 24, '201810291704_30_1', 'NQHDADE4', '/public/upload/ercode/201810291704_30_1/NQHDADE4.png', '2018-10-29', '2018-10-29 17:04:14', 2, 0, NULL, 37);
-INSERT INTO `ka_codes` VALUES (45, 30, 24, '201810291704_30_1', 'TAWAE7EG', '/public/upload/ercode/201810291704_30_1/TAWAE7EG.png', '2018-10-29', '2018-10-29 17:04:14', 2, 0, NULL, 37);
-INSERT INTO `ka_codes` VALUES (46, 30, 24, '201810291704_30_1', 'WMEKHR41', '/public/upload/ercode/201810291704_30_1/WMEKHR41.png', '2018-10-29', '2018-10-29 17:04:14', 2, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (44, 30, 24, '201810291704_30_1', 'NQHDADE4', '/public/upload/ercode/201810291704_30_1/NQHDADE4.png', '2018-10-29', '2018-10-29 17:04:14', 1, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (45, 30, 24, '201810291704_30_1', 'TAWAE7EG', '/public/upload/ercode/201810291704_30_1/TAWAE7EG.png', '2018-10-29', '2018-10-29 17:04:14', 1, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (46, 30, 24, '201810291704_30_1', 'WMEKHR41', '/public/upload/ercode/201810291704_30_1/WMEKHR41.png', '2018-10-29', '2018-10-29 17:04:14', 1, 0, NULL, 37);
 INSERT INTO `ka_codes` VALUES (47, 30, 24, '201810291704_30_1', 'EFJTN2AC', '/public/upload/ercode/201810291704_30_1/EFJTN2AC.png', '2018-10-29', '2018-10-29 17:04:14', 1, 40, '2018-10-31 17:49:54', 37);
 INSERT INTO `ka_codes` VALUES (48, 30, 24, '201810291704_30_1', 'HAHN3HEE', '/public/upload/ercode/201810291704_30_1/HAHN3HEE.png', '2018-10-29', '2018-10-29 17:04:14', 1, 39, '2018-10-31 15:46:28', 37);
 INSERT INTO `ka_codes` VALUES (49, 30, 24, '201810291704_30_1', 'JAEJDEFE', '/public/upload/ercode/201810291704_30_1/JAEJDEFE.png', '2018-10-29', '2018-10-29 17:04:14', 1, 37, '2018-10-31 15:39:18', 37);
@@ -1423,18 +1466,230 @@ INSERT INTO `ka_codes` VALUES (51, 30, 24, '201810291704_30_1', 'FMMGXPKB', '/pu
 INSERT INTO `ka_codes` VALUES (52, 30, 24, '201810291704_30_1', 'GGE5DEDZ', '/public/upload/ercode/201810291704_30_1/GGE5DEDZ.png', '2018-10-29', '2018-10-29 17:04:14', 1, 31, '2018-10-30 15:39:11', 37);
 INSERT INTO `ka_codes` VALUES (53, 30, 24, '201810291704_30_1', 'CNU75ECT', '/public/upload/ercode/201810291704_30_1/CNU75ECT.png', '2018-10-29', '2018-10-29 17:04:14', 1, 27, '2018-10-30 14:32:11', 37);
 INSERT INTO `ka_codes` VALUES (54, 30, 24, '201810301445_30_1', 'CBC_E3ZDGWAS', '/public/upload/ercode/201810301445_30_1/CBC_E3ZDGWAS.png', '2018-10-30', '2018-10-30 14:46:05', 0, 0, NULL, 37);
-INSERT INTO `ka_codes` VALUES (55, 30, 25, '201810301540_30_2', 'BCB_UBFKAOLC', '/public/upload/ercode/201810301540_30_2/BCB_UBFKAOLC.png', '2018-10-30', '2018-10-30 15:40:44', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (55, 30, 25, '201810301540_30_2', 'BCB_UBFKAOLC', '/public/upload/ercode/201810301540_30_2/BCB_UBFKAOLC.png', '2018-10-30', '2018-10-30 15:40:44', 2, 0, '2018-11-14 15:20:56', 37);
 INSERT INTO `ka_codes` VALUES (56, 30, 25, '201810301540_30_2', 'BCB_CMQMKK9Y', '/public/upload/ercode/201810301540_30_2/BCB_CMQMKK9Y.png', '2018-10-30', '2018-10-30 15:40:44', 1, 33, '2018-10-30 15:42:56', 37);
-INSERT INTO `ka_codes` VALUES (57, 30, 24, '201811091420_30_1', 'QYSBLELZ', '/public/upload/ercode/201811091420_30_1/QYSBLELZ.png', '2018-11-09', '2018-11-09 14:20:47', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (57, 30, 24, '201811091420_30_1', 'QYSBLELZ', '/public/upload/ercode/201811091420_30_1/QYSBLELZ.png', '2018-11-09', '2018-11-09 14:20:47', 2, 0, '2018-11-14 15:37:49', 37);
 INSERT INTO `ka_codes` VALUES (58, 30, 24, '201811091420_30_2', 'ABCOIPPW4JH', '/public/upload/ercode/201811091420_30_2/ABCOIPPW4JH.png', '2018-11-09', '2018-11-09 14:21:04', 1, 71, '2018-11-09 19:10:12', 37);
 INSERT INTO `ka_codes` VALUES (59, 30, 24, '201811121127_30_1', 'LPQXNZOG', '/public/upload/ercode/201811121127_30_1/LPQXNZOG.png', '2018-11-12', '2018-11-12 11:28:59', 1, 72, '2018-11-12 11:37:25', 37);
 INSERT INTO `ka_codes` VALUES (60, 32, 0, '201811121154_32_1', 'testD9HB389P', '/public/upload/ercode/201811121154_32_1/testD9HB389P.png', '2018-11-12', '2018-11-12 11:54:18', 1, 74, '2018-11-12 12:06:36', 37);
 INSERT INTO `ka_codes` VALUES (61, 32, 0, '201811121154_32_1', 'test633GFP16', '/public/upload/ercode/201811121154_32_1/test633GFP16.png', '2018-11-12', '2018-11-12 11:54:18', 1, 73, '2018-11-12 11:55:02', 37);
 INSERT INTO `ka_codes` VALUES (63, 32, 0, '201811121207_32_2', 'againGK3MZW9G', '/public/upload/ercode/201811121207_32_2/againGK3MZW9G.png', '2018-11-12', '2018-11-12 12:07:18', 1, 2, '2018-11-12 12:30:47', 37);
-INSERT INTO `ka_codes` VALUES (64, 32, 0, '201811121207_32_2', 'againKHZNF3N1', '/public/upload/ercode/201811121207_32_2/againKHZNF3N1.png', '2018-11-12', '2018-11-12 12:07:18', 1, 1, '2018-11-12 12:30:10', 37);
+INSERT INTO `ka_codes` VALUES (64, 32, 0, '201811121207_32_2', 'againKHZNF3N1', '/public/upload/ercode/201811121207_32_2/againKHZNF3N1.png', '2018-11-12', '2018-11-12 12:07:18', 2, 1, '2018-11-14 15:40:02', 37);
 INSERT INTO `ka_codes` VALUES (65, 32, 0, '201811121207_32_2', 'againFDLK5BLP', '/public/upload/ercode/201811121207_32_2/againFDLK5BLP.png', '2018-11-12', '2018-11-12 12:07:18', 1, 77, '2018-11-12 12:09:12', 37);
 INSERT INTO `ka_codes` VALUES (66, 32, 0, '201811121207_32_2', 'againOCHSLBNZ', '/public/upload/ercode/201811121207_32_2/againOCHSLBNZ.png', '2018-11-12', '2018-11-12 12:07:18', 1, 76, '2018-11-12 12:08:23', 37);
 INSERT INTO `ka_codes` VALUES (67, 32, 0, '201811121207_32_2', 'againSMVWXPKF', '/public/upload/ercode/201811121207_32_2/againSMVWXPKF.png', '2018-11-12', '2018-11-12 12:07:18', 1, 75, '2018-11-12 12:07:49', 37);
+INSERT INTO `ka_codes` VALUES (68, 30, 24, '201811141728_30_1', '4OQGF8KG', '/public/upload/ercode/201811141728_30_1/4OQGF8KG.png', '2018-11-14', '2018-11-14 17:28:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (69, 30, 24, '201811141728_30_1', 'ECBM1S72', '/public/upload/ercode/201811141728_30_1/ECBM1S72.png', '2018-11-14', '2018-11-14 17:28:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (70, 30, 24, '201811141728_30_1', 'DCKMDDSD', '/public/upload/ercode/201811141728_30_1/DCKMDDSD.png', '2018-11-14', '2018-11-14 17:28:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (71, 30, 24, '201811141728_30_1', 'EJVV42HE', '/public/upload/ercode/201811141728_30_1/EJVV42HE.png', '2018-11-14', '2018-11-14 17:28:38', 2, 0, '2018-11-14 17:29:07', 37);
+INSERT INTO `ka_codes` VALUES (72, 30, 24, '201811141728_30_1', 'GSX1SFGQ', '/public/upload/ercode/201811141728_30_1/GSX1SFGQ.png', '2018-11-14', '2018-11-14 17:28:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (73, 30, 24, '201811141728_30_1', 'EMTHR8T4', '/public/upload/ercode/201811141728_30_1/EMTHR8T4.png', '2018-11-14', '2018-11-14 17:28:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (74, 30, 24, '201811141728_30_1', 'LJCHFK7V', '/public/upload/ercode/201811141728_30_1/LJCHFK7V.png', '2018-11-14', '2018-11-14 17:28:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (75, 30, 24, '201811141728_30_1', 'NNRXLURM', '/public/upload/ercode/201811141728_30_1/NNRXLURM.png', '2018-11-14', '2018-11-14 17:28:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (76, 30, 24, '201811141728_30_1', '73ELZ6C5', '/public/upload/ercode/201811141728_30_1/73ELZ6C5.png', '2018-11-14', '2018-11-14 17:28:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (77, 30, 24, '201811141728_30_1', 'HNPDKVHN', '/public/upload/ercode/201811141728_30_1/HNPDKVHN.png', '2018-11-14', '2018-11-14 17:28:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (78, 30, 25, '201811151254_30_1', 'LPBJBDMK', '/public/upload/ercode/201811151254_30_1/LPBJBDMK.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (79, 30, 25, '201811151254_30_1', 'NKNDGFHU', '/public/upload/ercode/201811151254_30_1/NKNDGFHU.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (80, 30, 25, '201811151254_30_1', 'YEEYKETD', '/public/upload/ercode/201811151254_30_1/YEEYKETD.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (81, 30, 25, '201811151254_30_1', 'MOZLPPDO', '/public/upload/ercode/201811151254_30_1/MOZLPPDO.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (82, 30, 25, '201811151254_30_1', 'BKIWTDDV', '/public/upload/ercode/201811151254_30_1/BKIWTDDV.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (83, 30, 25, '201811151254_30_1', 'KKAHXRM4', '/public/upload/ercode/201811151254_30_1/KKAHXRM4.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (84, 30, 25, '201811151254_30_1', 'EP5KVK2E', '/public/upload/ercode/201811151254_30_1/EP5KVK2E.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (85, 30, 25, '201811151254_30_1', 'MFJ7NM4E', '/public/upload/ercode/201811151254_30_1/MFJ7NM4E.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (86, 30, 25, '201811151254_30_1', 'BPVTMBCQ', '/public/upload/ercode/201811151254_30_1/BPVTMBCQ.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (87, 30, 25, '201811151254_30_1', 'XJZ16GLX', '/public/upload/ercode/201811151254_30_1/XJZ16GLX.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (88, 30, 25, '201811151254_30_1', 'EQAHBD6M', '/public/upload/ercode/201811151254_30_1/EQAHBD6M.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (89, 30, 25, '201811151254_30_1', 'EHCKT619', '/public/upload/ercode/201811151254_30_1/EHCKT619.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (90, 30, 25, '201811151254_30_1', 'WDZ5HPD8', '/public/upload/ercode/201811151254_30_1/WDZ5HPD8.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (91, 30, 25, '201811151254_30_1', 'LJBH91T1', '/public/upload/ercode/201811151254_30_1/LJBH91T1.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (92, 30, 25, '201811151254_30_1', 'IDJLMHEW', '/public/upload/ercode/201811151254_30_1/IDJLMHEW.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (93, 30, 25, '201811151254_30_1', 'EHJ2MJ8P', '/public/upload/ercode/201811151254_30_1/EHJ2MJ8P.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (94, 30, 25, '201811151254_30_1', '2EQUFMOD', '/public/upload/ercode/201811151254_30_1/2EQUFMOD.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (95, 30, 25, '201811151254_30_1', '9KUOPXIQ', '/public/upload/ercode/201811151254_30_1/9KUOPXIQ.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (96, 30, 25, '201811151254_30_1', '46FS7KLM', '/public/upload/ercode/201811151254_30_1/46FS7KLM.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (97, 30, 25, '201811151254_30_1', 'EBNSLBCG', '/public/upload/ercode/201811151254_30_1/EBNSLBCG.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (98, 30, 25, '201811151254_30_1', 'DS11MRPO', '/public/upload/ercode/201811151254_30_1/DS11MRPO.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (99, 30, 25, '201811151254_30_1', 'NP8MM4SN', '/public/upload/ercode/201811151254_30_1/NP8MM4SN.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (100, 30, 25, '201811151254_30_1', 'YNSQYJDQ', '/public/upload/ercode/201811151254_30_1/YNSQYJDQ.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (101, 30, 25, '201811151254_30_1', 'B9ZSROLT', '/public/upload/ercode/201811151254_30_1/B9ZSROLT.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (102, 30, 25, '201811151254_30_1', 'JPRW2DDH', '/public/upload/ercode/201811151254_30_1/JPRW2DDH.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (103, 30, 25, '201811151254_30_1', 'IJDB1LVO', '/public/upload/ercode/201811151254_30_1/IJDB1LVO.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (104, 30, 25, '201811151254_30_1', 'HVEHGBJL', '/public/upload/ercode/201811151254_30_1/HVEHGBJL.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (105, 30, 25, '201811151254_30_1', 'IAM6HEP6', '/public/upload/ercode/201811151254_30_1/IAM6HEP6.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (106, 30, 25, '201811151254_30_1', 'CLMSDLSE', '/public/upload/ercode/201811151254_30_1/CLMSDLSE.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (107, 30, 25, '201811151254_30_1', 'PPLUGDQB', '/public/upload/ercode/201811151254_30_1/PPLUGDQB.png', '2018-11-15', '2018-11-15 12:55:35', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (108, 30, 25, '201811151254_30_1', 'TRQMY6G6', '/public/upload/ercode/201811151254_30_1/TRQMY6G6.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (109, 30, 25, '201811151254_30_1', 'HFLT6HAN', '/public/upload/ercode/201811151254_30_1/HFLT6HAN.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (110, 30, 25, '201811151254_30_1', 'UB5J9VLW', '/public/upload/ercode/201811151254_30_1/UB5J9VLW.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (111, 30, 25, '201811151254_30_1', 'VZPPB9KI', '/public/upload/ercode/201811151254_30_1/VZPPB9KI.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (112, 30, 25, '201811151254_30_1', 'DZMKXPMS', '/public/upload/ercode/201811151254_30_1/DZMKXPMS.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (113, 30, 25, '201811151254_30_1', 'CUQKBXUF', '/public/upload/ercode/201811151254_30_1/CUQKBXUF.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (114, 30, 25, '201811151254_30_1', '49PSXLC2', '/public/upload/ercode/201811151254_30_1/49PSXLC2.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (115, 30, 25, '201811151254_30_1', 'LICV8VW6', '/public/upload/ercode/201811151254_30_1/LICV8VW6.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (116, 30, 25, '201811151254_30_1', 'SMFHUFNA', '/public/upload/ercode/201811151254_30_1/SMFHUFNA.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (117, 30, 25, '201811151254_30_1', '3TDVPQEL', '/public/upload/ercode/201811151254_30_1/3TDVPQEL.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (118, 30, 25, '201811151254_30_1', '4MPDLMZE', '/public/upload/ercode/201811151254_30_1/4MPDLMZE.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (119, 30, 25, '201811151254_30_1', 'MPMQPBDK', '/public/upload/ercode/201811151254_30_1/MPMQPBDK.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (120, 30, 25, '201811151254_30_1', 'MWQEYT6D', '/public/upload/ercode/201811151254_30_1/MWQEYT6D.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (121, 30, 25, '201811151254_30_1', '7MQMW7LY', '/public/upload/ercode/201811151254_30_1/7MQMW7LY.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (122, 30, 25, '201811151254_30_1', 'ZDQRKQKB', '/public/upload/ercode/201811151254_30_1/ZDQRKQKB.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (123, 30, 25, '201811151254_30_1', 'HZ5Q78WH', '/public/upload/ercode/201811151254_30_1/HZ5Q78WH.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (124, 30, 25, '201811151254_30_1', 'KW1N4CNC', '/public/upload/ercode/201811151254_30_1/KW1N4CNC.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (125, 30, 25, '201811151254_30_1', 'UBGPNFSA', '/public/upload/ercode/201811151254_30_1/UBGPNFSA.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (126, 30, 25, '201811151254_30_1', 'E9F7JEBA', '/public/upload/ercode/201811151254_30_1/E9F7JEBA.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (127, 30, 25, '201811151254_30_1', 'BCEGGKOJ', '/public/upload/ercode/201811151254_30_1/BCEGGKOJ.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (128, 30, 25, '201811151254_30_1', '5QYQNXXL', '/public/upload/ercode/201811151254_30_1/5QYQNXXL.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (129, 30, 25, '201811151254_30_1', 'GFLJK77X', '/public/upload/ercode/201811151254_30_1/GFLJK77X.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (130, 30, 25, '201811151254_30_1', '2LLLHTEU', '/public/upload/ercode/201811151254_30_1/2LLLHTEU.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (131, 30, 25, '201811151254_30_1', 'OFW5MDLX', '/public/upload/ercode/201811151254_30_1/OFW5MDLX.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (132, 30, 25, '201811151254_30_1', 'BSMNHRDC', '/public/upload/ercode/201811151254_30_1/BSMNHRDC.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (133, 30, 25, '201811151254_30_1', 'UDPIZ8LH', '/public/upload/ercode/201811151254_30_1/UDPIZ8LH.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (134, 30, 25, '201811151254_30_1', 'OKHEELMJ', '/public/upload/ercode/201811151254_30_1/OKHEELMJ.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (135, 30, 25, '201811151254_30_1', 'FIO9ESDQ', '/public/upload/ercode/201811151254_30_1/FIO9ESDQ.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (136, 30, 25, '201811151254_30_1', 'DSC1JT3F', '/public/upload/ercode/201811151254_30_1/DSC1JT3F.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (137, 30, 25, '201811151254_30_1', 'QZ65HFDA', '/public/upload/ercode/201811151254_30_1/QZ65HFDA.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (138, 30, 25, '201811151254_30_1', 'JBOF5ACA', '/public/upload/ercode/201811151254_30_1/JBOF5ACA.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (139, 30, 25, '201811151254_30_1', '5M7EKKEL', '/public/upload/ercode/201811151254_30_1/5M7EKKEL.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (140, 30, 25, '201811151254_30_1', 'RTPPEEAR', '/public/upload/ercode/201811151254_30_1/RTPPEEAR.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (141, 30, 25, '201811151254_30_1', 'GEZBD4LQ', '/public/upload/ercode/201811151254_30_1/GEZBD4LQ.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (142, 30, 25, '201811151254_30_1', 'HWT5SKGT', '/public/upload/ercode/201811151254_30_1/HWT5SKGT.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (143, 30, 25, '201811151254_30_1', '2GQOQHFZ', '/public/upload/ercode/201811151254_30_1/2GQOQHFZ.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (144, 30, 25, '201811151254_30_1', 'CTNBYRKF', '/public/upload/ercode/201811151254_30_1/CTNBYRKF.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (145, 30, 25, '201811151254_30_1', 'HL9CDSN3', '/public/upload/ercode/201811151254_30_1/HL9CDSN3.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (146, 30, 25, '201811151254_30_1', 'BL7X7YNR', '/public/upload/ercode/201811151254_30_1/BL7X7YNR.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (147, 30, 25, '201811151254_30_1', 'BE5A34RP', '/public/upload/ercode/201811151254_30_1/BE5A34RP.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (148, 30, 25, '201811151254_30_1', 'CFSP2NH3', '/public/upload/ercode/201811151254_30_1/CFSP2NH3.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (149, 30, 25, '201811151254_30_1', 'GL6B8NEF', '/public/upload/ercode/201811151254_30_1/GL6B8NEF.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (150, 30, 25, '201811151254_30_1', 'A2CDBTJV', '/public/upload/ercode/201811151254_30_1/A2CDBTJV.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (151, 30, 25, '201811151254_30_1', 'OJPSJHTQ', '/public/upload/ercode/201811151254_30_1/OJPSJHTQ.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (152, 30, 25, '201811151254_30_1', 'FGSC8WC4', '/public/upload/ercode/201811151254_30_1/FGSC8WC4.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (153, 30, 25, '201811151254_30_1', 'CJQQCZYF', '/public/upload/ercode/201811151254_30_1/CJQQCZYF.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (154, 30, 25, '201811151254_30_1', 'EBCCNKEV', '/public/upload/ercode/201811151254_30_1/EBCCNKEV.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (155, 30, 25, '201811151254_30_1', 'GCLZ4G2P', '/public/upload/ercode/201811151254_30_1/GCLZ4G2P.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (156, 30, 25, '201811151254_30_1', '6SJPMKLJ', '/public/upload/ercode/201811151254_30_1/6SJPMKLJ.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (157, 30, 25, '201811151254_30_1', 'HEFH2FMQ', '/public/upload/ercode/201811151254_30_1/HEFH2FMQ.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (158, 30, 25, '201811151254_30_1', 'QPADOUST', '/public/upload/ercode/201811151254_30_1/QPADOUST.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (159, 30, 25, '201811151254_30_1', 'SPAED3BN', '/public/upload/ercode/201811151254_30_1/SPAED3BN.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (160, 30, 25, '201811151254_30_1', 'NJTRCDNX', '/public/upload/ercode/201811151254_30_1/NJTRCDNX.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (161, 30, 25, '201811151254_30_1', 'CZCHSBUL', '/public/upload/ercode/201811151254_30_1/CZCHSBUL.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (162, 30, 25, '201811151254_30_1', 'CJI1QIEX', '/public/upload/ercode/201811151254_30_1/CJI1QIEX.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (163, 30, 25, '201811151254_30_1', 'Z1ZBQJNB', '/public/upload/ercode/201811151254_30_1/Z1ZBQJNB.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (164, 30, 25, '201811151254_30_1', 'VJNSSQ6M', '/public/upload/ercode/201811151254_30_1/VJNSSQ6M.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (165, 30, 25, '201811151254_30_1', 'BGP7DNLH', '/public/upload/ercode/201811151254_30_1/BGP7DNLH.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (166, 30, 25, '201811151254_30_1', 'WZJTHBEA', '/public/upload/ercode/201811151254_30_1/WZJTHBEA.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (167, 30, 25, '201811151254_30_1', 'FCQGEVPE', '/public/upload/ercode/201811151254_30_1/FCQGEVPE.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (168, 30, 25, '201811151254_30_1', 'XNZG2B6N', '/public/upload/ercode/201811151254_30_1/XNZG2B6N.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (169, 30, 25, '201811151254_30_1', 'PB1H1LHP', '/public/upload/ercode/201811151254_30_1/PB1H1LHP.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (170, 30, 25, '201811151254_30_1', 'ACAT2W5E', '/public/upload/ercode/201811151254_30_1/ACAT2W5E.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (171, 30, 25, '201811151254_30_1', 'MWKXLW85', '/public/upload/ercode/201811151254_30_1/MWKXLW85.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (172, 30, 25, '201811151254_30_1', 'UQQTHEBP', '/public/upload/ercode/201811151254_30_1/UQQTHEBP.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (173, 30, 25, '201811151254_30_1', 'FVSD3CAS', '/public/upload/ercode/201811151254_30_1/FVSD3CAS.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (174, 30, 25, '201811151254_30_1', 'BWAGYNO8', '/public/upload/ercode/201811151254_30_1/BWAGYNO8.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (175, 30, 25, '201811151254_30_1', 'HW3O9HFG', '/public/upload/ercode/201811151254_30_1/HW3O9HFG.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (176, 30, 25, '201811151254_30_1', '2IAK7SN6', '/public/upload/ercode/201811151254_30_1/2IAK7SN6.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (177, 30, 25, '201811151254_30_1', 'NEP1M7NI', '/public/upload/ercode/201811151254_30_1/NEP1M7NI.png', '2018-11-15', '2018-11-15 12:55:36', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (178, 30, 25, '201811151254_30_1', 'EST7ELRS', '/public/upload/ercode/201811151254_30_1/EST7ELRS.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (179, 30, 25, '201811151254_30_1', 'CWPEF67O', '/public/upload/ercode/201811151254_30_1/CWPEF67O.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (180, 30, 25, '201811151254_30_1', 'PGQBV64K', '/public/upload/ercode/201811151254_30_1/PGQBV64K.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (181, 30, 25, '201811151254_30_1', 'YA46AG3T', '/public/upload/ercode/201811151254_30_1/YA46AG3T.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (182, 30, 25, '201811151254_30_1', 'BPAHNBGN', '/public/upload/ercode/201811151254_30_1/BPAHNBGN.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (183, 30, 25, '201811151254_30_1', 'SQHPRLZD', '/public/upload/ercode/201811151254_30_1/SQHPRLZD.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (184, 30, 25, '201811151254_30_1', 'RKJT6HVR', '/public/upload/ercode/201811151254_30_1/RKJT6HVR.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (185, 30, 25, '201811151254_30_1', 'KBAWGQYC', '/public/upload/ercode/201811151254_30_1/KBAWGQYC.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (186, 30, 25, '201811151254_30_1', 'SE47EBCM', '/public/upload/ercode/201811151254_30_1/SE47EBCM.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (187, 30, 25, '201811151254_30_1', 'G9LQXDQN', '/public/upload/ercode/201811151254_30_1/G9LQXDQN.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (188, 30, 25, '201811151254_30_1', 'NEXQ3ZGZ', '/public/upload/ercode/201811151254_30_1/NEXQ3ZGZ.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (189, 30, 25, '201811151254_30_1', 'BART1W1K', '/public/upload/ercode/201811151254_30_1/BART1W1K.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (190, 30, 25, '201811151254_30_1', 'DZBKAKKL', '/public/upload/ercode/201811151254_30_1/DZBKAKKL.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (191, 30, 25, '201811151254_30_1', 'GFSR8674', '/public/upload/ercode/201811151254_30_1/GFSR8674.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (192, 30, 25, '201811151254_30_1', 'A5SC5WPE', '/public/upload/ercode/201811151254_30_1/A5SC5WPE.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (193, 30, 25, '201811151254_30_1', 'AR3BPHPG', '/public/upload/ercode/201811151254_30_1/AR3BPHPG.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (194, 30, 25, '201811151254_30_1', 'KUCKCTAL', '/public/upload/ercode/201811151254_30_1/KUCKCTAL.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (195, 30, 25, '201811151254_30_1', '9HGJCCNG', '/public/upload/ercode/201811151254_30_1/9HGJCCNG.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (196, 30, 25, '201811151254_30_1', 'EKSBOEPD', '/public/upload/ercode/201811151254_30_1/EKSBOEPD.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (197, 30, 25, '201811151254_30_1', 'LRTB6DXM', '/public/upload/ercode/201811151254_30_1/LRTB6DXM.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (198, 30, 25, '201811151254_30_1', 'ZCCTPOSC', '/public/upload/ercode/201811151254_30_1/ZCCTPOSC.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (199, 30, 25, '201811151254_30_1', 'GFTD5AFS', '/public/upload/ercode/201811151254_30_1/GFTD5AFS.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (200, 30, 25, '201811151254_30_1', 'HFWH5LN8', '/public/upload/ercode/201811151254_30_1/HFWH5LN8.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (201, 30, 25, '201811151254_30_1', 'I5HD43AE', '/public/upload/ercode/201811151254_30_1/I5HD43AE.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (202, 30, 25, '201811151254_30_1', 'LG4H6N5S', '/public/upload/ercode/201811151254_30_1/LG4H6N5S.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (203, 30, 25, '201811151254_30_1', 'AKBFBQ4R', '/public/upload/ercode/201811151254_30_1/AKBFBQ4R.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (204, 30, 25, '201811151254_30_1', 'JPSYGF6F', '/public/upload/ercode/201811151254_30_1/JPSYGF6F.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (205, 30, 25, '201811151254_30_1', 'WWE7SHKT', '/public/upload/ercode/201811151254_30_1/WWE7SHKT.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (206, 30, 25, '201811151254_30_1', 'EXN9MCDG', '/public/upload/ercode/201811151254_30_1/EXN9MCDG.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (207, 30, 25, '201811151254_30_1', 'SQSE1D6R', '/public/upload/ercode/201811151254_30_1/SQSE1D6R.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (208, 30, 25, '201811151254_30_1', 'VB7YNB3L', '/public/upload/ercode/201811151254_30_1/VB7YNB3L.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (209, 30, 25, '201811151254_30_1', 'A6DH1AD7', '/public/upload/ercode/201811151254_30_1/A6DH1AD7.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (210, 30, 25, '201811151254_30_1', '9PDKAX9Q', '/public/upload/ercode/201811151254_30_1/9PDKAX9Q.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (211, 30, 25, '201811151254_30_1', 'EF4DGIUM', '/public/upload/ercode/201811151254_30_1/EF4DGIUM.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (212, 30, 25, '201811151254_30_1', 'QCRGHPR8', '/public/upload/ercode/201811151254_30_1/QCRGHPR8.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (213, 30, 25, '201811151254_30_1', 'WEFE7J78', '/public/upload/ercode/201811151254_30_1/WEFE7J78.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (214, 30, 25, '201811151254_30_1', 'ECGHSLQE', '/public/upload/ercode/201811151254_30_1/ECGHSLQE.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (215, 30, 25, '201811151254_30_1', 'DD5AB7QW', '/public/upload/ercode/201811151254_30_1/DD5AB7QW.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (216, 30, 25, '201811151254_30_1', '59O1PMG5', '/public/upload/ercode/201811151254_30_1/59O1PMG5.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (217, 30, 25, '201811151254_30_1', 'KN4YEEY9', '/public/upload/ercode/201811151254_30_1/KN4YEEY9.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (218, 30, 25, '201811151254_30_1', 'AQEXC53I', '/public/upload/ercode/201811151254_30_1/AQEXC53I.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (219, 30, 25, '201811151254_30_1', 'FTMGJDYU', '/public/upload/ercode/201811151254_30_1/FTMGJDYU.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (220, 30, 25, '201811151254_30_1', 'ZIDMHM6E', '/public/upload/ercode/201811151254_30_1/ZIDMHM6E.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (221, 30, 25, '201811151254_30_1', 'IOFB45MC', '/public/upload/ercode/201811151254_30_1/IOFB45MC.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (222, 30, 25, '201811151254_30_1', 'ZUHL9EQP', '/public/upload/ercode/201811151254_30_1/ZUHL9EQP.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (223, 30, 25, '201811151254_30_1', 'NEGNOGBM', '/public/upload/ercode/201811151254_30_1/NEGNOGBM.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (224, 30, 25, '201811151254_30_1', '7DNU4YVU', '/public/upload/ercode/201811151254_30_1/7DNU4YVU.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (225, 30, 25, '201811151254_30_1', '5QNHUIWC', '/public/upload/ercode/201811151254_30_1/5QNHUIWC.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (226, 30, 25, '201811151254_30_1', 'WJMQ4LC3', '/public/upload/ercode/201811151254_30_1/WJMQ4LC3.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (227, 30, 25, '201811151254_30_1', '4LQWPH9M', '/public/upload/ercode/201811151254_30_1/4LQWPH9M.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (228, 30, 25, '201811151254_30_1', 'B5674GKS', '/public/upload/ercode/201811151254_30_1/B5674GKS.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (229, 30, 25, '201811151254_30_1', 'LW4SZSFN', '/public/upload/ercode/201811151254_30_1/LW4SZSFN.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (230, 30, 25, '201811151254_30_1', 'SG7EIKQB', '/public/upload/ercode/201811151254_30_1/SG7EIKQB.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (231, 30, 25, '201811151254_30_1', 'EBLAHCOG', '/public/upload/ercode/201811151254_30_1/EBLAHCOG.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (232, 30, 25, '201811151254_30_1', 'VBGZZTIF', '/public/upload/ercode/201811151254_30_1/VBGZZTIF.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (233, 30, 25, '201811151254_30_1', 'BUAGAGKW', '/public/upload/ercode/201811151254_30_1/BUAGAGKW.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (234, 30, 25, '201811151254_30_1', 'BF4KN1GL', '/public/upload/ercode/201811151254_30_1/BF4KN1GL.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (235, 30, 25, '201811151254_30_1', 'Y1AA9MRG', '/public/upload/ercode/201811151254_30_1/Y1AA9MRG.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (236, 30, 25, '201811151254_30_1', 'L5G48L5P', '/public/upload/ercode/201811151254_30_1/L5G48L5P.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (237, 30, 25, '201811151254_30_1', 'A7PJ7NJS', '/public/upload/ercode/201811151254_30_1/A7PJ7NJS.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (238, 30, 25, '201811151254_30_1', 'T3QM8UQO', '/public/upload/ercode/201811151254_30_1/T3QM8UQO.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (239, 30, 25, '201811151254_30_1', '3BCAWA32', '/public/upload/ercode/201811151254_30_1/3BCAWA32.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (240, 30, 25, '201811151254_30_1', 'IKBBCCHY', '/public/upload/ercode/201811151254_30_1/IKBBCCHY.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (241, 30, 25, '201811151254_30_1', 'JIEAHD1Q', '/public/upload/ercode/201811151254_30_1/JIEAHD1Q.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (242, 30, 25, '201811151254_30_1', '9AH1UD2L', '/public/upload/ercode/201811151254_30_1/9AH1UD2L.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (243, 30, 25, '201811151254_30_1', '8D8M3NK4', '/public/upload/ercode/201811151254_30_1/8D8M3NK4.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (244, 30, 25, '201811151254_30_1', 'LEFUHGPP', '/public/upload/ercode/201811151254_30_1/LEFUHGPP.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (245, 30, 25, '201811151254_30_1', '9AGLWEPJ', '/public/upload/ercode/201811151254_30_1/9AGLWEPJ.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (246, 30, 25, '201811151254_30_1', '3JNUPTHH', '/public/upload/ercode/201811151254_30_1/3JNUPTHH.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (247, 30, 25, '201811151254_30_1', 'EEEBCCEQ', '/public/upload/ercode/201811151254_30_1/EEEBCCEQ.png', '2018-11-15', '2018-11-15 12:55:37', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (248, 30, 25, '201811151254_30_1', '7QQ5RB1N', '/public/upload/ercode/201811151254_30_1/7QQ5RB1N.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (249, 30, 25, '201811151254_30_1', 'U6UC2FNE', '/public/upload/ercode/201811151254_30_1/U6UC2FNE.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (250, 30, 25, '201811151254_30_1', 'SMNW542N', '/public/upload/ercode/201811151254_30_1/SMNW542N.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (251, 30, 25, '201811151254_30_1', 'EFJAE4BP', '/public/upload/ercode/201811151254_30_1/EFJAE4BP.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (252, 30, 25, '201811151254_30_1', 'BU48MSGH', '/public/upload/ercode/201811151254_30_1/BU48MSGH.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (253, 30, 25, '201811151254_30_1', 'JJGCE4XC', '/public/upload/ercode/201811151254_30_1/JJGCE4XC.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (254, 30, 25, '201811151254_30_1', 'OE4LTSPM', '/public/upload/ercode/201811151254_30_1/OE4LTSPM.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (255, 30, 25, '201811151254_30_1', 'B1FG1RQK', '/public/upload/ercode/201811151254_30_1/B1FG1RQK.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (256, 30, 25, '201811151254_30_1', 'MAGTAFTC', '/public/upload/ercode/201811151254_30_1/MAGTAFTC.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (257, 30, 25, '201811151254_30_1', 'NBPPTVTL', '/public/upload/ercode/201811151254_30_1/NBPPTVTL.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (258, 30, 25, '201811151254_30_1', 'QI6NNTCL', '/public/upload/ercode/201811151254_30_1/QI6NNTCL.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (259, 30, 25, '201811151254_30_1', 'EJWVKSRY', '/public/upload/ercode/201811151254_30_1/EJWVKSRY.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (260, 30, 25, '201811151254_30_1', 'SSHHBUKM', '/public/upload/ercode/201811151254_30_1/SSHHBUKM.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (261, 30, 25, '201811151254_30_1', 'NGQGCV49', '/public/upload/ercode/201811151254_30_1/NGQGCV49.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (262, 30, 25, '201811151254_30_1', 'XAAKHEEE', '/public/upload/ercode/201811151254_30_1/XAAKHEEE.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (263, 30, 25, '201811151254_30_1', '2EJE9ZSP', '/public/upload/ercode/201811151254_30_1/2EJE9ZSP.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (264, 30, 25, '201811151254_30_1', 'ED4OL7F6', '/public/upload/ercode/201811151254_30_1/ED4OL7F6.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (265, 30, 25, '201811151254_30_1', 'WNGNSVMJ', '/public/upload/ercode/201811151254_30_1/WNGNSVMJ.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (266, 30, 25, '201811151254_30_1', 'IRXEN9EY', '/public/upload/ercode/201811151254_30_1/IRXEN9EY.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (267, 30, 25, '201811151254_30_1', 'RJN2WTKA', '/public/upload/ercode/201811151254_30_1/RJN2WTKA.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (268, 30, 25, '201811151254_30_1', 'NSNPKYIG', '/public/upload/ercode/201811151254_30_1/NSNPKYIG.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (269, 30, 25, '201811151254_30_1', 'NR4OK4LM', '/public/upload/ercode/201811151254_30_1/NR4OK4LM.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (270, 30, 25, '201811151254_30_1', 'NJSDGKUS', '/public/upload/ercode/201811151254_30_1/NJSDGKUS.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (271, 30, 25, '201811151254_30_1', '5C8TWCJ9', '/public/upload/ercode/201811151254_30_1/5C8TWCJ9.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (272, 30, 25, '201811151254_30_1', 'COHJMBCE', '/public/upload/ercode/201811151254_30_1/COHJMBCE.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (273, 30, 25, '201811151254_30_1', '7JJC8PPQ', '/public/upload/ercode/201811151254_30_1/7JJC8PPQ.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (274, 30, 25, '201811151254_30_1', 'ICGNYCGJ', '/public/upload/ercode/201811151254_30_1/ICGNYCGJ.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (275, 30, 25, '201811151254_30_1', 'HKLCTOVL', '/public/upload/ercode/201811151254_30_1/HKLCTOVL.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (276, 30, 25, '201811151254_30_1', '5CSG8EGC', '/public/upload/ercode/201811151254_30_1/5CSG8EGC.png', '2018-11-15', '2018-11-15 12:55:38', 0, 0, NULL, 37);
+INSERT INTO `ka_codes` VALUES (333, 32, 0, '201811151506_32_1', '21NSGBCQ', '/public/upload/ercode/201811151506_32_1/21NSGBCQ.png', '2018-11-15', '2018-11-15 15:06:45', 2, 0, '2018-11-15 15:08:34', 37);
+INSERT INTO `ka_codes` VALUES (334, 32, 0, '201811151506_32_1', 'VAGDSEPK', '/public/upload/ercode/201811151506_32_1/VAGDSEPK.png', '2018-11-15', '2018-11-15 15:06:45', 2, 0, '2018-11-15 15:08:31', 37);
+INSERT INTO `ka_codes` VALUES (335, 32, 0, '201811151506_32_1', 'Q8DMEHWG', '/public/upload/ercode/201811151506_32_1/Q8DMEHWG.png', '2018-11-15', '2018-11-15 15:06:45', 2, 0, '2018-11-15 15:08:07', 37);
 
 -- ----------------------------
 -- Table structure for ka_goods
@@ -1613,7 +1868,7 @@ CREATE TABLE `ka_message_limit`  (
 -- ----------------------------
 INSERT INTO `ka_message_limit` VALUES (1, '18130191539', 1, 1537501407, 1537545599, NULL, NULL);
 INSERT INTO `ka_message_limit` VALUES (2, '13888888888', 1, 1538209662, 1538236799, NULL, NULL);
-INSERT INTO `ka_message_limit` VALUES (3, '18140191539', 10, 1540440021, 1540483199, 123456, 1541761402);
+INSERT INTO `ka_message_limit` VALUES (3, '18140191539', 10, 1540440021, 1540483199, 123456, 1542350417);
 INSERT INTO `ka_message_limit` VALUES (4, '18782985561', 3, 1540367233, 1540396799, NULL, NULL);
 INSERT INTO `ka_message_limit` VALUES (5, '18981940330', 2, 1540438099, 1540483199, 1478, 1540651243);
 INSERT INTO `ka_message_limit` VALUES (6, '15982106350', 2, 1540438298, 1540483199, 3529, 1540690652);
@@ -1631,24 +1886,29 @@ DROP TABLE IF EXISTS `ka_orders`;
 CREATE TABLE `ka_orders`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `order_sn` char(18) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `goods_id` int(10) NOT NULL,
-  `goods_num` mediumint(5) NOT NULL,
-  `aid` int(10) NOT NULL,
-  `create_time` datetime NOT NULL,
-  `time` int(10) NOT NULL,
-  `shipping_time` int(10) NOT NULL,
-  `operator_id` int(10) NOT NULL,
-  `shipping_id` int(10) NOT NULL,
-  `type` tinyint(1) NOT NULL,
+  `goods_id` int(10) NOT NULL COMMENT '兑换商品id',
+  `goods_num` mediumint(5) NOT NULL COMMENT '商品数量',
+  `aid` int(10) NOT NULL COMMENT '活动id',
+  `create_time` datetime NOT NULL COMMENT '订单日期',
+  `time` int(10) NOT NULL COMMENT '下单时间戳',
+  `shipping_time` int(10) NOT NULL COMMENT '发货时间',
+  `operator_id` int(10) NOT NULL COMMENT '发放型活动:记录客服经理id   兑换型活动:记录兑换码id',
+  `shipping_id` int(10) NOT NULL COMMENT '发货单id',
+  `type` tinyint(1) NOT NULL COMMENT '1:自助兑换活动   2:发放型活动',
+  `status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '-1:已删除  0:正常',
   `sid` mediumint(5) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+) ENGINE = MyISAM AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
 
 -- ----------------------------
 -- Records of ka_orders
 -- ----------------------------
-INSERT INTO `ka_orders` VALUES (1, '201811121230105353', 12, 1, 32, '2018-11-12 12:30:10', 1541997010, 0, 64, 78, 1, 37);
-INSERT INTO `ka_orders` VALUES (2, '201811121230476202', 12, 1, 32, '2018-11-12 12:30:47', 1541997047, 0, 63, 79, 1, 37);
+INSERT INTO `ka_orders` VALUES (1, '201811121230105353', 12, 1, 32, '2018-11-12 12:30:10', 1541997010, 0, 64, 78, 1, -1, 37);
+INSERT INTO `ka_orders` VALUES (2, '201811121230476202', 12, 1, 32, '2018-11-12 12:30:47', 1541997047, 1542190332, 63, 79, 1, 0, 37);
+INSERT INTO `ka_orders` VALUES (3, '201811131533597376', 43, 1, 33, '2018-11-13 15:33:59', 1542094439, 0, 5, 80, 2, 0, 32);
+INSERT INTO `ka_orders` VALUES (4, '201811141544126321', 16, 1, 29, '2018-11-14 15:44:12', 1542181452, 0, 12, 81, 2, 0, 37);
+INSERT INTO `ka_orders` VALUES (5, '201811141544356600', 20, 3, 29, '2018-11-14 15:44:35', 1542181475, 0, 12, 82, 2, -1, 37);
+INSERT INTO `ka_orders` VALUES (6, '201811141549341129', 28, 2, 29, '2018-11-14 15:49:35', 1542181775, 0, 12, 83, 2, 0, 37);
 
 -- ----------------------------
 -- Table structure for ka_sales_man
@@ -1662,7 +1922,7 @@ CREATE TABLE `ka_sales_man`  (
   `sid` mediumint(5) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `b`(`branch_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 141 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 142 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ka_sales_man
@@ -1803,6 +2063,7 @@ INSERT INTO `ka_sales_man` VALUES (137, '陈思涵', '18782410707', 12, 37);
 INSERT INTO `ka_sales_man` VALUES (138, '彭婷', '18583616136', 12, 37);
 INSERT INTO `ka_sales_man` VALUES (139, '吴智', '18010671913', 12, 37);
 INSERT INTO `ka_sales_man` VALUES (140, '王迪', '18140191530', 7, 37);
+INSERT INTO `ka_sales_man` VALUES (141, '王迪', '18140191539', 130, 33);
 
 -- ----------------------------
 -- Table structure for ka_shipping
@@ -1821,7 +2082,7 @@ CREATE TABLE `ka_shipping`  (
   `remarks` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '备注',
   `new_field` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '后台自定义字段',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 80 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单发货表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 84 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '订单发货表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of ka_shipping
@@ -1895,7 +2156,11 @@ INSERT INTO `ka_shipping` VALUES (75, '', NULL, '王迪', '18140191539', '181401
 INSERT INTO `ka_shipping` VALUES (76, '', NULL, '王迪', '18140191539', '18140191539', '北京市/北京市市辖区/东城区/天府三街', '1115', '王迪1', '', '[{\"title\":\"test1\",\"content\":\"\\u55ef\\u54ea\"}]');
 INSERT INTO `ka_shipping` VALUES (77, '', NULL, '', '', '18140191539', '北京市/北京市市辖区/东城区/天府三街', '', '的', '', NULL);
 INSERT INTO `ka_shipping` VALUES (78, '', NULL, '', '', '18140191539', '北京市/北京市市辖区/东城区/天府三街', '', '王迪', '', NULL);
-INSERT INTO `ka_shipping` VALUES (79, '', NULL, '', '', '18140191539', '北京市/北京市市辖区/东城区/天府三街', '', '王迪', '', NULL);
+INSERT INTO `ka_shipping` VALUES (79, 'ZTO', '3901850478576', '', '', '18140191539', '北京市/北京市市辖区/东城区/天府三街', '', '王迪', '', NULL);
+INSERT INTO `ka_shipping` VALUES (80, '', NULL, '', '', '18140191539', '北京市/北京市市辖区/东城区/天府三街', '', '王迪', '', NULL);
+INSERT INTO `ka_shipping` VALUES (81, '', NULL, '王迪', '', '18140191539', '北京市/北京市市辖区/东城区/天府三街', '111115', '王迪', '', '[{\"title\":\"\\u5b66\\u6821\\u540d\",\"content\":\"\\u963f\\u8428\\u6cd5\"},{\"title\":\"\\u5a5a\\u59fb\\u72b6\\u51b5\",\"content\":\"\\u8bf7\\u6e29\\u67d4\"},{\"title\":\"\\u662f\\u5426\\u6709\\u5b50\\u5973\",\"content\":\"\\u9a71\\u868a\"}]');
+INSERT INTO `ka_shipping` VALUES (82, '', NULL, '王迪', '', '18140191539', '北京市/北京市市辖区/东城区/天府三街', '111115', '王迪', '', '[{\"title\":\"\\u5b66\\u6821\\u540d\",\"content\":\"\\u5b98\\u65b9\"},{\"title\":\"\\u5a5a\\u59fb\\u72b6\\u51b5\",\"content\":\"\\u7b54\\u590d\"},{\"title\":\"\\u662f\\u5426\\u6709\\u5b50\\u5973\",\"content\":\"\\u554a\"}]');
+INSERT INTO `ka_shipping` VALUES (83, '', NULL, '我的', '', '18140191539', '北京市/北京市市辖区/昌平区/天府三街', '111115', '王迪', '', '[{\"title\":\"\\u5b66\\u6821\\u540d\",\"content\":\"\\u68b5\\u8482\\u5188\\u548c\\u6708\"},{\"title\":\"\\u5a5a\\u59fb\\u72b6\\u51b5\",\"content\":\"\\u98ce\\u5149\\u597d\"},{\"title\":\"\\u662f\\u5426\\u6709\\u5b50\\u5973\",\"content\":\"\\u7535\\u996d\\u9505\"}]');
 
 -- ----------------------------
 -- Table structure for ka_shop
